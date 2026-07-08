@@ -1891,57 +1891,77 @@ const DirectoryCard = ({ soluper, theme, onClick }) => {
   return (
     <div 
       onClick={() => onClick(soluper)} 
-      className={`relative p-6 cursor-pointer flex flex-col justify-between overflow-hidden group transition-all duration-500 hover:scale-[1.03] hover:-translate-y-1.5 active:scale-95 ${design.bg} ${design.border} ${design.glow} ${
-        theme === 'bot' ? 'rounded-none border-[1.5px]' : 'rounded-3xl border-[1.5px]'
+      className={`relative p-5 pt-6 pb-5 cursor-pointer flex flex-col items-center justify-between overflow-hidden group transition-all duration-500 hover:scale-[1.03] hover:-translate-y-1.5 active:scale-95 ${design.bg} ${design.border} ${design.glow} ${
+        theme === 'bot' ? 'rounded-none border-[1.5px]' : 'rounded-3xl border-[1.5px] hover:shadow-[0_20px_45px_rgba(0,0,0,0.5)]'
       }`}
       style={{ height: '350px' }}
     >
+      {/* Decorative Frame Layout (Apple / Luxury Style) */}
       {theme !== 'bot' && (
         <>
+          {/* Golden/Silver Ornamental Corners */}
           <div className={`absolute top-3 left-3 w-3.5 h-3.5 border-t-[1.5px] border-l-[1.5px] ${design.accentColor} pointer-events-none z-10 transition-transform duration-500 group-hover:-translate-x-0.5 group-hover:-translate-y-0.5`} />
           <div className={`absolute top-3 right-3 w-3.5 h-3.5 border-t-[1.5px] border-r-[1.5px] ${design.accentColor} pointer-events-none z-10 transition-transform duration-500 group-hover:translate-x-0.5 group-hover:-translate-y-0.5`} />
           <div className={`absolute bottom-3 left-3 w-3.5 h-3.5 border-b-[1.5px] border-l-[1.5px] ${design.accentColor} pointer-events-none z-10 transition-transform duration-500 group-hover:-translate-x-0.5 group-hover:translate-y-0.5`} />
           <div className={`absolute bottom-3 right-3 w-3.5 h-3.5 border-b-[1.5px] border-r-[1.5px] ${design.accentColor} pointer-events-none z-10 transition-transform duration-500 group-hover:translate-x-0.5 group-hover:translate-y-0.5`} />
+
+          {/* Double border inner box */}
           <div className={`absolute inset-3 border-[1.5px] ${design.innerBorder} rounded-[20px] pointer-events-none transition-all duration-500 group-hover:scale-[0.98]`} />
+          
+          {/* Radial Light glow / Radial background pattern */}
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.06)_0%,transparent_70%)] pointer-events-none opacity-40" />
+          
+          {/* High-end Metallic sheen hover effect */}
           <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_ease-out] pointer-events-none" />
         </>
       )}
 
+      {/* Profile cut-out with circular background glow */}
       <div className="relative flex justify-center mt-3">
-        <div className="absolute w-28 h-28 rounded-full blur-xl opacity-35 bg-white/20 transition-all duration-500 group-hover:scale-125 pointer-events-none" />
-        <div className="relative w-28 h-28">
-          <div className={`w-full h-full overflow-hidden shadow-2xl transition-all duration-500 group-hover:scale-105 flex items-center justify-center ${
+        {/* Glow behind portrait */}
+        <div className="absolute w-32 h-32 rounded-full blur-xl opacity-35 bg-white/20 transition-all duration-500 group-hover:scale-125 pointer-events-none" />
+        
+        <div className="relative w-32 h-32 transition-transform duration-500 group-hover:scale-105">
+          {/* Profile Image with Gold/Silver border frame (Bevel, Inner Glow, Secondary ring) */}
+          <div className={`w-full h-full overflow-hidden relative flex-shrink-0 flex items-center justify-center transition-all duration-500 ${
             theme === 'bot' 
               ? 'rounded-none border border-green-500 grayscale group-hover:grayscale-0' 
-              : `rounded-full border-[3px] ${design.accentColor} shadow-[0_0_20px_rgba(255,255,255,0.1)]`
+              : `rounded-full p-[3px] bg-gradient-to-b from-white/10 via-transparent to-black/35 border-[1.5px] ${design.accentColor} shadow-[0_6px_20px_rgba(0,0,0,0.45),0_0_20px_rgba(255,255,255,0.02)] group-hover:shadow-[0_8px_30px_rgba(255,255,255,0.08)]`
           }`}>
-            <img 
-              src={soluper.image} 
-              alt={soluper.name} 
-              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
-            />
+            {/* Inner secondary border frame */}
+            <div className={`w-full h-full rounded-full overflow-hidden border-[2px] border-black/40 flex items-center justify-center bg-slate-800`}>
+              <img 
+                src={soluper.image} 
+                alt={soluper.name} 
+                className="w-full h-full object-cover transition-transform duration-750 group-hover:scale-[1.08]" 
+              />
+            </div>
           </div>
 
+          {/* Small Active Status Dot (Aligned to larger frame) */}
           {soluper.status === 'Active' && (
-            <div className={`absolute bottom-0.5 right-0.5 w-4 h-4 rounded-full border-2 z-10 ${
-              theme === 'bot' ? 'border-black bg-green-500 rounded-none' : 'border-slate-950 bg-green-400'
+            <div className={`absolute bottom-1 right-1 w-4.5 h-4.5 rounded-full border-2 z-10 transition-transform duration-500 group-hover:scale-105 ${
+              theme === 'bot' ? 'border-black bg-green-500 rounded-none' : 'border-slate-955 bg-green-400'
             }`} />
           )}
         </div>
       </div>
 
-      <div className="relative z-10 w-full text-center mt-4 pb-2 flex flex-col items-center flex-1 justify-end">
-        <div className={`inline-flex items-center gap-1 px-3 py-0.5 mb-3 rounded-full border text-[9.5px] font-bold uppercase tracking-wider ${design.badgeColor}`}>
+      {/* Information Section / Glassmorphism Panel */}
+      <div className="relative z-10 w-full text-center mt-3 pb-1 flex flex-col items-center flex-1 justify-end">
+        {/* Role Badge */}
+        <div className={`inline-flex items-center gap-1 px-3 py-0.5 mb-2.5 rounded-full border text-[9.5px] font-bold uppercase tracking-wider ${design.badgeColor}`}>
           {design.badge}
         </div>
 
+        {/* Member Name */}
         <h4 className={`text-[17px] font-extrabold tracking-tight transition-colors ${
           theme === 'bot' ? 'text-green-400 font-mono group-hover:text-green-300' : 'text-white'
         }`}>
           {soluper.name}
         </h4>
 
+        {/* Designation Title */}
         <p className={`text-[10.5px] font-semibold tracking-wider uppercase mt-1 ${
           theme === 'bot' ? 'text-green-700 font-mono' : 'text-slate-300/80'
         }`}>
