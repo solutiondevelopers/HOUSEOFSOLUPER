@@ -1917,16 +1917,16 @@ const DirectoryCard = ({ soluper, theme, onClick }) => {
       )}
 
       {/* Profile cut-out with circular background glow */}
-      <div className="relative flex justify-center mt-3">
+      <div className="relative flex justify-center mt-2">
         {/* Glow behind portrait */}
-        <div className="absolute w-32 h-32 rounded-full blur-xl opacity-35 bg-white/20 transition-all duration-500 group-hover:scale-125 pointer-events-none" />
+        <div className="absolute w-44 h-44 rounded-full blur-xl opacity-35 bg-white/20 transition-all duration-500 group-hover:scale-110 pointer-events-none" />
         
-        <div className="relative w-32 h-32 transition-transform duration-500 group-hover:scale-105">
+        <div className="relative w-44 h-44 transition-transform duration-500 group-hover:scale-105">
           {/* Profile Image with Gold/Silver border frame (Bevel, Inner Glow, Secondary ring) */}
           <div className={`w-full h-full overflow-hidden relative flex-shrink-0 flex items-center justify-center transition-all duration-500 ${
             theme === 'bot' 
               ? 'rounded-none border border-green-500 grayscale group-hover:grayscale-0' 
-              : `rounded-full p-[3px] bg-gradient-to-b from-white/10 via-transparent to-black/35 border-[1.5px] ${design.accentColor} shadow-[0_6px_20px_rgba(0,0,0,0.45),0_0_20px_rgba(255,255,255,0.02)] group-hover:shadow-[0_8px_30px_rgba(255,255,255,0.08)]`
+              : `rounded-full p-[4px] bg-gradient-to-b from-white/10 via-transparent to-black/35 border-[1.5px] ${design.accentColor} shadow-[0_6px_20px_rgba(0,0,0,0.45),0_0_20px_rgba(255,255,255,0.02)] group-hover:shadow-[0_8px_30px_rgba(255,255,255,0.08)]`
           }`}>
             {/* Inner secondary border frame */}
             <div className={`w-full h-full rounded-full overflow-hidden border-[2px] border-black/40 flex items-center justify-center bg-slate-800`}>
@@ -1940,7 +1940,7 @@ const DirectoryCard = ({ soluper, theme, onClick }) => {
 
           {/* Small Active Status Dot (Aligned to larger frame) */}
           {soluper.status === 'Active' && (
-            <div className={`absolute bottom-1 right-1 w-4.5 h-4.5 rounded-full border-2 z-10 transition-transform duration-500 group-hover:scale-105 ${
+            <div className={`absolute bottom-2 right-2 w-5 h-5 rounded-full border-2 z-10 transition-transform duration-500 group-hover:scale-105 ${
               theme === 'bot' ? 'border-black bg-green-500 rounded-none' : 'border-slate-955 bg-green-400'
             }`} />
           )}
@@ -1948,9 +1948,9 @@ const DirectoryCard = ({ soluper, theme, onClick }) => {
       </div>
 
       {/* Information Section / Glassmorphism Panel */}
-      <div className="relative z-10 w-full text-center mt-3 pb-1 flex flex-col items-center flex-1 justify-end">
+      <div className="relative z-10 w-full text-center mt-2 pb-0.5 flex flex-col items-center flex-1 justify-end">
         {/* Role Badge */}
-        <div className={`inline-flex items-center gap-1 px-3 py-0.5 mb-2.5 rounded-full border text-[9.5px] font-bold uppercase tracking-wider ${design.badgeColor}`}>
+        <div className={`inline-flex items-center gap-1 px-3 py-0.5 mb-2 rounded-full border text-[9.5px] font-bold uppercase tracking-wider ${design.badgeColor}`}>
           {design.badge}
         </div>
 
