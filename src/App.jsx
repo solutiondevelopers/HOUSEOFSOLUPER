@@ -3048,11 +3048,11 @@ const SoluperProfile = ({ soluper, theme, onBack }) => {
                     </div>
                     
                     {/* Name */}
-                    <h1 className={`text-4xl font-black tracking-tight mt-1.5 transition-colors ${
+                    <h1 className={`text-3xl md:text-4xl font-black tracking-tight mt-1.5 transition-colors ${
                       theme === 'bot' 
                         ? 'text-green-400 font-mono' 
                         : (theme === 'light'
-                            ? 'text-[#8a6500] drop-shadow-[0_1px_1px_rgba(255,255,255,0.8)]'
+                            ? 'text-slate-900 md:text-[#D4AF37] drop-shadow-[0_1px_1px_rgba(255,255,255,0.8)] md:drop-shadow-[0_2px_10px_rgba(212,175,55,0.25)]'
                             : 'text-[#D4AF37] drop-shadow-[0_2px_10px_rgba(212,175,55,0.25)] drop-shadow-[0_4px_8px_rgba(0,0,0,0.9)]')
                     }`}>
                       {soluper.name}
@@ -3063,7 +3063,7 @@ const SoluperProfile = ({ soluper, theme, onBack }) => {
                       theme === 'bot' 
                         ? 'text-green-700 font-mono' 
                         : (theme === 'light'
-                            ? 'text-slate-700'
+                            ? 'text-slate-700 md:text-[#f5ebd5]/90'
                             : 'text-[#f5ebd5]/90 drop-shadow-[0_2px_4px_rgba(0,0,0,0.85)]')
                     }`}>{soluper.role}</p>
                   </div>
