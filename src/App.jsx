@@ -1839,7 +1839,7 @@ const DirectoryCard = ({ soluper, theme, onClick }) => {
         border: 'border-yellow-600/50',
         glow: 'shadow-[inset_0_0_30px_rgba(202,138,4,0.18)]',
         badge: '🎯 Event Lead',
-        badgeColor: 'bg-yellow-600/20 border-yellow-500/40 text-yellow-450 text-yellow-400',
+        badgeColor: 'bg-yellow-600/20 border-yellow-500/40 text-yellow-400',
         accentColor: 'border-yellow-500/70',
         innerBorder: 'border-yellow-600/20'
       };
@@ -1873,7 +1873,6 @@ const DirectoryCard = ({ soluper, theme, onClick }) => {
       };
     }
 
-    // Default Charcoal Theme for other leads & general categories
     return {
       bg: theme === 'bot' 
         ? 'bg-black border-green-900 text-green-700 font-mono' 
@@ -1892,74 +1891,59 @@ const DirectoryCard = ({ soluper, theme, onClick }) => {
   return (
     <div 
       onClick={() => onClick(soluper)} 
-      className={`relative p-5 cursor-pointer flex flex-col justify-between overflow-hidden group transition-all duration-500 hover:scale-[1.03] hover:-translate-y-1.5 active:scale-95 ${design.bg} ${design.border} ${design.glow} ${
-        theme === 'bot' ? 'rounded-none border-2' : 'rounded-3xl border-2'
+      className={`relative p-6 cursor-pointer flex flex-col justify-between overflow-hidden group transition-all duration-500 hover:scale-[1.03] hover:-translate-y-1.5 active:scale-95 ${design.bg} ${design.border} ${design.glow} ${
+        theme === 'bot' ? 'rounded-none border-[1.5px]' : 'rounded-3xl border-[1.5px]'
       }`}
-      style={{ height: '340px' }}
+      style={{ height: '350px' }}
     >
-      {/* Decorative Frame Layout (Apple / Luxury Style) */}
       {theme !== 'bot' && (
         <>
-          {/* Golden/Silver Ornamental Corners */}
-          <div className={`absolute top-3 left-3 w-4 h-4 border-t-2 border-l-2 ${design.accentColor} pointer-events-none z-10 transition-transform duration-500 group-hover:-translate-x-0.5 group-hover:-translate-y-0.5`} />
-          <div className={`absolute top-3 right-3 w-4 h-4 border-t-2 border-r-2 ${design.accentColor} pointer-events-none z-10 transition-transform duration-500 group-hover:translate-x-0.5 group-hover:-translate-y-0.5`} />
-          <div className={`absolute bottom-3 left-3 w-4 h-4 border-b-2 border-l-2 ${design.accentColor} pointer-events-none z-10 transition-transform duration-500 group-hover:-translate-x-0.5 group-hover:translate-y-0.5`} />
-          <div className={`absolute bottom-3 right-3 w-4 h-4 border-b-2 border-r-2 ${design.accentColor} pointer-events-none z-10 transition-transform duration-500 group-hover:translate-x-0.5 group-hover:translate-y-0.5`} />
-
-          {/* Double border inner box */}
-          <div className={`absolute inset-3 border-2 ${design.innerBorder} rounded-[20px] pointer-events-none transition-all duration-500 group-hover:scale-[0.98]`} />
-          
-          {/* Radial Light glow / Radial background pattern */}
+          <div className={`absolute top-3 left-3 w-3.5 h-3.5 border-t-[1.5px] border-l-[1.5px] ${design.accentColor} pointer-events-none z-10 transition-transform duration-500 group-hover:-translate-x-0.5 group-hover:-translate-y-0.5`} />
+          <div className={`absolute top-3 right-3 w-3.5 h-3.5 border-t-[1.5px] border-r-[1.5px] ${design.accentColor} pointer-events-none z-10 transition-transform duration-500 group-hover:translate-x-0.5 group-hover:-translate-y-0.5`} />
+          <div className={`absolute bottom-3 left-3 w-3.5 h-3.5 border-b-[1.5px] border-l-[1.5px] ${design.accentColor} pointer-events-none z-10 transition-transform duration-500 group-hover:-translate-x-0.5 group-hover:translate-y-0.5`} />
+          <div className={`absolute bottom-3 right-3 w-3.5 h-3.5 border-b-[1.5px] border-r-[1.5px] ${design.accentColor} pointer-events-none z-10 transition-transform duration-500 group-hover:translate-x-0.5 group-hover:translate-y-0.5`} />
+          <div className={`absolute inset-3 border-[1.5px] ${design.innerBorder} rounded-[20px] pointer-events-none transition-all duration-500 group-hover:scale-[0.98]`} />
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.06)_0%,transparent_70%)] pointer-events-none opacity-40" />
-          
-          {/* High-end Metallic sheen hover effect */}
           <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_ease-out] pointer-events-none" />
         </>
       )}
 
-      {/* Profile cut-out with circular background glow */}
-      <div className="relative flex justify-center mt-4">
-        {/* Glow behind portrait */}
-        <div className={`absolute w-24 h-24 rounded-full blur-xl opacity-35 bg-white/20 transition-all duration-500 group-hover:scale-125`} />
-        
-        {/* Profile Image with Gold/Silver border frame */}
-        <div className={`relative w-24 h-24 overflow-hidden shadow-2xl transition-all duration-500 group-hover:scale-105 ${
-          theme === 'bot' 
-            ? 'rounded-none border border-green-500 grayscale group-hover:grayscale-0' 
-            : `rounded-full border-[3px] ${design.accentColor}`
-        }`}>
-          <img 
-            src={soluper.image} 
-            alt={soluper.name} 
-            className={`w-full h-full object-cover transition-transform duration-700 group-hover:scale-110`} 
-          />
-        </div>
+      <div className="relative flex justify-center mt-3">
+        <div className="absolute w-28 h-28 rounded-full blur-xl opacity-35 bg-white/20 transition-all duration-500 group-hover:scale-125 pointer-events-none" />
+        <div className="relative w-28 h-28">
+          <div className={`w-full h-full overflow-hidden shadow-2xl transition-all duration-500 group-hover:scale-105 flex items-center justify-center ${
+            theme === 'bot' 
+              ? 'rounded-none border border-green-500 grayscale group-hover:grayscale-0' 
+              : `rounded-full border-[3px] ${design.accentColor} shadow-[0_0_20px_rgba(255,255,255,0.1)]`
+          }`}>
+            <img 
+              src={soluper.image} 
+              alt={soluper.name} 
+              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
+            />
+          </div>
 
-        {/* Small Active Status Dot */}
-        {soluper.status === 'Active' && (
-          <div className={`absolute bottom-0 right-[40%] w-3.5 h-3.5 rounded-full border-2 ${
-            theme === 'bot' ? 'border-black bg-green-500 rounded-none' : 'border-slate-900 bg-green-400'
-          }`} />
-        )}
+          {soluper.status === 'Active' && (
+            <div className={`absolute bottom-0.5 right-0.5 w-4 h-4 rounded-full border-2 z-10 ${
+              theme === 'bot' ? 'border-black bg-green-500 rounded-none' : 'border-slate-950 bg-green-400'
+            }`} />
+          )}
+        </div>
       </div>
 
-      {/* Information Section / Glassmorphism Panel */}
-      <div className={`relative z-10 w-full text-center mt-3 pb-3 flex flex-col items-center flex-1 justify-end`}>
-        {/* Role Badge */}
-        <div className={`inline-flex items-center gap-1 px-2.5 py-0.5 mb-2.5 rounded-full border text-[9px] font-bold uppercase tracking-wider ${design.badgeColor}`}>
+      <div className="relative z-10 w-full text-center mt-4 pb-2 flex flex-col items-center flex-1 justify-end">
+        <div className={`inline-flex items-center gap-1 px-3 py-0.5 mb-3 rounded-full border text-[9.5px] font-bold uppercase tracking-wider ${design.badgeColor}`}>
           {design.badge}
         </div>
 
-        {/* Member Name */}
-        <h4 className={`text-base font-extrabold tracking-tight transition-colors ${
+        <h4 className={`text-[17px] font-extrabold tracking-tight transition-colors ${
           theme === 'bot' ? 'text-green-400 font-mono group-hover:text-green-300' : 'text-white'
         }`}>
           {soluper.name}
         </h4>
 
-        {/* Designation Title */}
-        <p className={`text-[10px] font-medium tracking-widest uppercase mt-0.5 ${
-          theme === 'bot' ? 'text-green-700 font-mono' : 'text-slate-350'
+        <p className={`text-[10.5px] font-semibold tracking-wider uppercase mt-1 ${
+          theme === 'bot' ? 'text-green-700 font-mono' : 'text-slate-300/80'
         }`}>
           {soluper.role}
         </p>
@@ -2723,7 +2707,7 @@ const TeamPage = ({ theme, onSoluperClick }) => {
 
             {activeSubPage === "Lead" && (
               leads.length > 0 ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
                   {leads.map(soluper => <DirectoryCard key={soluper.id} soluper={soluper} theme={theme} onClick={() => onSoluperClick(soluper)} />)}
                 </div>
               ) : (
@@ -2795,10 +2779,182 @@ const ProjectsPage = ({ theme }) => (
 const SoluperProfile = ({ soluper, theme, onBack }) => {
   const [view, setView] = useState('overview'); // 'overview' or 'achievements'
 
-  const bgClass = theme === 'bot' ? 'bg-black/95 border-green-900' : (theme === 'light' ? 'bg-white/95 border-slate-200' : 'bg-slate-950/95 border-slate-800');
+  const getProfileDesign = () => {
+    const role = soluper.role.toLowerCase();
+    const isPast = soluper.status === 'Past';
+    
+    if (isPast) {
+      return {
+        headerGradient: 'from-zinc-950 via-zinc-900 to-black',
+        accentBorder: 'border-zinc-800',
+        textAccent: 'text-zinc-400',
+        bgAccent: 'bg-zinc-800/10',
+        badgeColor: 'bg-zinc-800/30 border-zinc-700/50 text-zinc-400',
+        badgeText: '🩶 Core Soluper',
+        accentColor: 'border-zinc-550/30 border-zinc-500/40',
+        innerBorder: 'border-zinc-800/30',
+        glowColor: 'rgba(255, 255, 255, 0.05)',
+        buttonPrimary: 'bg-zinc-850 hover:bg-zinc-800 text-white border-zinc-750 border shadow-md',
+        cardClass: 'bg-slate-900/60 border border-zinc-800/60 backdrop-blur-md shadow-2xl',
+        chipClass: 'bg-zinc-850/50 text-zinc-400 border-zinc-800/50',
+        competencyClass: 'bg-zinc-900/40 text-zinc-400 border-zinc-800/40'
+      };
+    }
+
+    if (role.includes('founder') || role.includes('chief') || role.includes('architect')) {
+      const isArchitect = role.includes('architect');
+      return {
+        headerGradient: isArchitect ? 'from-orange-950 via-amber-950 to-stone-950' : 'from-red-950 via-red-900 to-rose-950',
+        accentBorder: isArchitect ? 'border-yellow-500/50' : 'border-amber-500/50',
+        textAccent: isArchitect ? 'text-yellow-400' : 'text-amber-400',
+        bgAccent: isArchitect ? 'bg-yellow-500/10' : 'bg-amber-500/10',
+        badgeColor: isArchitect ? 'bg-yellow-500/20 border-yellow-500/40 text-yellow-400' : 'bg-amber-500/20 border-amber-500/40 text-amber-400',
+        badgeText: isArchitect ? '🚀 Tech Architect' : '👑 Founder',
+        accentColor: isArchitect ? 'border-yellow-400/70' : 'border-amber-400/70',
+        innerBorder: isArchitect ? 'border-yellow-500/20' : 'border-amber-500/20',
+        glowColor: isArchitect ? 'rgba(234, 179, 8, 0.25)' : 'rgba(245, 158, 11, 0.25)',
+        buttonPrimary: isArchitect 
+          ? 'bg-yellow-600 hover:bg-yellow-500 text-white border-yellow-650 border shadow-lg shadow-yellow-500/20'
+          : 'bg-amber-600 hover:bg-amber-500 text-white border-amber-650 border shadow-lg shadow-amber-500/20',
+        cardClass: isArchitect 
+          ? 'bg-orange-950/15 border border-orange-900/30 backdrop-blur-md shadow-2xl'
+          : 'bg-red-950/15 border border-red-900/30 backdrop-blur-md shadow-2xl',
+        chipClass: isArchitect ? 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20' : 'bg-amber-500/10 text-amber-400 border-amber-500/20',
+        competencyClass: isArchitect ? 'bg-yellow-500/10 text-yellow-400 border-yellow-500/25' : 'bg-amber-500/10 text-amber-400 border-amber-500/25'
+      };
+    }
+
+    if (role.includes('president')) {
+      return {
+        headerGradient: 'from-red-950 via-red-900 to-rose-950',
+        accentBorder: 'border-amber-500/50',
+        textAccent: 'text-amber-400',
+        bgAccent: 'bg-amber-500/10',
+        badgeColor: 'bg-amber-500/20 border-amber-500/40 text-amber-400',
+        badgeText: '👑 President',
+        accentColor: 'border-amber-400/70',
+        innerBorder: 'border-amber-500/20',
+        glowColor: 'rgba(245, 158, 11, 0.25)',
+        buttonPrimary: 'bg-amber-600 hover:bg-amber-500 text-white border-amber-650 border shadow-lg shadow-amber-500/20',
+        cardClass: 'bg-red-950/15 border border-red-900/30 backdrop-blur-md shadow-2xl',
+        chipClass: 'bg-amber-500/10 text-amber-400 border-amber-500/20',
+        competencyClass: 'bg-amber-500/10 text-amber-400 border-amber-500/25'
+      };
+    }
+
+    if (role.includes('technical lead')) {
+      return {
+        headerGradient: 'from-blue-950 via-slate-900 to-indigo-950',
+        accentBorder: 'border-slate-400/50',
+        textAccent: 'text-slate-350',
+        bgAccent: 'bg-slate-500/10',
+        badgeColor: 'bg-slate-500/20 border-slate-400/40 text-slate-300',
+        badgeText: '🚀 Tech Lead',
+        accentColor: 'border-slate-350/70 border-slate-300/70',
+        innerBorder: 'border-slate-400/25',
+        glowColor: 'rgba(148, 163, 184, 0.25)',
+        buttonPrimary: 'bg-blue-600 hover:bg-blue-500 text-white border-blue-650 border shadow-lg shadow-blue-500/20',
+        cardClass: 'bg-blue-950/15 border border-blue-900/30 backdrop-blur-md shadow-2xl',
+        chipClass: 'bg-slate-550/10 text-slate-300 border-slate-500/20',
+        competencyClass: 'bg-slate-550/10 text-slate-300 border-slate-500/25'
+      };
+    }
+
+    if (role.includes('operational')) {
+      return {
+        headerGradient: 'from-purple-950 via-fuchsia-950 to-indigo-950',
+        accentBorder: 'border-pink-500/40',
+        textAccent: 'text-pink-400',
+        bgAccent: 'bg-pink-500/10',
+        badgeColor: 'bg-pink-500/20 border-pink-500/40 text-pink-300',
+        badgeText: '⚙️ Operational Lead',
+        accentColor: 'border-pink-400/70',
+        innerBorder: 'border-pink-500/20',
+        glowColor: 'rgba(236, 72, 153, 0.25)',
+        buttonPrimary: 'bg-pink-600 hover:bg-pink-500 text-white border-pink-650 border shadow-lg shadow-pink-500/20',
+        cardClass: 'bg-purple-950/15 border border-purple-900/30 backdrop-blur-md shadow-2xl',
+        chipClass: 'bg-pink-550/10 text-pink-300 border-pink-500/20',
+        competencyClass: 'bg-pink-550/10 text-pink-300 border-pink-500/25'
+      };
+    }
+
+    if (role.includes('event')) {
+      return {
+        headerGradient: 'from-amber-950 via-yellow-950 to-stone-900',
+        accentBorder: 'border-yellow-600/50',
+        textAccent: 'text-yellow-400',
+        bgAccent: 'bg-yellow-600/10',
+        badgeColor: 'bg-yellow-600/20 border-yellow-500/40 text-yellow-450 text-yellow-450',
+        badgeText: '🎯 Event Lead',
+        accentColor: 'border-yellow-500/70',
+        innerBorder: 'border-yellow-600/20',
+        glowColor: 'rgba(234, 179, 8, 0.25)',
+        buttonPrimary: 'bg-yellow-600 hover:bg-yellow-500 text-white border-yellow-650 border shadow-lg shadow-yellow-500/20',
+        cardClass: 'bg-amber-950/15 border border-amber-900/30 backdrop-blur-md shadow-2xl',
+        chipClass: 'bg-yellow-600/10 text-yellow-400 border-yellow-500/20',
+        competencyClass: 'bg-yellow-650/10 text-yellow-400 border-yellow-600/25'
+      };
+    }
+
+    if (role.includes('documentation') || role.includes('marketing')) {
+      return {
+        headerGradient: 'from-emerald-950 via-green-950 to-stone-900',
+        accentBorder: 'border-emerald-500/40',
+        textAccent: 'text-emerald-450 text-emerald-400',
+        bgAccent: 'bg-emerald-500/10',
+        badgeColor: 'bg-emerald-500/20 border-emerald-500/40 text-emerald-400',
+        badgeText: '📄 Documentation Lead',
+        accentColor: 'border-amber-400/60',
+        innerBorder: 'border-emerald-500/20',
+        glowColor: 'rgba(16, 185, 129, 0.25)',
+        buttonPrimary: 'bg-emerald-600 hover:bg-emerald-500 text-white border-emerald-650 border shadow-lg shadow-emerald-500/20',
+        cardClass: 'bg-emerald-950/15 border border-emerald-900/30 backdrop-blur-md shadow-2xl',
+        chipClass: 'bg-emerald-550/10 text-emerald-400 border-emerald-500/20',
+        competencyClass: 'bg-emerald-550/10 text-emerald-400 border-emerald-500/25'
+      };
+    }
+
+    if (role.includes('media') || role.includes('project & research')) {
+      return {
+        headerGradient: 'from-purple-950 via-fuchsia-950 to-indigo-950',
+        accentBorder: 'border-pink-500/40',
+        textAccent: 'text-pink-400',
+        bgAccent: 'bg-pink-500/10',
+        badgeColor: 'bg-pink-500/20 border-pink-500/40 text-pink-300',
+        badgeText: role.includes('media') ? '📢 Media Lead' : '🔬 Research Lead',
+        accentColor: 'border-pink-400/70',
+        innerBorder: 'border-pink-500/20',
+        glowColor: 'rgba(236, 72, 153, 0.25)',
+        buttonPrimary: 'bg-pink-600 hover:bg-pink-500 text-white border-pink-655 border shadow-lg shadow-pink-500/20',
+        cardClass: 'bg-purple-950/15 border border-purple-900/30 backdrop-blur-md shadow-2xl',
+        chipClass: 'bg-pink-550/10 text-pink-300 border-pink-500/20',
+        competencyClass: 'bg-pink-550/10 text-pink-300 border-pink-500/25'
+      };
+    }
+
+    // Default Charcoal Theme
+    return {
+      headerGradient: 'from-zinc-900 via-stone-900 to-neutral-950',
+      accentBorder: 'border-zinc-700/60',
+      textAccent: 'text-zinc-350',
+      bgAccent: 'bg-zinc-700/10',
+      badgeColor: 'bg-zinc-700/30 border-zinc-650/45 text-zinc-300',
+      badgeText: '⭐ Lead',
+      accentColor: 'border-zinc-500/60',
+      innerBorder: 'border-zinc-700/20',
+      glowColor: 'rgba(255, 255, 255, 0.05)',
+      buttonPrimary: 'bg-zinc-750 hover:bg-zinc-700 text-white border-zinc-650 border shadow-lg shadow-zinc-700/20',
+      cardClass: 'bg-slate-900/60 border border-zinc-800/60 backdrop-blur-md shadow-2xl',
+      chipClass: 'bg-zinc-700/15 text-zinc-300 border-zinc-700/20',
+      competencyClass: 'bg-zinc-700/15 text-zinc-300 border-zinc-700/25'
+    };
+  };
+
+  const profDesign = getProfileDesign();
+  const bgClass = theme === 'bot' ? 'bg-black/95 border-green-900' : (theme === 'light' ? 'bg-white/95 border-slate-200' : 'bg-slate-955/95 border-slate-800');
   const textClass = theme === 'bot' ? 'text-green-400 font-mono' : (theme === 'light' ? 'text-slate-900' : 'text-white');
   const subTextClass = theme === 'bot' ? 'text-green-700 font-mono' : (theme === 'light' ? 'text-slate-500' : 'text-slate-400');
-  const cardClass = theme === 'bot' ? 'bg-black/80 border border-green-800 backdrop-blur-md' : (theme === 'light' ? 'bg-slate-50/80 border border-slate-200 shadow-sm backdrop-blur-md' : 'bg-slate-900/80 border border-slate-700 backdrop-blur-md');
+  const cardClass = theme === 'bot' ? 'bg-black/80 border border-green-800 backdrop-blur-md font-mono' : profDesign.cardClass;
 
   // Achievements View Component
   const AchievementsGallery = () => {
@@ -2816,7 +2972,7 @@ const SoluperProfile = ({ soluper, theme, onBack }) => {
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 animate-fade-in">
             {achievements.map((ach, idx) => (
-                <div key={idx} className={`group relative overflow-hidden rounded-2xl border transition-all hover:-translate-y-1 ${theme === 'bot' ? 'border-green-900' : 'border-slate-700'}`}>
+                <div key={idx} className={`group relative overflow-hidden rounded-2xl border transition-all hover:-translate-y-1 ${theme === 'bot' ? 'border-green-900' : (theme === 'light' ? 'border-slate-200' : profDesign.accentBorder)}`}>
                     <div className="aspect-video w-full overflow-hidden bg-slate-800">
                         <img src={ach.image} alt={ach.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
                     </div>
@@ -2831,14 +2987,26 @@ const SoluperProfile = ({ soluper, theme, onBack }) => {
   };
 
   return (
-    <div className="min-h-screen pt-24 pb-12 px-6 relative z-10">
+    <div className="min-h-screen pt-24 pb-12 px-6 relative z-10 animate-[fade-in_0.6s_ease-out]">
       <div className="max-w-5xl mx-auto">
         <button onClick={onBack} className={`mb-8 flex items-center gap-2 ${subTextClass} hover:${textClass} transition-colors bg-transparent`}><ArrowLeft className="w-5 h-5" /> Back to Team</button>
         
-        <div className={`rounded-3xl overflow-hidden border ${theme === 'bot' ? 'border-green-900 rounded-none' : 'border-slate-800'} ${bgClass} backdrop-blur-xl`}>
+        <div className={`rounded-3xl overflow-hidden border ${theme === 'bot' ? 'border-green-900 rounded-none' : 'border-slate-800'} ${bgClass} backdrop-blur-xl shadow-2xl`}>
           {/* Header Banner */}
-          <div className={`h-48 w-full bg-gradient-to-r ${soluper.gradient} relative`}>
-            {theme === 'bot' && <div className="absolute inset-0 bg-black/60 bg-[size:20px_20px] bg-[linear-gradient(to_right,#0f0_1px,transparent_1px),linear-gradient(to_bottom,#0f0_1px,transparent_1px)] opacity-20"></div>}
+          <div className={`h-52 w-full bg-gradient-to-r ${theme === 'bot' ? 'from-black to-black' : profDesign.headerGradient} relative overflow-hidden`}>
+            {theme === 'bot' ? (
+              <div className="absolute inset-0 bg-black/60 bg-[size:20px_20px] bg-[linear-gradient(to_right,#0f0_1px,transparent_1px),linear-gradient(to_bottom,#0f0_1px,transparent_1px)] opacity-20"></div>
+            ) : (
+              <>
+                {/* Patterns/Ornaments matching card design */}
+                <div className={`absolute top-4 left-4 w-5 h-5 border-t-2 border-l-2 ${profDesign.accentColor} pointer-events-none z-10`} />
+                <div className={`absolute top-4 right-4 w-5 h-5 border-t-2 border-r-2 ${profDesign.accentColor} pointer-events-none z-10`} />
+                <div className={`absolute bottom-4 left-4 w-5 h-5 border-b-2 border-l-2 ${profDesign.accentColor} pointer-events-none z-10`} />
+                <div className={`absolute bottom-4 right-4 w-5 h-5 border-b-2 border-r-2 ${profDesign.accentColor} pointer-events-none z-10`} />
+                <div className={`absolute inset-4 border-[1.5px] ${profDesign.innerBorder} rounded-2xl pointer-events-none`} />
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.08)_0%,transparent_80%)] pointer-events-none opacity-55" />
+              </>
+            )}
             {(soluper.status === 'Past' || soluper.status === 'Alumni') && (
                 <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
                     <span className="text-4xl font-black uppercase tracking-widest text-white/20 -rotate-12 border-4 border-white/20 p-4">Past Soluper</span>
@@ -2847,28 +3015,59 @@ const SoluperProfile = ({ soluper, theme, onBack }) => {
           </div>
           
           <div className="px-8 pb-8">
-            <div className="flex flex-col md:flex-row gap-8 -mt-16 relative z-10">
-              <div className={`w-32 h-32 rounded-3xl overflow-hidden border-4 ${theme === 'bot' ? 'border-black rounded-none grayscale' : (theme === 'light' ? 'border-white shadow-lg' : 'border-slate-900')} ${soluper.status === 'Past' || soluper.status === 'Alumni' ? 'grayscale' : ''}`}>
-                <img src={soluper.image} alt={soluper.name} className="w-full h-full object-cover bg-slate-800" />
+            <div className="flex flex-col md:flex-row gap-8 -mt-20 md:-mt-24 relative z-10 items-center md:items-end text-center md:text-left">
+              {/* Profile image with matching frame */}
+              <div className={`w-36 h-36 overflow-hidden relative flex-shrink-0 flex items-center justify-center ${
+                theme === 'bot' 
+                  ? 'border-2 border-green-500 rounded-none grayscale' 
+                  : `rounded-full border-[4px] ${profDesign.accentColor} shadow-[0_0_25px_rgba(255,255,255,0.15)] bg-slate-800`
+              } ${soluper.status === 'Past' || soluper.status === 'Alumni' ? 'grayscale' : ''}`}>
+                <img src={soluper.image} alt={soluper.name} className="w-full h-full object-cover" />
               </div>
               
-              <div className="flex-1 pt-16 md:pt-20">
-                <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                  <div>
-                    <h1 className={`text-3xl font-bold ${textClass}`}>{soluper.name}</h1>
-                    <p className={`text-lg font-medium ${subTextClass} flex items-center gap-2 mt-1`}>{soluper.role}</p>
+              <div className="flex-1 pb-4 w-full">
+                <div className="flex flex-col md:flex-row justify-between items-center md:items-end gap-6 w-full">
+                  <div className="flex flex-col items-center md:items-start">
+                    {/* Badge */}
+                    <div className={`inline-flex items-center gap-1 px-3 py-0.5 mb-3 rounded-full border text-[10px] font-bold uppercase tracking-wider ${profDesign.badgeColor}`}>
+                      {profDesign.badgeText}
+                    </div>
+                    
+                    {/* Name */}
+                    <h1 className={`text-4xl font-extrabold tracking-tight ${textClass}`}>{soluper.name}</h1>
+                    
+                    {/* Role */}
+                    <p className={`text-lg font-semibold tracking-wide mt-1.5 ${subTextClass}`}>{soluper.role}</p>
                   </div>
-                  <div className="flex gap-3">
-                    <Button theme={theme} variant="primary" icon={Mail} className="!py-2">Contact</Button>
-                    <Button 
-                        theme={theme} 
-                        variant={view === 'achievements' ? 'primary' : 'outline'} 
-                        icon={Trophy} 
-                        className="!py-2"
-                        onClick={() => setView(view === 'overview' ? 'achievements' : 'overview')}
+                  
+                  {/* Buttons */}
+                  <div className="flex gap-3 flex-shrink-0">
+                    <button 
+                      className={`px-5 py-2.5 rounded-full font-bold text-xs uppercase tracking-wider transition-all duration-300 hover:scale-105 active:scale-95 flex items-center gap-2 shadow-md ${
+                        theme === 'bot' 
+                          ? 'bg-black border border-green-500 text-green-400 font-mono rounded-none' 
+                          : profDesign.buttonPrimary
+                      }`}
                     >
-                        {view === 'overview' ? 'Achievements' : 'Overview'}
-                    </Button>
+                      <Mail className="w-4 h-4" />
+                      Contact
+                    </button>
+                    
+                    <button 
+                      onClick={() => setView(view === 'overview' ? 'achievements' : 'overview')}
+                      className={`px-5 py-2.5 rounded-full font-bold text-xs uppercase tracking-wider transition-all duration-300 hover:scale-105 active:scale-95 flex items-center gap-2 border shadow-sm ${
+                        theme === 'bot' 
+                          ? 'bg-black border border-green-500 text-green-400 font-mono rounded-none' 
+                          : (view === 'achievements' 
+                              ? profDesign.buttonPrimary 
+                              : (theme === 'light' 
+                                  ? 'bg-white border-slate-200 text-slate-700 hover:border-slate-350' 
+                                  : 'bg-slate-900 border-slate-800 text-slate-300 hover:border-slate-700'))
+                      }`}
+                    >
+                      <Trophy className="w-4 h-4" />
+                      {view === 'overview' ? 'Achievements' : 'Overview'}
+                    </button>
                   </div>
                 </div>
               </div>
@@ -2883,9 +3082,9 @@ const SoluperProfile = ({ soluper, theme, onBack }) => {
                             <h3 className={`font-bold mb-4 flex items-center gap-2 ${textClass}`}><Cpu className="w-5 h-5" /> Skills</h3>
                             <div className="flex flex-wrap gap-2">
                                 {soluper.skills.map((skill, i) => (
-                                <span key={i} className={`text-xs px-2.5 py-1 rounded-md font-medium border ${theme === 'bot' ? 'border-green-800 bg-green-900/20 text-green-500 font-mono rounded-none' : (theme === 'light' ? 'bg-slate-100 text-slate-700 border-slate-200' : 'bg-slate-800 text-slate-300 border-slate-700')}`}>
-                                    {skill.name}
-                                </span>
+                                  <span key={i} className={`text-xs px-2.5 py-1 rounded-md font-medium border ${theme === 'bot' ? 'border-green-800 bg-green-900/20 text-green-500 font-mono rounded-none' : profDesign.chipClass}`}>
+                                      {skill.name}
+                                  </span>
                                 ))}
                             </div>
                             </div>
@@ -2906,8 +3105,8 @@ const SoluperProfile = ({ soluper, theme, onBack }) => {
                                     <h3 className={`font-bold flex items-center gap-2 ${textClass}`}><User className="w-5 h-5" /> About</h3>
                                     <span className={`px-3 py-1 rounded-full text-xs font-bold border flex items-center gap-2 ${
                                         soluper.status === 'Active' 
-                                            ? (theme === 'bot' ? 'border-green-500 text-green-500' : 'bg-green-100 text-green-700 border-green-200')
-                                            : (theme === 'bot' ? 'border-gray-500 text-gray-500' : 'bg-gray-100 text-gray-700 border-gray-200')
+                                            ? (theme === 'bot' ? 'border-green-500 text-green-500' : 'bg-green-100/10 text-green-400 border-green-500/20')
+                                            : (theme === 'bot' ? 'border-gray-500 text-gray-500' : 'bg-gray-100/10 text-gray-400 border-gray-500/20')
                                     }`}>
                                         <div className={`w-2 h-2 rounded-full ${soluper.status === 'Active' ? 'bg-green-500' : 'bg-gray-400'}`}></div>
                                         {soluper.status}
@@ -2918,19 +3117,19 @@ const SoluperProfile = ({ soluper, theme, onBack }) => {
 
                                 {/* Info Grid */}
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-                                    <div className={`p-4 rounded-xl border ${theme === 'bot' ? 'border-green-900 bg-green-900/10' : (theme === 'light' ? 'bg-slate-50 border-slate-100' : 'bg-slate-800/50 border-slate-700')}`}>
+                                    <div className={`p-4 rounded-xl border ${theme === 'bot' ? 'border-green-900 bg-green-900/10' : (theme === 'light' ? 'bg-slate-50 border-slate-100' : 'bg-slate-800/50 border-slate-700/50')}`}>
                                         <div className={`text-xs uppercase tracking-wider mb-1 ${theme === 'bot' ? 'text-green-700' : 'text-slate-500'}`}>Location</div>
                                         <div className={`font-semibold flex items-center gap-2 ${textClass}`}><MapPin className="w-4 h-4" /> {soluper.location}</div>
                                     </div>
-                                    <div className={`p-4 rounded-xl border ${theme === 'bot' ? 'border-green-900 bg-green-900/10' : (theme === 'light' ? 'bg-slate-50 border-slate-100' : 'bg-slate-800/50 border-slate-700')}`}>
+                                    <div className={`p-4 rounded-xl border ${theme === 'bot' ? 'border-green-900 bg-green-900/10' : (theme === 'light' ? 'bg-slate-50 border-slate-100' : 'bg-slate-800/50 border-slate-700/50')}`}>
                                         <div className={`text-xs uppercase tracking-wider mb-1 ${theme === 'bot' ? 'text-green-700' : 'text-slate-500'}`}>Department</div>
                                         <div className={`font-semibold flex items-center gap-2 ${textClass}`}><Briefcase className="w-4 h-4" /> {soluper.category}</div>
                                     </div>
-                                    <div className={`p-4 rounded-xl border ${theme === 'bot' ? 'border-green-900 bg-green-900/10' : (theme === 'light' ? 'bg-slate-50 border-slate-100' : 'bg-slate-800/50 border-slate-700')}`}>
+                                    <div className={`p-4 rounded-xl border ${theme === 'bot' ? 'border-green-900 bg-green-900/10' : (theme === 'light' ? 'bg-slate-50 border-slate-100' : 'bg-slate-800/50 border-slate-700/50')}`}>
                                         <div className={`text-xs uppercase tracking-wider mb-1 ${theme === 'bot' ? 'text-green-700' : 'text-slate-500'}`}>Join Date</div>
                                         <div className={`font-semibold flex items-center gap-2 ${textClass}`}><Calendar className="w-4 h-4" /> {soluper.joined}</div>
                                     </div>
-                                    <div className={`p-4 rounded-xl border ${theme === 'bot' ? 'border-green-900 bg-green-900/10' : (theme === 'light' ? 'bg-slate-50 border-slate-100' : 'bg-slate-800/50 border-slate-700')}`}>
+                                    <div className={`p-4 rounded-xl border ${theme === 'bot' ? 'border-green-900 bg-green-900/10' : (theme === 'light' ? 'bg-slate-50 border-slate-100' : 'bg-slate-800/50 border-slate-700/50')}`}>
                                         <div className={`text-xs uppercase tracking-wider mb-1 ${theme === 'bot' ? 'text-green-700' : 'text-slate-500'}`}>Status</div>
                                         <div className={`font-semibold flex items-center gap-2 ${textClass}`}>
                                             {soluper.status === 'Active' ? <UserCheck className="w-4 h-4 text-green-500" /> : <UserMinus className="w-4 h-4 text-gray-500" />} 
@@ -2944,7 +3143,7 @@ const SoluperProfile = ({ soluper, theme, onBack }) => {
                                     <div className={`text-xs uppercase tracking-wider mb-3 ${theme === 'bot' ? 'text-green-700' : 'text-slate-500'}`}>Core Competencies</div>
                                     <div className="flex flex-wrap gap-2">
                                         {["System Architecture", "Agile", "Problem Solving", "Team Leadership"].map((tag, i) => (
-                                            <span key={i} className={`px-3 py-1.5 rounded-lg text-sm font-medium border ${theme === 'bot' ? 'border-green-500 text-green-500 bg-transparent' : (theme === 'light' ? 'bg-indigo-50 text-indigo-600 border-indigo-100' : 'bg-amber-500/10 text-amber-400 border-amber-500/20')}`}>
+                                            <span key={i} className={`px-3 py-1.5 rounded-lg text-sm font-medium border ${theme === 'bot' ? 'border-green-500 text-green-500 bg-transparent font-mono' : profDesign.competencyClass}`}>
                                                 {tag}
                                             </span>
                                         ))}
