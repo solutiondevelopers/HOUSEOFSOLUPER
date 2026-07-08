@@ -2998,7 +2998,7 @@ const SoluperProfile = ({ soluper, theme, onBack }) => {
   return (
     <div className="min-h-screen pt-24 pb-12 px-6 relative z-10 animate-[fade-in_0.6s_ease-out]">
       <div className="max-w-5xl mx-auto">
-        <button onClick={onBack} className={`mb-8 flex items-center gap-2 ${subTextClass} hover:${theme === 'bot' ? 'text-green-300' : 'text-[#D4AF37]'} transition-colors bg-transparent font-bold`}><ArrowLeft className="w-5 h-5" /> Back to Team</button>
+        <button onClick={onBack} className={`mb-8 flex items-center gap-2 ${subTextClass} hover:${theme === 'bot' ? 'text-green-300' : (theme === 'light' ? 'text-[#8a6500]' : 'text-[#D4AF37]')} transition-colors bg-transparent font-bold`}><ArrowLeft className="w-5 h-5" /> Back to Team</button>
         
         <div className={`rounded-3xl overflow-hidden border ${theme === 'bot' ? 'border-green-900 rounded-none' : 'border-slate-800'} ${bgClass} backdrop-blur-xl shadow-2xl`}>
           {/* Header Banner */}
@@ -3043,7 +3043,7 @@ const SoluperProfile = ({ soluper, theme, onBack }) => {
                     )}
 
                     {/* Badge */}
-                    <div className={`inline-flex items-center gap-1 px-3 py-0.5 mb-3 rounded-full border text-[10px] font-bold uppercase tracking-wider ${theme === 'bot' ? 'border-green-800 text-green-500 font-mono rounded-none' : profDesign.badgeColor}`}>
+                    <div className={`inline-flex items-center gap-1 px-3 py-0.5 mb-3 rounded-full border text-[10px] font-bold uppercase tracking-wider ${theme === 'bot' ? 'border-green-800 text-green-500 font-mono rounded-none' : (theme === 'light' ? 'bg-[#8a6500]/10 border-[#8a6500]/30 text-[#8a6500]' : profDesign.badgeColor)}`}>
                       {profDesign.badgeText}
                     </div>
                     
@@ -3051,7 +3051,9 @@ const SoluperProfile = ({ soluper, theme, onBack }) => {
                     <h1 className={`text-4xl font-black tracking-tight mt-1.5 transition-colors ${
                       theme === 'bot' 
                         ? 'text-green-400 font-mono' 
-                        : 'text-[#D4AF37] drop-shadow-[0_2px_10px_rgba(212,175,55,0.25)] drop-shadow-[0_4px_8px_rgba(0,0,0,0.9)]'
+                        : (theme === 'light'
+                            ? 'text-[#8a6500] drop-shadow-[0_1px_1px_rgba(255,255,255,0.8)]'
+                            : 'text-[#D4AF37] drop-shadow-[0_2px_10px_rgba(212,175,55,0.25)] drop-shadow-[0_4px_8px_rgba(0,0,0,0.9)]')
                     }`}>
                       {soluper.name}
                     </h1>
@@ -3060,17 +3062,21 @@ const SoluperProfile = ({ soluper, theme, onBack }) => {
                     <p className={`text-lg font-bold tracking-wide mt-2 ${
                       theme === 'bot' 
                         ? 'text-green-700 font-mono' 
-                        : 'text-[#f5ebd5]/90 drop-shadow-[0_2px_4px_rgba(0,0,0,0.85)]'
+                        : (theme === 'light'
+                            ? 'text-slate-700'
+                            : 'text-[#f5ebd5]/90 drop-shadow-[0_2px_4px_rgba(0,0,0,0.85)]')
                     }`}>{soluper.role}</p>
                   </div>
                   
                   {/* Buttons */}
                   <div className="flex gap-3 flex-shrink-0">
                     <button 
-                      className={`px-5 py-2.5 rounded-full font-black text-xs uppercase tracking-wider transition-all duration-350 hover:scale-105 hover:shadow-[0_0_15px_rgba(212,175,55,0.4)] active:scale-95 flex items-center gap-2 shadow-md ${
+                      className={`px-5 py-2.5 rounded-full font-black text-xs uppercase tracking-wider transition-all duration-355 hover:scale-105 active:scale-95 flex items-center gap-2 shadow-md ${
                         theme === 'bot' 
                           ? 'bg-black border border-green-500 text-green-400 font-mono rounded-none' 
-                          : `bg-[#D4AF37] hover:bg-[#c59f2e] text-black border-[#D4AF37] border`
+                          : (theme === 'light'
+                              ? 'bg-[#8a6500] hover:bg-[#705200] text-white border-[#8a6500] hover:shadow-[0_0_15px_rgba(138,101,0,0.4)]'
+                              : 'bg-[#D4AF37] hover:bg-[#c59f2e] text-black border-[#D4AF37] hover:shadow-[0_0_15px_rgba(212,175,55,0.4)]')
                       }`}
                     >
                       <Mail className="w-4 h-4" />
@@ -3079,12 +3085,12 @@ const SoluperProfile = ({ soluper, theme, onBack }) => {
                     
                     <button 
                       onClick={() => setView(view === 'overview' ? 'achievements' : 'overview')}
-                      className={`px-5 py-2.5 rounded-full font-black text-xs uppercase tracking-wider transition-all duration-350 hover:scale-105 hover:shadow-[0_0_15px_rgba(212,175,55,0.25)] active:scale-95 flex items-center gap-2 border shadow-sm ${
+                      className={`px-5 py-2.5 rounded-full font-black text-xs uppercase tracking-wider transition-all duration-355 hover:scale-105 active:scale-95 flex items-center gap-2 border shadow-sm ${
                         theme === 'bot' 
                           ? 'bg-black border border-green-500 text-green-400 font-mono rounded-none' 
                           : (view === 'achievements' 
-                              ? `bg-[#D4AF37] hover:bg-[#c59f2e] text-black border-[#D4AF37]` 
-                              : `bg-transparent hover:bg-[#D4AF37]/10 text-[#D4AF37] border-[#D4AF37]/50`)
+                              ? (theme === 'light' ? 'bg-[#8a6500] hover:bg-[#705200] text-white border-[#8a6500] hover:shadow-[0_0_15px_rgba(138,101,0,0.25)]' : 'bg-[#D4AF37] hover:bg-[#c59f2e] text-black border-[#D4AF37] hover:shadow-[0_0_15px_rgba(212,175,55,0.25)]') 
+                              : (theme === 'light' ? 'bg-transparent hover:bg-[#8a6500]/10 text-[#8a6500] border-[#8a6500]/50' : 'bg-transparent hover:bg-[#D4AF37]/10 text-[#D4AF37] border-[#D4AF37]/50'))
                       }`}
                     >
                       <Trophy className="w-4 h-4" />
@@ -3102,13 +3108,13 @@ const SoluperProfile = ({ soluper, theme, onBack }) => {
                         <div className="space-y-6">
                             <div className={`p-6 rounded-2xl ${cardClass}`}>
                             <h3 className={`font-extrabold mb-4 flex items-center gap-2.5 ${
-                              theme === 'bot' ? 'text-green-400 font-mono' : 'text-[#D4AF37] tracking-wide text-lg'
+                              theme === 'bot' ? 'text-green-400 font-mono' : (theme === 'light' ? 'text-[#8a6500] tracking-wide text-lg' : 'text-[#D4AF37] tracking-wide text-lg')
                             }`}>
-                              <Cpu className="w-5 h-5 text-[#D4AF37]" /> Skills
+                              <Cpu className={`w-5 h-5 ${theme === 'light' ? 'text-[#8a6500]' : 'text-[#D4AF37]'}`} /> Skills
                             </h3>
                             <div className="flex flex-wrap gap-2">
                                 {soluper.skills.map((skill, i) => (
-                                  <span key={i} className={`text-xs px-2.5 py-1 rounded-md font-bold border ${theme === 'bot' ? 'border-green-800 bg-green-900/20 text-green-500 font-mono rounded-none' : profDesign.chipClass}`}>
+                                  <span key={i} className={`text-xs px-2.5 py-1 rounded-md font-bold border ${theme === 'bot' ? 'border-green-800 bg-green-900/20 text-green-500 font-mono rounded-none' : (theme === 'light' ? 'bg-slate-100 text-slate-700 border-slate-200' : profDesign.chipClass)}`}>
                                       {skill.name}
                                   </span>
                                 ))}
@@ -3117,13 +3123,13 @@ const SoluperProfile = ({ soluper, theme, onBack }) => {
 
                             <div className={`p-6 rounded-2xl ${cardClass}`}>
                             <h3 className={`font-extrabold mb-4 flex items-center gap-2.5 ${
-                              theme === 'bot' ? 'text-green-400 font-mono' : 'text-[#D4AF37] tracking-wide text-lg'
+                              theme === 'bot' ? 'text-green-400 font-mono' : (theme === 'light' ? 'text-[#8a6500] tracking-wide text-lg' : 'text-[#D4AF37] tracking-wide text-lg')
                             }`}>
-                              <Activity className="w-5 h-5 text-[#D4AF37]" /> Activity
+                              <Activity className={`w-5 h-5 ${theme === 'light' ? 'text-[#8a6500]' : 'text-[#D4AF37]'}`} /> Activity
                             </h3>
                             <div className="space-y-4 text-sm font-medium">
-                                <div className="flex justify-between"><span className={subTextClass}>Commits</span><span className={textClass}>{soluper.commits}</span></div>
-                                <div className="flex justify-between"><span className={subTextClass}>Projects</span><span className={textClass}>{soluper.projects}</span></div>
+                                <div className="flex justify-between"><span className={theme === 'light' ? 'text-slate-500 font-bold' : subTextClass}>Commits</span><span className={textClass}>{soluper.commits}</span></div>
+                                <div className="flex justify-between"><span className={theme === 'light' ? 'text-slate-500 font-bold' : subTextClass}>Projects</span><span className={textClass}>{soluper.projects}</span></div>
                             </div>
                             </div>
                         </div>
@@ -3133,14 +3139,14 @@ const SoluperProfile = ({ soluper, theme, onBack }) => {
                             <div className={`p-6 rounded-2xl ${cardClass}`}>
                                 <div className="flex justify-between items-start mb-4">
                                     <h3 className={`font-extrabold flex items-center gap-2.5 ${
-                                      theme === 'bot' ? 'text-green-400 font-mono' : 'text-[#D4AF37] tracking-wide text-lg'
+                                      theme === 'bot' ? 'text-green-400 font-mono' : (theme === 'light' ? 'text-[#8a6500] tracking-wide text-lg' : 'text-[#D4AF37] tracking-wide text-lg')
                                     }`}>
-                                      <User className="w-5 h-5 text-[#D4AF37]" /> About
+                                      <User className={`w-5 h-5 ${theme === 'light' ? 'text-[#8a6500]' : 'text-[#D4AF37]'}`} /> About
                                     </h3>
                                     <span className={`px-3 py-1 rounded-full text-xs font-bold border flex items-center gap-2 ${
                                         soluper.status === 'Active' 
-                                            ? (theme === 'bot' ? 'border-green-500 text-green-500' : 'bg-[#D4AF37]/10 text-[#D4AF37] border-[#D4AF37]/30')
-                                            : (theme === 'bot' ? 'border-gray-500 text-gray-500' : 'bg-gray-100/10 text-gray-400 border-gray-500/20')
+                                            ? (theme === 'bot' ? 'border-green-500 text-green-500' : (theme === 'light' ? 'bg-green-50 text-green-700 border-green-200' : 'bg-[#D4AF37]/10 text-[#D4AF37] border-[#D4AF37]/30'))
+                                            : (theme === 'bot' ? 'border-gray-500 text-gray-500' : (theme === 'light' ? 'bg-gray-50 text-gray-700 border-gray-200' : 'bg-gray-100/10 text-gray-400 border-gray-500/20'))
                                     }`}>
                                         <div className={`w-2 h-2 rounded-full ${soluper.status === 'Active' ? 'bg-green-500' : 'bg-gray-400'}`}></div>
                                         {soluper.status}
@@ -3148,30 +3154,30 @@ const SoluperProfile = ({ soluper, theme, onBack }) => {
                                 </div>
                                 
                                 <p className={`leading-relaxed text-[15.5px] md:text-[16.5px] mb-6 ${
-                                  theme === 'bot' ? 'text-green-700 font-mono' : 'text-slate-200/90 font-medium tracking-wide'
+                                  theme === 'bot' ? 'text-green-700 font-mono' : (theme === 'light' ? 'text-slate-700 font-medium' : 'text-slate-200/90 font-medium tracking-wide')
                                 }`}>{soluper.bio}</p>
 
                                 {/* Elegant divider line */}
                                 {theme !== 'bot' && (
-                                  <div className="w-full h-[1.5px] bg-[#D4AF37]/10 mb-6" />
+                                  <div className={`w-full h-[1.5px] mb-6 ${theme === 'light' ? 'bg-slate-200' : 'bg-[#D4AF37]/10'}`} />
                                 )}
 
                                 {/* Info Grid */}
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-                                    <div className={`p-4 rounded-xl border ${theme === 'bot' ? 'border-green-900 bg-green-900/10' : (theme === 'light' ? 'bg-slate-50 border-slate-100' : 'bg-slate-800/40 border-slate-700/40')}`}>
+                                    <div className={`p-4 rounded-xl border ${theme === 'bot' ? 'border-green-900 bg-green-900/10' : (theme === 'light' ? 'bg-slate-50 border-slate-250 border-slate-200' : 'bg-slate-800/40 border-slate-700/40')}`}>
                                         <div className={`text-xs uppercase tracking-wider mb-1 ${theme === 'bot' ? 'text-green-700 font-mono' : 'text-slate-400/95 font-bold'}`}>Location</div>
-                                        <div className={`font-semibold flex items-center gap-2 ${textClass}`}><MapPin className="w-4 h-4 text-[#D4AF37]" /> {soluper.location}</div>
+                                        <div className={`font-semibold flex items-center gap-2 ${textClass}`}><MapPin className={`w-4 h-4 ${theme === 'light' ? 'text-[#8a6500]' : 'text-[#D4AF37]'}`} /> {soluper.location}</div>
                                     </div>
-                                    <div className={`p-4 rounded-xl border ${theme === 'bot' ? 'border-green-900 bg-green-900/10' : (theme === 'light' ? 'bg-slate-50 border-slate-100' : 'bg-slate-800/40 border-slate-700/40')}`}>
+                                    <div className={`p-4 rounded-xl border ${theme === 'bot' ? 'border-green-900 bg-green-900/10' : (theme === 'light' ? 'bg-slate-50 border-slate-250 border-slate-200' : 'bg-slate-800/40 border-slate-700/40')}`}>
                                         <div className={`text-xs uppercase tracking-wider mb-1 ${theme === 'bot' ? 'text-green-700 font-mono' : 'text-slate-400/95 font-bold'}`}>Department</div>
-                                        <div className={`font-semibold flex items-center gap-2 ${textClass}`}><Briefcase className="w-4 h-4 text-[#D4AF37]" /> {soluper.category}</div>
+                                        <div className={`font-semibold flex items-center gap-2 ${textClass}`}><Briefcase className={`w-4 h-4 ${theme === 'light' ? 'text-[#8a6500]' : 'text-[#D4AF37]'}`} /> {soluper.category}</div>
                                     </div>
-                                    <div className={`p-4 rounded-xl border ${theme === 'bot' ? 'border-green-900 bg-green-900/10' : (theme === 'light' ? 'bg-slate-50 border-slate-100' : 'bg-slate-800/40 border-slate-700/40')}`}>
+                                    <div className={`p-4 rounded-xl border ${theme === 'bot' ? 'border-green-900 bg-green-900/10' : (theme === 'light' ? 'bg-slate-50 border-slate-250 border-slate-200' : 'bg-slate-800/40 border-slate-700/40')}`}>
                                         <div className={`text-xs uppercase tracking-wider mb-1 ${theme === 'bot' ? 'text-green-700 font-mono' : 'text-slate-400/95 font-bold'}`}>Join Date</div>
-                                        <div className={`font-semibold flex items-center gap-2 ${textClass}`}><Calendar className="w-4 h-4 text-[#D4AF37]" /> {soluper.joined}</div>
+                                        <div className={`font-semibold flex items-center gap-2 ${textClass}`}><Calendar className={`w-4 h-4 ${theme === 'light' ? 'text-[#8a6500]' : 'text-[#D4AF37]'}`} /> {soluper.joined}</div>
                                     </div>
-                                    <div className={`p-4 rounded-xl border ${theme === 'bot' ? 'border-green-900 bg-green-900/10' : (theme === 'light' ? 'bg-slate-50 border-slate-100' : 'bg-slate-800/40 border-slate-700/40')}`}>
-                                        <div className={`text-xs uppercase tracking-wider mb-1 ${theme === 'bot' ? 'text-green-700' : 'text-slate-400/95 font-bold'}`}>Status</div>
+                                    <div className={`p-4 rounded-xl border ${theme === 'bot' ? 'border-green-900 bg-green-900/10' : (theme === 'light' ? 'bg-slate-50 border-slate-250 border-slate-200' : 'bg-slate-800/40 border-slate-700/40')}`}>
+                                        <div className={`text-xs uppercase tracking-wider mb-1 ${theme === 'bot' ? 'text-green-700' : 'text-slate-450 font-bold'}`}>Status</div>
                                         <div className={`font-semibold flex items-center gap-2 ${textClass}`}>
                                             {soluper.status === 'Active' ? <UserCheck className="w-4 h-4 text-green-500" /> : <UserMinus className="w-4 h-4 text-gray-500" />} 
                                             {soluper.status === 'Active' ? 'Active Soluper' : 'Past Soluper'}
@@ -3184,7 +3190,7 @@ const SoluperProfile = ({ soluper, theme, onBack }) => {
                                     <div className={`text-xs uppercase tracking-wider mb-3 ${theme === 'bot' ? 'text-green-700 font-mono' : 'text-slate-400/95 font-bold'}`}>Core Competencies</div>
                                     <div className="flex flex-wrap gap-2">
                                         {["System Architecture", "Agile", "Problem Solving", "Team Leadership"].map((tag, i) => (
-                                            <span key={i} className={`px-3 py-1.5 rounded-lg text-sm font-bold border ${theme === 'bot' ? 'border-green-500 text-green-500 bg-transparent font-mono' : profDesign.competencyClass}`}>
+                                            <span key={i} className={`px-3 py-1.5 rounded-lg text-sm font-bold border ${theme === 'bot' ? 'border-green-500 text-green-500 bg-transparent font-mono' : (theme === 'light' ? 'bg-amber-50 text-amber-800 border-amber-200' : profDesign.competencyClass)}`}>
                                                 {tag}
                                             </span>
                                         ))}
