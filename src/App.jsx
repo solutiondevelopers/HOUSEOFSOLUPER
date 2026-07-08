@@ -2802,6 +2802,7 @@ const SoluperProfile = ({ soluper, theme, onBack }) => {
   const getProfileDesign = () => {
     const role = soluper.role.toLowerCase();
     const isPast = soluper.status === 'Past';
+    const isLight = theme === 'light';
     
     if (isPast) {
       return {
@@ -2816,7 +2817,8 @@ const SoluperProfile = ({ soluper, theme, onBack }) => {
         glowColor: 'rgba(255, 255, 255, 0.05)',
         cardClass: 'bg-slate-900/60 border border-zinc-800/60 backdrop-blur-md shadow-2xl',
         chipClass: 'bg-zinc-850/50 text-zinc-400 border-zinc-800/50',
-        competencyClass: 'bg-zinc-900/40 text-zinc-400 border-zinc-800/40'
+        competencyClass: 'bg-zinc-900/40 text-zinc-400 border-zinc-800/40',
+        roleColor: isLight ? 'text-zinc-700' : 'text-zinc-400'
       };
     }
 
@@ -2836,7 +2838,10 @@ const SoluperProfile = ({ soluper, theme, onBack }) => {
           ? 'bg-orange-955/10 border border-orange-900/25 backdrop-blur-md shadow-2xl'
           : 'bg-red-955/10 border border-red-900/25 backdrop-blur-md shadow-2xl',
         chipClass: 'bg-[#D4AF37]/10 text-[#D4AF37] border-[#D4AF37]/20',
-        competencyClass: 'bg-[#D4AF37]/10 text-[#D4AF37] border-[#D4AF37]/25'
+        competencyClass: 'bg-[#D4AF37]/10 text-[#D4AF37] border-[#D4AF37]/25',
+        roleColor: isLight 
+          ? (isArchitect ? 'text-amber-800' : 'text-red-800') 
+          : (isArchitect ? 'text-yellow-400' : 'text-[#f5ebd5]/95')
       };
     }
 
@@ -2853,7 +2858,8 @@ const SoluperProfile = ({ soluper, theme, onBack }) => {
         glowColor: 'rgba(245, 158, 11, 0.25)',
         cardClass: 'bg-red-955/10 border border-red-900/25 backdrop-blur-md shadow-2xl',
         chipClass: 'bg-[#D4AF37]/10 text-[#D4AF37] border-[#D4AF37]/20',
-        competencyClass: 'bg-[#D4AF37]/10 text-[#D4AF37] border-[#D4AF37]/25'
+        competencyClass: 'bg-[#D4AF37]/10 text-[#D4AF37] border-[#D4AF37]/25',
+        roleColor: isLight ? 'text-red-800' : 'text-[#f5ebd5]/95'
       };
     }
 
@@ -2870,7 +2876,8 @@ const SoluperProfile = ({ soluper, theme, onBack }) => {
         glowColor: 'rgba(148, 163, 184, 0.25)',
         cardClass: 'bg-blue-955/10 border border-blue-900/25 backdrop-blur-md shadow-2xl',
         chipClass: 'bg-[#D4AF37]/10 text-[#D4AF37] border-[#D4AF37]/20',
-        competencyClass: 'bg-[#D4AF37]/10 text-[#D4AF37] border-[#D4AF37]/25'
+        competencyClass: 'bg-[#D4AF37]/10 text-[#D4AF37] border-[#D4AF37]/25',
+        roleColor: isLight ? 'text-[#1e3a8a]' : 'text-slate-300'
       };
     }
 
@@ -2887,7 +2894,8 @@ const SoluperProfile = ({ soluper, theme, onBack }) => {
         glowColor: 'rgba(236, 72, 153, 0.25)',
         cardClass: 'bg-purple-955/10 border border-purple-900/25 backdrop-blur-md shadow-2xl',
         chipClass: 'bg-[#D4AF37]/10 text-[#D4AF37] border-[#D4AF37]/20',
-        competencyClass: 'bg-[#D4AF37]/10 text-[#D4AF37] border-[#D4AF37]/25'
+        competencyClass: 'bg-[#D4AF37]/10 text-[#D4AF37] border-[#D4AF37]/25',
+        roleColor: isLight ? 'text-[#701a75]' : 'text-pink-300'
       };
     }
 
@@ -2904,7 +2912,8 @@ const SoluperProfile = ({ soluper, theme, onBack }) => {
         glowColor: 'rgba(234, 179, 8, 0.25)',
         cardClass: 'bg-amber-955/10 border border-amber-900/25 backdrop-blur-md shadow-2xl',
         chipClass: 'bg-[#D4AF37]/10 text-[#D4AF37] border-[#D4AF37]/20',
-        competencyClass: 'bg-[#D4AF37]/10 text-[#D4AF37] border-[#D4AF37]/25'
+        competencyClass: 'bg-[#D4AF37]/10 text-[#D4AF37] border-[#D4AF37]/25',
+        roleColor: isLight ? 'text-amber-800' : 'text-yellow-400'
       };
     }
 
@@ -2921,7 +2930,8 @@ const SoluperProfile = ({ soluper, theme, onBack }) => {
         glowColor: 'rgba(16, 185, 129, 0.25)',
         cardClass: 'bg-emerald-955/10 border border-emerald-900/25 backdrop-blur-md shadow-2xl',
         chipClass: 'bg-[#D4AF37]/10 text-[#D4AF37] border-[#D4AF37]/20',
-        competencyClass: 'bg-[#D4AF37]/10 text-[#D4AF37] border-[#D4AF37]/25'
+        competencyClass: 'bg-[#D4AF37]/10 text-[#D4AF37] border-[#D4AF37]/25',
+        roleColor: isLight ? 'text-[#065f46]' : 'text-emerald-350'
       };
     }
 
@@ -2938,7 +2948,8 @@ const SoluperProfile = ({ soluper, theme, onBack }) => {
         glowColor: 'rgba(236, 72, 153, 0.25)',
         cardClass: 'bg-purple-955/10 border border-purple-900/25 backdrop-blur-md shadow-2xl',
         chipClass: 'bg-[#D4AF37]/10 text-[#D4AF37] border-[#D4AF37]/20',
-        competencyClass: 'bg-[#D4AF37]/10 text-[#D4AF37] border-[#D4AF37]/25'
+        competencyClass: 'bg-[#D4AF37]/10 text-[#D4AF37] border-[#D4AF37]/25',
+        roleColor: isLight ? 'text-[#701a75]' : 'text-pink-300'
       };
     }
 
@@ -2955,7 +2966,8 @@ const SoluperProfile = ({ soluper, theme, onBack }) => {
       glowColor: 'rgba(255, 255, 255, 0.05)',
       cardClass: 'bg-slate-900/60 border border-zinc-800/60 backdrop-blur-md shadow-2xl',
       chipClass: 'bg-zinc-700/15 text-zinc-300 border-zinc-700/20',
-      competencyClass: 'bg-zinc-700/15 text-zinc-300 border-zinc-700/25'
+      competencyClass: 'bg-zinc-700/15 text-zinc-300 border-zinc-700/25',
+      roleColor: isLight ? 'text-slate-800' : 'text-slate-300'
     };
   };
 
@@ -3051,20 +3063,16 @@ const SoluperProfile = ({ soluper, theme, onBack }) => {
                     <h1 className={`text-3xl md:text-4xl font-black tracking-tight mt-1.5 transition-colors ${
                       theme === 'bot' 
                         ? 'text-green-400 font-mono' 
-                        : (theme === 'light'
-                            ? 'text-slate-900 md:text-[#D4AF37] drop-shadow-[0_1px_1px_rgba(255,255,255,0.8)] md:drop-shadow-[0_2px_10px_rgba(212,175,55,0.25)]'
-                            : 'text-[#D4AF37] drop-shadow-[0_2px_10px_rgba(212,175,55,0.25)] drop-shadow-[0_4px_8px_rgba(0,0,0,0.9)]')
+                        : 'text-[#D4AF37] drop-shadow-[0_2px_8px_rgba(0,0,0,0.85)] drop-shadow-[0_4px_12px_rgba(0,0,0,0.95)]'
                     }`}>
                       {soluper.name}
                     </h1>
                     
                     {/* Role */}
-                    <p className={`text-lg font-bold tracking-wide mt-2 ${
+                    <p className={`text-md md:text-lg font-bold tracking-wider mt-2.5 transition-colors ${
                       theme === 'bot' 
                         ? 'text-green-700 font-mono' 
-                        : (theme === 'light'
-                            ? 'text-slate-700 md:text-[#f5ebd5]/90'
-                            : 'text-[#f5ebd5]/90 drop-shadow-[0_2px_4px_rgba(0,0,0,0.85)]')
+                        : `${profDesign.roleColor} drop-shadow-[0_1px_1.5px_rgba(0,0,0,0.35)]`
                     }`}>{soluper.role}</p>
                   </div>
                   
