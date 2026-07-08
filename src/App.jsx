@@ -1742,33 +1742,231 @@ const SpotlightCard = ({ soluper, theme, onClick }) => (
   </div>
 );
 
-const DirectoryCard = ({ soluper, theme, onClick }) => (
-  <div onClick={() => onClick(soluper)} className={`p-4 transition-all flex items-center gap-4 group relative overflow-hidden backdrop-blur-sm border ${theme === 'bot' ? 'bg-black/80 border-green-900 hover:border-green-500 rounded-none' : (theme === 'light' ? 'bg-white/80 rounded-xl border-slate-200 hover:border-amber-300 hover:shadow-lg hover:-translate-y-1' : 'bg-slate-900/80 rounded-xl border-slate-800 hover:border-slate-600 hover:-translate-y-1')}`}>
-    <div className={`h-16 w-16 flex-shrink-0 overflow-hidden relative ${theme === 'bot' ? 'rounded-none border border-green-800 grayscale' : (theme === 'light' ? 'rounded-full bg-slate-100 border border-slate-200' : 'rounded-full bg-slate-800 border border-slate-700')}`}>
-      <img src={soluper.image} alt={soluper.name} className={`w-full h-full object-cover group-hover:scale-110 transition-transform ${soluper.status === 'Past' || soluper.status === 'Alumni' ? 'grayscale opacity-80' : ''}`} />
-      
-      {/* Status Dot on Avatar */}
-      <div className={`absolute bottom-0 right-0 w-4 h-4 border-2 rounded-full ${
-          theme === 'light' ? 'border-white' : (theme === 'bot' ? 'border-black rounded-none' : 'border-slate-900')
-      } ${
-          soluper.status === 'Active' 
-          ? (theme === 'bot' ? 'bg-green-500' : 'bg-green-500') 
-          : 'bg-gray-400'
-      }`}></div>
-    </div>
+const DirectoryCard = ({ soluper, theme, onClick }) => {
+  const getDesign = () => {
+    const role = soluper.role.toLowerCase();
+    const isPast = soluper.status === 'Past';
+    
+    if (isPast) {
+      return {
+        bg: theme === 'bot' 
+          ? 'bg-black border-zinc-800 text-zinc-500 font-mono' 
+          : 'bg-gradient-to-b from-zinc-900 via-neutral-900 to-black text-slate-350 shadow-[0_15px_30px_rgba(0,0,0,0.5)]',
+        border: 'border-zinc-800/80',
+        glow: 'shadow-[inset_0_0_20px_rgba(255,255,255,0.02)]',
+        badge: '🩶 Core Soluper',
+        badgeColor: 'bg-zinc-800/30 border-zinc-700/50 text-zinc-400',
+        accentColor: 'border-zinc-500/40',
+        innerBorder: 'border-zinc-800/30'
+      };
+    }
 
-    <div className="flex-1 min-w-0 relative z-10">
-      <div className="flex items-center gap-2">
-        <h4 className={`font-bold truncate transition-colors ${theme === 'bot' ? 'text-green-400 font-mono group-hover:text-green-300' : (theme === 'light' ? 'text-slate-900 group-hover:text-amber-600' : 'text-white group-hover:text-amber-400')}`}>{soluper.name}</h4>
-        {(soluper.status === 'Past' || soluper.status === 'Alumni') && (
-             <span className={`text-[10px] px-1.5 py-0.5 rounded border uppercase tracking-wider ${theme === 'bot' ? 'border-gray-600 text-gray-500 bg-black' : 'border-gray-400 text-gray-500 bg-gray-100'}`}>Past Soluper</span>
+    if (role.includes('founder') || role.includes('chief executive')) {
+      return {
+        bg: theme === 'bot' 
+          ? 'bg-black border-red-600 text-red-500 font-mono shadow-[0_0_20px_rgba(220,38,38,0.25)]' 
+          : 'bg-gradient-to-b from-red-950 via-red-900 to-rose-950 text-white shadow-[0_15px_35px_rgba(220,38,38,0.18)]',
+        border: 'border-amber-500/50',
+        glow: 'shadow-[inset_0_0_30px_rgba(245,158,11,0.18)]',
+        badge: '👑 Founder',
+        badgeColor: 'bg-amber-500/20 border-amber-500/40 text-amber-400',
+        accentColor: 'border-amber-400/70',
+        innerBorder: 'border-amber-500/20'
+      };
+    }
+    
+    if (role.includes('architect')) {
+      return {
+        bg: theme === 'bot' 
+          ? 'bg-black border-orange-500 text-orange-500 font-mono shadow-[0_0_20px_rgba(249,115,22,0.25)]' 
+          : 'bg-gradient-to-b from-orange-950 via-amber-950 to-stone-900 text-white shadow-[0_15px_35px_rgba(249,115,22,0.15)]',
+        border: 'border-yellow-500/50',
+        glow: 'shadow-[inset_0_0_30px_rgba(234,179,8,0.18)]',
+        badge: '🚀 Tech Architect',
+        badgeColor: 'bg-yellow-500/20 border-yellow-500/40 text-yellow-400',
+        accentColor: 'border-yellow-400/70',
+        innerBorder: 'border-yellow-500/20'
+      };
+    }
+
+    if (role.includes('president')) {
+      return {
+        bg: theme === 'bot' 
+          ? 'bg-black border-red-500 text-red-500 font-mono shadow-[0_0_25px_rgba(239,68,68,0.25)]' 
+          : 'bg-gradient-to-b from-red-950 via-red-900 to-rose-950 text-white shadow-[0_15px_35px_rgba(220,38,38,0.18)]',
+        border: 'border-amber-500/50',
+        glow: 'shadow-[inset_0_0_30px_rgba(245,158,11,0.18)]',
+        badge: '👑 President',
+        badgeColor: 'bg-amber-500/20 border-amber-500/40 text-amber-400',
+        accentColor: 'border-amber-400/70',
+        innerBorder: 'border-amber-500/20'
+      };
+    }
+
+    if (role.includes('technical lead')) {
+      return {
+        bg: theme === 'bot' 
+          ? 'bg-black border-cyan-500 text-cyan-400 font-mono shadow-[0_0_20px_rgba(6,182,212,0.25)]' 
+          : 'bg-gradient-to-b from-blue-950 via-slate-900 to-indigo-950 text-white shadow-[0_15px_35px_rgba(59,130,246,0.15)]',
+        border: 'border-slate-400/50',
+        glow: 'shadow-[inset_0_0_30px_rgba(148,163,184,0.18)]',
+        badge: '🚀 Tech Lead',
+        badgeColor: 'bg-slate-500/20 border-slate-400/40 text-slate-300',
+        accentColor: 'border-slate-350/70 border-slate-300/70',
+        innerBorder: 'border-slate-400/25'
+      };
+    }
+
+    if (role.includes('operational')) {
+      return {
+        bg: theme === 'bot' 
+          ? 'bg-black border-purple-500 text-purple-400 font-mono shadow-[0_0_20px_rgba(168,85,247,0.25)]' 
+          : 'bg-gradient-to-b from-purple-950 via-fuchsia-950 to-indigo-950 text-white shadow-[0_15px_35px_rgba(168,85,247,0.15)]',
+        border: 'border-pink-500/40',
+        glow: 'shadow-[inset_0_0_30px_rgba(236,72,153,0.18)]',
+        badge: '⚙️ Operational Lead',
+        badgeColor: 'bg-pink-500/20 border-pink-500/40 text-pink-300',
+        accentColor: 'border-pink-400/70',
+        innerBorder: 'border-pink-500/20'
+      };
+    }
+
+    if (role.includes('event')) {
+      return {
+        bg: theme === 'bot' 
+          ? 'bg-black border-yellow-500 text-yellow-500 font-mono shadow-[0_0_20px_rgba(234,179,8,0.25)]' 
+          : 'bg-gradient-to-b from-amber-950 via-yellow-950 to-stone-900 text-white shadow-[0_15px_35px_rgba(234,179,8,0.15)]',
+        border: 'border-yellow-600/50',
+        glow: 'shadow-[inset_0_0_30px_rgba(202,138,4,0.18)]',
+        badge: '🎯 Event Lead',
+        badgeColor: 'bg-yellow-600/20 border-yellow-500/40 text-yellow-450 text-yellow-400',
+        accentColor: 'border-yellow-500/70',
+        innerBorder: 'border-yellow-600/20'
+      };
+    }
+
+    if (role.includes('documentation') || role.includes('marketing')) {
+      return {
+        bg: theme === 'bot' 
+          ? 'bg-black border-green-500 text-green-400 font-mono shadow-[0_0_20px_rgba(34,197,94,0.25)]' 
+          : 'bg-gradient-to-b from-emerald-950 via-green-950 to-stone-900 text-white shadow-[0_15px_35px_rgba(16,185,129,0.15)]',
+        border: 'border-emerald-500/40',
+        glow: 'shadow-[inset_0_0_30px_rgba(16,185,129,0.18)]',
+        badge: '📄 Documentation Lead',
+        badgeColor: 'bg-emerald-500/20 border-emerald-500/40 text-emerald-400',
+        accentColor: 'border-amber-400/60',
+        innerBorder: 'border-emerald-500/20'
+      };
+    }
+
+    if (role.includes('media') || role.includes('project & research')) {
+      return {
+        bg: theme === 'bot' 
+          ? 'bg-black border-purple-500 text-purple-400 font-mono shadow-[0_0_20px_rgba(168,85,247,0.25)]' 
+          : 'bg-gradient-to-b from-purple-950 via-fuchsia-950 to-indigo-950 text-white shadow-[0_15px_35px_rgba(168,85,247,0.15)]',
+        border: 'border-pink-500/40',
+        glow: 'shadow-[inset_0_0_30px_rgba(236,72,153,0.18)]',
+        badge: role.includes('media') ? '📢 Media Lead' : '🔬 Research Lead',
+        badgeColor: 'bg-pink-500/20 border-pink-500/40 text-pink-300',
+        accentColor: 'border-pink-400/70',
+        innerBorder: 'border-pink-500/20'
+      };
+    }
+
+    // Default Charcoal Theme for other leads & general categories
+    return {
+      bg: theme === 'bot' 
+        ? 'bg-black border-green-900 text-green-700 font-mono' 
+        : 'bg-gradient-to-b from-zinc-900 via-stone-900 to-neutral-950 text-white shadow-[0_15px_30px_rgba(0,0,0,0.5)]',
+      border: 'border-zinc-700/60',
+      glow: 'shadow-[inset_0_0_25px_rgba(255,255,255,0.03)]',
+      badge: `⭐ Lead`,
+      badgeColor: 'bg-zinc-700/30 border-zinc-650/45 text-zinc-300',
+      accentColor: 'border-zinc-500/60',
+      innerBorder: 'border-zinc-700/20'
+    };
+  };
+
+  const design = getDesign();
+
+  return (
+    <div 
+      onClick={() => onClick(soluper)} 
+      className={`relative p-5 cursor-pointer flex flex-col justify-between overflow-hidden group transition-all duration-500 hover:scale-[1.03] hover:-translate-y-1.5 active:scale-95 ${design.bg} ${design.border} ${design.glow} ${
+        theme === 'bot' ? 'rounded-none border-2' : 'rounded-3xl border-2'
+      }`}
+      style={{ height: '340px' }}
+    >
+      {/* Decorative Frame Layout (Apple / Luxury Style) */}
+      {theme !== 'bot' && (
+        <>
+          {/* Golden/Silver Ornamental Corners */}
+          <div className={`absolute top-3 left-3 w-4 h-4 border-t-2 border-l-2 ${design.accentColor} pointer-events-none z-10 transition-transform duration-500 group-hover:-translate-x-0.5 group-hover:-translate-y-0.5`} />
+          <div className={`absolute top-3 right-3 w-4 h-4 border-t-2 border-r-2 ${design.accentColor} pointer-events-none z-10 transition-transform duration-500 group-hover:translate-x-0.5 group-hover:-translate-y-0.5`} />
+          <div className={`absolute bottom-3 left-3 w-4 h-4 border-b-2 border-l-2 ${design.accentColor} pointer-events-none z-10 transition-transform duration-500 group-hover:-translate-x-0.5 group-hover:translate-y-0.5`} />
+          <div className={`absolute bottom-3 right-3 w-4 h-4 border-b-2 border-r-2 ${design.accentColor} pointer-events-none z-10 transition-transform duration-500 group-hover:translate-x-0.5 group-hover:translate-y-0.5`} />
+
+          {/* Double border inner box */}
+          <div className={`absolute inset-3 border-2 ${design.innerBorder} rounded-[20px] pointer-events-none transition-all duration-500 group-hover:scale-[0.98]`} />
+          
+          {/* Radial Light glow / Radial background pattern */}
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.06)_0%,transparent_70%)] pointer-events-none opacity-40" />
+          
+          {/* High-end Metallic sheen hover effect */}
+          <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_ease-out] pointer-events-none" />
+        </>
+      )}
+
+      {/* Profile cut-out with circular background glow */}
+      <div className="relative flex justify-center mt-4">
+        {/* Glow behind portrait */}
+        <div className={`absolute w-24 h-24 rounded-full blur-xl opacity-35 bg-white/20 transition-all duration-500 group-hover:scale-125`} />
+        
+        {/* Profile Image with Gold/Silver border frame */}
+        <div className={`relative w-24 h-24 overflow-hidden shadow-2xl transition-all duration-500 group-hover:scale-105 ${
+          theme === 'bot' 
+            ? 'rounded-none border border-green-500 grayscale group-hover:grayscale-0' 
+            : `rounded-full border-[3px] ${design.accentColor}`
+        }`}>
+          <img 
+            src={soluper.image} 
+            alt={soluper.name} 
+            className={`w-full h-full object-cover transition-transform duration-700 group-hover:scale-110`} 
+          />
+        </div>
+
+        {/* Small Active Status Dot */}
+        {soluper.status === 'Active' && (
+          <div className={`absolute bottom-0 right-[40%] w-3.5 h-3.5 rounded-full border-2 ${
+            theme === 'bot' ? 'border-black bg-green-500 rounded-none' : 'border-slate-900 bg-green-400'
+          }`} />
         )}
       </div>
-      <p className={`text-xs uppercase tracking-wide mb-2 ${theme === 'bot' ? 'text-green-800 font-mono' : (theme === 'light' ? 'text-slate-500' : 'text-slate-400')}`}>{soluper.role}</p>
+
+      {/* Information Section / Glassmorphism Panel */}
+      <div className={`relative z-10 w-full text-center mt-3 pb-3 flex flex-col items-center flex-1 justify-end`}>
+        {/* Role Badge */}
+        <div className={`inline-flex items-center gap-1 px-2.5 py-0.5 mb-2.5 rounded-full border text-[9px] font-bold uppercase tracking-wider ${design.badgeColor}`}>
+          {design.badge}
+        </div>
+
+        {/* Member Name */}
+        <h4 className={`text-base font-extrabold tracking-tight transition-colors ${
+          theme === 'bot' ? 'text-green-400 font-mono group-hover:text-green-300' : 'text-white'
+        }`}>
+          {soluper.name}
+        </h4>
+
+        {/* Designation Title */}
+        <p className={`text-[10px] font-medium tracking-widest uppercase mt-0.5 ${
+          theme === 'bot' ? 'text-green-700 font-mono' : 'text-slate-350'
+        }`}>
+          {soluper.role}
+        </p>
+      </div>
     </div>
-    <div className="flex flex-col gap-2"><button className={`p-2 transition-colors ${theme === 'bot' ? 'text-green-700 hover:text-green-400' : (theme === 'light' ? 'text-slate-400 hover:text-slate-900' : 'text-slate-500 hover:text-white')}`}><ExternalLink className="w-4 h-4" /></button></div>
-  </div>
-);
+  );
+};
 
 // --- VIEW COMPONENTS ---
 
