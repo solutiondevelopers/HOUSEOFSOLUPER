@@ -1177,6 +1177,15 @@ const Background3D = ({ theme }) => {
       vRotY: (Math.random() - 0.5) * 0.02
     }));
 
+    const particles = Array.from({ length: 50 }, () => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      vx: (Math.random() - 0.5) * 0.5,
+      vy: (Math.random() - 0.5) * 0.5,
+      size: Math.random() * 2 + 1,
+      opacity: Math.random() * 0.16 + 0.04
+    }));
+
     const project = (x, y, z) => {
       const scale = 800 / (800 + z);
       return { x: x * scale + canvas.width / 2, y: y * scale + canvas.height / 2, scale };
@@ -1187,6 +1196,21 @@ const Background3D = ({ theme }) => {
     const render = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       const strokeColor = theme === 'bot' ? '34, 197, 94' : (theme === 'light' ? '217, 119, 6' : '245, 158, 11');
+
+      // Draw drifting particles background layer
+      particles.forEach(p => {
+        p.x += p.vx;
+        p.y += p.vy;
+        if (p.x < 0) p.x = canvas.width;
+        if (p.x > canvas.width) p.x = 0;
+        if (p.y < 0) p.y = canvas.height;
+        if (p.y > canvas.height) p.y = 0;
+
+        ctx.fillStyle = `rgba(${strokeColor}, ${p.opacity})`;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fill();
+      });
 
       cubes.forEach(cube => {
         // Apply ambient base velocity + active dynamic velocity
@@ -1241,7 +1265,7 @@ const Background3D = ({ theme }) => {
         const distFromCenter = Math.sqrt(cube.x * cube.x + cube.y * cube.y);
         const maxDist = Math.sqrt(canvas.width * canvas.width + canvas.height * canvas.height) * 0.5;
         const centerFade = Math.min(1, distFromCenter / (maxDist || 1));
-        const opacity = Math.max(0.015, (1 - cube.z/1200) * 0.14 * centerFade);
+        const opacity = Math.max(0.02, (1 - cube.z/1200) * 0.24 * centerFade);
         ctx.strokeStyle = `rgba(${strokeColor}, ${opacity})`;
         ctx.lineWidth = 1.5 * vertices[0].scale;
         edges.forEach(e => { ctx.moveTo(vertices[e[0]].x, vertices[e[0]].y); ctx.lineTo(vertices[e[1]].x, vertices[e[1]].y); });
@@ -1254,7 +1278,7 @@ const Background3D = ({ theme }) => {
     return () => cancelAnimationFrame(animationFrameId);
   }, [theme]);
 
-  return <canvas ref={canvasRef} className="fixed inset-0 w-full h-full pointer-events-none z-0" />;
+  return <canvas ref={canvasRef} className="fixed inset-0 w-full h-full pointer-events-none z-0 blur-[0.8px]" />;
 };
 
 const DevBot = ({ theme }) => {
@@ -2644,11 +2668,313 @@ const JourneyTimeline = ({ theme }) => {
   );
 };
 
+// --- FUTURISTIC CENTERPIECE COMPONENT ---
+const FuturisticCenterpiece = ({ theme, onClick }) => {
+  const canvasRef = useRef(null);
+  const [isHovered, setIsHovered] = useState(false);
+  const rotationSpeed = useRef(0.008);
+  const angleX = useRef(Math.PI / 6);
+  const angleY = useRef(Math.PI / 4);
+  const scale = useRef(1);
+  const pulseDirection = useRef(1);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    let animationFrameId;
+
+    const resize = () => {
+      canvas.width = 300;
+      canvas.height = 300;
+    };
+    resize();
+
+    // 3D Box vertices (rectangular prism)
+    const sizeX = 65;
+    const sizeY = 85;
+    const sizeZ = 65;
+    const vertices = [
+      { x: -sizeX, y: -sizeY, z: -sizeZ },
+      { x: sizeX, y: -sizeY, z: -sizeZ },
+      { x: sizeX, y: sizeY, z: -sizeZ },
+      { x: -sizeX, y: sizeY, z: -sizeZ },
+      { x: -sizeX, y: -sizeY, z: sizeZ },
+      { x: sizeX, y: -sizeY, z: sizeZ },
+      { x: sizeX, y: sizeY, z: sizeZ },
+      { x: -sizeX, y: sizeY, z: sizeZ }
+    ];
+
+    const edges = [
+      [0, 1], [1, 2], [2, 3], [3, 0], // back face
+      [4, 5], [5, 6], [6, 7], [7, 4], // front face
+      [0, 4], [1, 5], [2, 6], [3, 7]  // connecting edges
+    ];
+
+    const project = (x, y, z) => {
+      const perspective = 350;
+      const scaleProject = perspective / (perspective + z);
+      return {
+        x: x * scaleProject + canvas.width / 2,
+        y: y * scaleProject + canvas.height / 2
+      };
+    };
+
+    const rotateX = (x, y, z, angle) => {
+      const cos = Math.cos(angle);
+      const sin = Math.sin(angle);
+      return { x, y: y * cos - z * sin, z: y * sin + z * cos };
+    };
+
+    const rotateY = (x, y, z, angle) => {
+      const cos = Math.cos(angle);
+      const sin = Math.sin(angle);
+      return { x: x * cos + z * sin, y, z: -x * sin + z * cos };
+    };
+
+    const render = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Pulse scaling
+      if (pulseDirection.current === 1) {
+        scale.current += 0.0008;
+        if (scale.current >= 1.04) pulseDirection.current = -1;
+      } else {
+        scale.current -= 0.0008;
+        if (scale.current <= 0.96) pulseDirection.current = 1;
+      }
+
+      // Dynamic speed based on hover
+      const targetSpeed = isHovered ? 0.002 : 0.006;
+      rotationSpeed.current += (targetSpeed - rotationSpeed.current) * 0.1;
+      
+      angleX.current += rotationSpeed.current;
+      angleY.current += rotationSpeed.current * 0.75;
+
+      // Project vertices
+      const projected = vertices.map(v => {
+        let x = v.x * scale.current;
+        let y = v.y * scale.current;
+        let z = v.z * scale.current;
+
+        let rot = rotateX(x, y, z, angleX.current);
+        rot = rotateY(rot.x, rot.y, rot.z, angleY.current);
+
+        return project(rot.x, rot.y, rot.z);
+      });
+
+      // Translucent inner faces for glassmorphism look
+      ctx.fillStyle = theme === 'bot' ? 'rgba(34, 197, 94, 0.04)' : 'rgba(245, 158, 11, 0.05)';
+      ctx.beginPath();
+      ctx.moveTo(projected[4].x, projected[4].y);
+      ctx.lineTo(projected[5].x, projected[5].y);
+      ctx.lineTo(projected[6].x, projected[6].y);
+      ctx.lineTo(projected[7].x, projected[7].y);
+      ctx.closePath();
+      ctx.fill();
+
+      ctx.beginPath();
+      ctx.moveTo(projected[0].x, projected[0].y);
+      ctx.lineTo(projected[1].x, projected[1].y);
+      ctx.lineTo(projected[2].x, projected[2].y);
+      ctx.lineTo(projected[3].x, projected[3].y);
+      ctx.closePath();
+      ctx.fill();
+
+      // Draw wireframe edges
+      ctx.strokeStyle = theme === 'bot' ? 'rgba(34, 197, 94, 0.85)' : 'rgba(245, 158, 11, 0.95)';
+      ctx.lineWidth = isHovered ? 2.2 : 1.6;
+      ctx.shadowBlur = isHovered ? 18 : 6;
+      ctx.shadowColor = theme === 'bot' ? 'rgba(34, 197, 94, 0.6)' : 'rgba(245, 158, 11, 0.6)';
+
+      edges.forEach(edge => {
+        ctx.beginPath();
+        ctx.moveTo(projected[edge[0]].x, projected[edge[0]].y);
+        ctx.lineTo(projected[edge[1]].x, projected[edge[1]].y);
+        ctx.stroke();
+      });
+
+      // Vertex nodes
+      ctx.shadowBlur = 0;
+      projected.forEach(v => {
+        ctx.beginPath();
+        ctx.arc(v.x, v.y, isHovered ? 3.5 : 2.5, 0, Math.PI * 2);
+        ctx.fillStyle = theme === 'bot' ? '#22c55e' : '#D4AF37';
+        ctx.fill();
+      });
+
+      animationFrameId = requestAnimationFrame(render);
+    };
+    render();
+
+    return () => cancelAnimationFrame(animationFrameId);
+  }, [theme, isHovered]);
+
+  const infoCards = [
+    { label: "Achievements", value: "25+ Awards", icon: Trophy, posClass: "top-0 left-1/2 -translate-x-1/2 -translate-y-6 md:-translate-y-8" },
+    { label: "Events & Memories", value: "60+ Memories", icon: Images, posClass: "bottom-0 left-1/2 -translate-x-1/2 translate-y-6 md:translate-y-8" },
+    { label: "Hackathons", value: "15 Competitions", icon: Target, posClass: "top-1/2 left-0 -translate-y-1/2 -translate-x-6 md:-translate-x-12 lg:-translate-x-20" },
+    { label: "Community", value: "500+ Members", icon: Users, posClass: "top-1/2 right-0 -translate-y-1/2 translate-x-6 md:translate-x-12 lg:translate-x-20" }
+  ];
+
+  return (
+    <div 
+      className="relative flex items-center justify-center w-full h-[420px] my-8 cursor-pointer select-none group"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      onClick={onClick}
+    >
+      {/* SVG Connecting lines */}
+      <svg className="absolute inset-0 w-full h-full pointer-events-none z-0">
+        <defs>
+          <linearGradient id="glowGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#D4AF37" stopOpacity="0.8" />
+            <stop offset="100%" stopColor="#f59e0b" stopOpacity="0.2" />
+          </linearGradient>
+        </defs>
+        
+        {/* Draw lines from center to 4 panels */}
+        {/* Left connector line */}
+        <line x1="20%" y1="50%" x2="40%" y2="50%" stroke="url(#glowGrad)" strokeWidth="1.5" strokeDasharray="3 3" className="opacity-80 animate-pulse" />
+        {/* Right connector line */}
+        <line x1="80%" y1="50%" x2="60%" y2="50%" stroke="url(#glowGrad)" strokeWidth="1.5" strokeDasharray="3 3" className="opacity-80 animate-pulse" />
+        {/* Top connector line */}
+        <line x1="50%" y1="18%" x2="50%" y2="40%" stroke="url(#glowGrad)" strokeWidth="1.5" strokeDasharray="3 3" className="opacity-80 animate-pulse" />
+        {/* Bottom connector line */}
+        <line x1="50%" y1="82%" x2="50%" y2="60%" stroke="url(#glowGrad)" strokeWidth="1.5" strokeDasharray="3 3" className="opacity-80 animate-pulse" />
+      </svg>
+
+      {/* Center 3D Cube Canvas Frame */}
+      <div className={`relative z-10 w-[240px] h-[240px] md:w-[280px] md:h-[280px] flex items-center justify-center rounded-full transition-all duration-500 bg-gradient-to-br from-white/5 to-white/0 border border-white/5 ${
+        isHovered ? 'scale-105 shadow-[0_0_60px_rgba(245,158,11,0.18)] border-amber-500/25' : ''
+      }`}>
+        <canvas ref={canvasRef} />
+      </div>
+
+      {/* Floating Info Panels */}
+      {infoCards.map((card, i) => {
+        const Icon = card.icon;
+        return (
+          <div 
+            key={i} 
+            className={`absolute z-20 flex flex-col items-center p-3 md:p-4 rounded-2xl border backdrop-blur-md transition-all duration-350 shadow-md ${card.posClass} ${
+              theme === 'bot' 
+                ? 'bg-black/90 border-green-900 text-green-500 font-mono text-[10px]' 
+                : (theme === 'light' 
+                    ? 'bg-white/90 border-slate-200 text-slate-800 hover:shadow-lg' 
+                    : 'bg-slate-900/90 border-slate-850 text-slate-250 hover:shadow-2xl')
+            } ${isHovered ? 'scale-105 border-amber-500/35' : ''}`}
+          >
+            <div className={`p-2 rounded-xl mb-1.5 ${theme === 'light' ? 'bg-amber-50 text-amber-600' : 'bg-amber-500/10 text-amber-400'}`}>
+              <Icon className="w-4 h-4 md:w-5 md:h-5" />
+            </div>
+            <span className="text-[9px] uppercase font-bold tracking-widest text-slate-500">{card.label}</span>
+            <span className={`text-xs md:text-sm font-black mt-0.5 ${theme === 'light' ? 'text-slate-900' : 'text-white'}`}>{card.value}</span>
+          </div>
+        );
+      })}
+    </div>
+  );
+};
+
+// --- CORE REGISTRY STATS DASHBOARD MODAL ---
+const StatsModal = ({ isOpen, onClose, theme }) => {
+  if (!isOpen) return null;
+
+  const bgClass = theme === 'bot' 
+    ? 'bg-black/95 border-green-950 text-green-400 font-mono rounded-none' 
+    : (theme === 'light' ? 'bg-white border-slate-200 text-slate-900 rounded-3xl' : 'bg-slate-950/95 border-slate-850 text-white rounded-3xl');
+
+  const stats = [
+    { label: "Achievements", value: "25+", desc: "Milestones & Trophies", icon: Trophy, color: "text-amber-500" },
+    { label: "Hackathons", value: "15", desc: "National & Inter-College sprints", icon: Target, color: "text-red-500" },
+    { label: "Workshops", value: "30+", desc: "Masterclasses & System Sessions", icon: GraduationCap, color: "text-blue-500" },
+    { label: "Outreach & Surveys", value: "12+", desc: "Field visits & research audits", icon: ClipboardList, color: "text-emerald-500" },
+    { label: "Active Contributors", value: "75+", desc: "Core and Lead Solupers", icon: Users, color: "text-purple-500" },
+    { label: "Memories Captured", value: "60+", desc: "Living photographic logs", icon: Images, color: "text-pink-500" }
+  ];
+
+  return (
+    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/85 backdrop-blur-md p-4 overflow-y-auto animate-[fade-in_0.2s_ease-out]">
+      <div className={`relative max-w-3xl w-full p-8 border backdrop-blur-xl shadow-2xl overflow-y-auto max-h-[90vh] ${bgClass}`}>
+        {/* Close Button */}
+        <button onClick={onClose} className="absolute top-6 right-6 text-slate-500 hover:text-slate-200 transition-all bg-white/5 hover:bg-white/10 p-2 rounded-full z-10">
+          <X className="w-5 h-5" />
+        </button>
+
+        {/* Heading */}
+        <div className="mb-8">
+          <span className={`text-xs font-mono font-bold tracking-widest uppercase ${theme === 'bot' ? 'text-green-500' : 'text-amber-500'}`}>
+            // CORE REGISTRY LOGS
+          </span>
+          <h2 className="text-2xl md:text-3xl font-black mt-1">Syndicate Dashboard Stats</h2>
+          <p className="text-xs text-slate-500 mt-1">Live database index of Solution Developers milestones & accomplishments.</p>
+        </div>
+
+        {/* Statistics Grid */}
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-8">
+          {stats.map((stat, i) => {
+            const Icon = stat.icon;
+            return (
+              <div 
+                key={i} 
+                className={`p-5 rounded-2xl border ${
+                  theme === 'bot' 
+                    ? 'border-green-950 bg-black/40' 
+                    : (theme === 'light' ? 'bg-slate-50 border-slate-100' : 'bg-slate-900/40 border-slate-800/40')
+                }`}
+              >
+                <div className="flex justify-between items-start mb-3">
+                  <span className={`text-3xl font-black ${theme === 'bot' ? 'text-green-400' : 'text-amber-500'}`}>{stat.value}</span>
+                  <Icon className={`w-5 h-5 ${stat.color}`} />
+                </div>
+                <div className="font-extrabold text-sm mb-1">{stat.label}</div>
+                <div className="text-[10.5px] text-slate-500 font-medium leading-tight">{stat.desc}</div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Short Timeline summary */}
+        <div className={`p-6 rounded-2xl border mb-6 ${
+          theme === 'bot' 
+            ? 'border-green-950 bg-black/40' 
+            : (theme === 'light' ? 'bg-slate-50 border-slate-100' : 'bg-slate-900/40 border-slate-800/40')
+        }`}>
+          <h3 className="font-extrabold mb-4 text-sm uppercase tracking-wider flex items-center gap-2">
+            <Milestone className="w-4 h-4 text-amber-500" /> Historic Landmark Eras
+          </h3>
+          <div className="space-y-4 text-xs font-semibold">
+            <div className="flex items-center justify-between border-b border-white/5 pb-2">
+              <span className="text-slate-400">Era I Presidential (Hariom Sandve)</span>
+              <span className={theme === 'bot' ? 'text-green-500' : 'text-amber-500'}>July 2025 - Dec 2025</span>
+            </div>
+            <div className="flex items-center justify-between border-b border-white/5 pb-2">
+              <span className="text-slate-400">Era II Presidential (Prem & Ragini)</span>
+              <span className={theme === 'bot' ? 'text-green-500' : 'text-amber-500'}>Jan 2026 - June 2026</span>
+            </div>
+            <div className="flex items-center justify-between pb-1">
+              <span className="text-slate-400">Era III Presidential (Sammed & Sneha)</span>
+              <span className={theme === 'bot' ? 'text-green-500' : 'text-amber-500'}>July 2026 - Dec 2026</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Footer */}
+        <div className="text-center text-[10px] text-slate-650 font-mono">
+          SECURE PROTOCOL // DB_VER_2.45 // SOLUTION DEVELOPERS
+        </div>
+      </div>
+    </div>
+  );
+};
+
 // --- REDESIGNED GALLERY PAGE ---
 const GalleryPage = ({ theme }) => {
     const [activeTab, setActiveTab] = useState('achievements');
     const [selectedAlbum, setSelectedAlbum] = useState(null);
     const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+    const [isStatsOpen, setIsStatsOpen] = useState(false);
 
     const data = GALLERY_DATA[activeTab];
     const featuredAlbum = GALLERY_DATA.achievements[0]; // SIH Winners
@@ -2658,82 +2984,11 @@ const GalleryPage = ({ theme }) => {
     return (
         <section className="px-6 pb-24 min-h-screen pt-24 bg-transparent relative z-10">
              <div className="max-w-7xl mx-auto">
-                <SectionTitle theme={theme} title="Living Album" subtitle="Documenting our memories, collaborations, and celebrations." />
+                <SectionTitle theme={theme} title="Digital Museum" subtitle="Documenting our memories, collaborations, and celebrations." />
                 
-                {/* Featured Hero Section */}
-                <div className="mb-16 animate-[fade-in_0.6s_ease-out]">
-                    <div className={`relative overflow-hidden rounded-3xl border transition-all duration-350 ${
-                        theme === 'bot' 
-                          ? 'bg-black/90 border-green-900' 
-                          : (theme === 'light' ? 'bg-white border-slate-200 shadow-xl' : 'bg-slate-900/90 border-slate-850')
-                    }`}>
-                        <div className="grid grid-cols-1 lg:grid-cols-12">
-                            {/* Image banner */}
-                            <div className="lg:col-span-7 h-64 sm:h-96 relative overflow-hidden bg-slate-950">
-                                <img 
-                                  src={featuredAlbum.cover} 
-                                  alt={featuredAlbum.title} 
-                                  className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
-                                />
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent lg:hidden" />
-                            </div>
-
-                            {/* Content text */}
-                            <div className="lg:col-span-5 p-8 sm:p-10 flex flex-col justify-center">
-                                <div className="mb-4">
-                                    <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider ${
-                                        theme === 'bot' 
-                                          ? 'bg-green-950/40 text-green-400 border border-green-800 font-mono' 
-                                          : (theme === 'light' ? 'bg-amber-100 text-amber-800 border-amber-200' : 'bg-amber-500/10 text-amber-400 border border-amber-500/20')
-                                    }`}>
-                                      <Trophy className="w-3.5 h-3.5 text-amber-500" /> Featured Memory
-                                    </span>
-                                </div>
-
-                                <h2 className={`text-2xl sm:text-3xl font-black tracking-tight mb-3 transition-colors ${
-                                    theme === 'bot' ? 'text-green-400 font-mono' : (theme === 'light' ? 'text-slate-900' : 'text-white')
-                                }`}>
-                                    {featuredAlbum.title}
-                                </h2>
-                                
-                                <p className={`text-sm leading-relaxed mb-6 ${
-                                    theme === 'bot' ? 'text-green-700 font-mono' : (theme === 'light' ? 'text-slate-600' : 'text-slate-400')
-                                }`}>
-                                    {featuredAlbum.desc}
-                                </p>
-
-                                <div className={`flex flex-col sm:flex-row sm:items-center gap-4 mb-8 text-xs font-semibold ${
-                                    theme === 'bot' ? 'text-green-700' : (theme === 'light' ? 'text-slate-500' : 'text-slate-400')
-                                }`}>
-                                    <div className="flex items-center gap-1.5">
-                                        <Calendar className="w-4 h-4 text-amber-500" /> {featuredAlbum.date}
-                                    </div>
-                                    <div className="flex items-center gap-1.5">
-                                        <MapPin className="w-4 h-4 text-amber-500" /> {featuredAlbum.location}
-                                    </div>
-                                    <div className="flex items-center gap-1.5">
-                                        <Images className="w-4 h-4 text-amber-500" /> {featuredAlbum.photos.length} Photos
-                                    </div>
-                                </div>
-
-                                <button 
-                                  onClick={() => {
-                                      setSelectedAlbum(featuredAlbum);
-                                      setIsLightboxOpen(true);
-                                  }}
-                                  className={`inline-flex items-center justify-center gap-2 self-start px-6 py-3 rounded-full font-black text-xs uppercase tracking-wider transition-all duration-300 hover:scale-105 active:scale-95 ${
-                                      theme === 'bot' 
-                                        ? 'bg-black border border-green-500 text-green-400 font-mono rounded-none' 
-                                        : (theme === 'light' 
-                                            ? 'bg-[#8a6500] hover:bg-[#705200] text-white hover:shadow-[0_0_15px_rgba(138,101,0,0.3)]' 
-                                            : 'bg-[#D4AF37] hover:bg-[#c59f2e] text-black hover:shadow-[0_0_15px_rgba(212,175,55,0.35)]')
-                                  }`}
-                                >
-                                    <Eye className="w-4 h-4" /> View Full Album
-                                </button>
-                            </div>
-                        </div>
-                    </div>
+                {/* NEW Animated Centerpiece with Floating Panels */}
+                <div className="animate-[fade-in_0.7s_ease-out]">
+                  <FuturisticCenterpiece theme={theme} onClick={() => setIsStatsOpen(true)} />
                 </div>
 
                 {/* Segmented Control / Tabs */}
@@ -2787,13 +3042,14 @@ const GalleryPage = ({ theme }) => {
                                   setSelectedAlbum(item);
                                   setIsLightboxOpen(true);
                               }}
-                              className={`group relative overflow-hidden rounded-3xl ${cardClass} ${item.sizeClass} hover:-translate-y-2 transition-all duration-350 cursor-pointer shadow-lg hover:shadow-2xl`}
+                              className={`group relative overflow-hidden rounded-[24px] ${cardClass} ${item.sizeClass} hover:-translate-y-2 transition-all duration-350 cursor-pointer shadow-lg hover:shadow-2xl`}
                             >
                                  {/* Image cover with zoom */}
                                  <div className="absolute inset-0 bg-slate-900 z-0">
                                      <img 
                                        src={item.cover} 
                                        alt={item.title} 
+                                       loading="lazy"
                                        className="w-full h-full object-cover opacity-85 group-hover:scale-105 transition-transform duration-500" 
                                      />
                                      {/* Gradient overlay */}
@@ -2838,6 +3094,82 @@ const GalleryPage = ({ theme }) => {
                     })}
                 </div>
 
+                {/* Featured Hero Section */}
+                <div className="mb-16 animate-[fade-in_0.6s_ease-out]">
+                    <div className={`relative overflow-hidden rounded-[24px] border transition-all duration-350 ${
+                        theme === 'bot' 
+                          ? 'bg-black/90 border-green-900' 
+                          : (theme === 'light' ? 'bg-white border-slate-200 shadow-xl' : 'bg-slate-900/90 border-slate-850')
+                    }`}>
+                        <div className="grid grid-cols-1 lg:grid-cols-12">
+                            {/* Image banner */}
+                            <div className="lg:col-span-7 h-64 sm:h-96 relative overflow-hidden bg-slate-950">
+                                <img 
+                                  src={featuredAlbum.cover} 
+                                  alt={featuredAlbum.title} 
+                                  className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
+                                />
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent lg:hidden" />
+                            </div>
+
+                            {/* Content text */}
+                            <div className="lg:col-span-5 p-8 sm:p-10 flex flex-col justify-center">
+                                <div className="mb-4">
+                                    <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider ${
+                                        theme === 'bot' 
+                                          ? 'bg-green-950/40 text-green-400 border border-green-800 font-mono' 
+                                          : (theme === 'light' ? 'bg-amber-100 text-amber-800 border-amber-200' : 'bg-amber-500/10 text-amber-400 border border-amber-500/20')
+                                    }`}>
+                                      <Trophy className="w-3.5 h-3.5 text-amber-500" /> Featured Memory
+                                    </span>
+                                </div>
+
+                                <h2 className={`text-2xl sm:text-3xl font-black tracking-tight mb-3 transition-colors ${
+                                    theme === 'bot' ? 'text-green-400 font-mono' : (theme === 'light' ? 'text-slate-900' : 'text-white')
+                                }`}>
+                                    {featuredAlbum.title}
+                                </h2>
+                                
+                                <p className={`text-sm leading-relaxed mb-6 ${
+                                    theme === 'bot' ? 'text-green-700 font-mono' : (theme === 'light' ? 'text-slate-650' : 'text-slate-400')
+                                }`}>
+                                    {featuredAlbum.desc}
+                                </p>
+
+                                <div className={`flex flex-col sm:flex-row sm:items-center gap-4 mb-8 text-xs font-semibold ${
+                                    theme === 'bot' ? 'text-green-700' : (theme === 'light' ? 'text-slate-500' : 'text-slate-400')
+                                }`}>
+                                    <div className="flex items-center gap-1.5">
+                                        <Calendar className="w-4 h-4 text-amber-500" /> {featuredAlbum.date}
+                                    </div>
+                                    <div className="flex items-center gap-1.5">
+                                        <MapPin className="w-4 h-4 text-amber-500" /> {featuredAlbum.location}
+                                    </div>
+                                    <div className="flex items-center gap-1.5">
+                                        <Images className="w-4 h-4 text-amber-500" /> {featuredAlbum.photos.length} Photos
+                                    </div>
+                                </div>
+
+                                <button 
+                                  onClick={() => {
+                                      setSelectedAlbum(featuredAlbum);
+                                      setIsLightboxOpen(true);
+                                  }}
+                                  className={`inline-flex items-center justify-center gap-2 self-start px-6 py-3 rounded-full font-black text-xs uppercase tracking-wider transition-all duration-300 hover:scale-105 active:scale-95 ${
+                                      theme === 'bot' 
+                                        ? 'bg-black border border-green-500 text-green-400 font-mono rounded-none' 
+                                        : (theme === 'light' 
+                                            ? 'bg-[#8a6500] hover:bg-[#705200] text-white hover:shadow-[0_0_15px_rgba(138,101,0,0.3)]' 
+                                            : 'bg-[#D4AF37] hover:bg-[#c59f2e] text-black hover:shadow-[0_0_15px_rgba(212,175,55,0.35)]')
+                                  }`}
+                                >
+                                    <Eye className="w-4 h-4" /> View Full Album
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 {/* Timeline for Surveys & Journey */}
                 {activeTab === 'surveys' && (
                   <div className="mt-16 animate-[fade-in_0.5s_ease-out]">
@@ -2862,6 +3194,13 @@ const GalleryPage = ({ theme }) => {
                    setIsLightboxOpen(false);
                    setSelectedAlbum(null);
                }} 
+             />
+
+             {/* Stats Summary Modal Dashboard */}
+             <StatsModal 
+               isOpen={isStatsOpen} 
+               onClose={() => setIsStatsOpen(false)} 
+               theme={theme} 
              />
         </section>
     );
