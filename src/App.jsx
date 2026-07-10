@@ -13,7 +13,7 @@ import {
   Home, Users, Send, MessageSquare, Image, Handshake, Award, ClipboardList,
   Crown, Gem, Coffee, Sparkles, Quote, Atom, Cloud, Box, Brain,
   Bell, Radio, Building2, GraduationCap, Network, Wifi, CheckCircle2,
-  UserMinus, UserCheck, Target, Flame, Hammer
+  UserMinus, UserCheck, Target, Flame, Hammer, Eye, Images, Milestone, Trees, Medal
 } from 'lucide-react';
 
 // --- CUSTOM LOGO COMPONENT ---
@@ -711,16 +711,165 @@ const PROJECTS = [
 
 const GALLERY_DATA = {
   achievements: [
-    { title: "Smart India Hackathon 2024 Winners", desc: "1st Place in Smart Automation", image: "bg-yellow-500" },
-    { title: "Best Student Startup", desc: "Awarded by Ministry of Tech", image: "bg-blue-500" },
-    { title: "100 Days of Code Completion", desc: "Team Milestone", image: "bg-green-500" },
-    { title: "Global AI Summit Finalists", desc: "Represented the nation", image: "bg-purple-500" }
+    {
+      id: "sih-2024",
+      title: "Smart India Hackathon 2024 Winners",
+      desc: "Secured 1st Place in Smart Automation category for our real-time smart agriculture optimizer.",
+      date: "Dec 2024",
+      location: "New Delhi, India",
+      badge: "🏆 1st Place",
+      cover: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=800&auto=format&fit=crop",
+      photos: [
+        "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=800&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=800&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=800&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1515187029135-18ee286d815b?q=80&w=800&auto=format&fit=crop"
+      ],
+      sizeClass: "md:col-span-2 md:row-span-2",
+      icon: "trophy"
+    },
+    {
+      id: "best-startup-2025",
+      title: "Best Student Startup Award",
+      desc: "Honored with the 'Best Student Startup' award by the Ministry of Technology for community engineering.",
+      date: "Mar 2025",
+      location: "Bangalore, India",
+      badge: "🥇 National Award",
+      cover: "https://images.unsplash.com/photo-1528605248644-14dd04022da1?q=80&w=800&auto=format&fit=crop",
+      photos: [
+        "https://images.unsplash.com/photo-1528605248644-14dd04022da1?q=80&w=800&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?q=80&w=800&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=800&auto=format&fit=crop"
+      ],
+      sizeClass: "md:col-span-1 md:row-span-1",
+      icon: "medal"
+    },
+    {
+      id: "ai-summit-2025",
+      title: "Global AI Summit Finalists",
+      desc: "Selected among the top 10 student teams globally to pitch agentic AI solutions at the Global AI Summit.",
+      date: "May 2025",
+      location: "Virtual / Singapore",
+      badge: "🚀 Finalist",
+      cover: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=800&auto=format&fit=crop",
+      photos: [
+        "https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=800&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?q=80&w=800&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1515187029135-18ee286d815b?q=80&w=800&auto=format&fit=crop"
+      ],
+      sizeClass: "md:col-span-1 md:row-span-2",
+      icon: "award"
+    },
+    {
+      id: "gala-2025",
+      title: "Decade Gala & Celebration",
+      desc: "An evening honoring our seniors, alumni, and major milestones with awards and team tributes.",
+      date: "June 2025",
+      location: "Grand Palace Lounge",
+      badge: "🎉 Celebration",
+      cover: "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?q=80&w=800&auto=format&fit=crop",
+      photos: [
+        "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?q=80&w=800&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1505232458627-a72726f5b710?q=80&w=800&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1469371670807-013ccf25f16a?q=80&w=800&auto=format&fit=crop"
+      ],
+      sizeClass: "md:col-span-2 md:row-span-1",
+      icon: "cheers"
+    },
+    {
+      id: "hack-victory-2025",
+      title: "Inter-College Hackathon Winners",
+      desc: "Won first prize for DevForge CLI, an automated microservices project setup tool.",
+      date: "Oct 2025",
+      location: "COEP Pune",
+      badge: "🏆 1st Place",
+      cover: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=800&auto=format&fit=crop",
+      photos: [
+        "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=800&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=800&auto=format&fit=crop"
+      ],
+      sizeClass: "md:col-span-1 md:row-span-1",
+      icon: "trophy"
+    }
   ],
   surveys: [
-    { title: "Campus Tech Survey", desc: "Analyzing student needs", image: "bg-red-500" },
-    { title: "Industry 4.0 Readiness", desc: "Field research at local factories", image: "bg-orange-500" },
-    { title: "User Experience Study", desc: "Feedback loop for Edu-Advisory", image: "bg-teal-500" },
-    { title: "Community Outreach", desc: "Teaching code to local schools", image: "bg-pink-500" }
+    {
+      id: "campus-tech-survey-2025",
+      title: "Campus Tech Needs Survey",
+      desc: "Conducted field interviews and quantitative data collection from over 1,200 students to identify software bugs in college portals.",
+      date: "Jan 2025",
+      location: "Main Campus Hub",
+      badge: "📊 Survey",
+      cover: "https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=800&auto=format&fit=crop",
+      photos: [
+        "https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=800&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1517048676732-d65bc937f952?q=80&w=800&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1531498860502-7c67cf02f6ac?q=80&w=800&auto=format&fit=crop"
+      ],
+      sizeClass: "md:col-span-2 md:row-span-2",
+      icon: "clipboard"
+    },
+    {
+      id: "factory-visit-2025",
+      title: "Industry 4.0 Readiness Audit",
+      desc: "Collaborated with local small scale manufacturing units to analyze automation readiness and compile production efficiency statistics.",
+      date: "Feb 2025",
+      location: "MIDC Industrial Area",
+      badge: "🏭 Audit",
+      cover: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=800&auto=format&fit=crop",
+      photos: [
+        "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=800&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?q=80&w=800&auto=format&fit=crop"
+      ],
+      sizeClass: "md:col-span-1 md:row-span-1",
+      icon: "building"
+    },
+    {
+      id: "outreach-2025",
+      title: "Outreach: Coding for Kids",
+      desc: "Spent a weekend teaching basic programming logic, block structures, and web development fundamentals to underprivileged students.",
+      date: "Apr 2025",
+      location: "Community Center",
+      badge: "📸 Outreach",
+      cover: "https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=800&auto=format&fit=crop",
+      photos: [
+        "https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=800&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=800&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?q=80&w=800&auto=format&fit=crop"
+      ],
+      sizeClass: "md:col-span-1 md:row-span-2",
+      icon: "users"
+    },
+    {
+      id: "sysdesign-workshop-2025",
+      title: "System Design Masterclass",
+      desc: "Held a deep-dive technical whiteboard workshop on database partitioning, client-server load balancing, and cache layers.",
+      date: "Aug 2025",
+      location: "Newton Seminar Room",
+      badge: "🎓 Workshop",
+      cover: "https://images.unsplash.com/photo-1531482615713-2afd69097998?q=80&w=800&auto=format&fit=crop",
+      photos: [
+        "https://images.unsplash.com/photo-1531482615713-2afd69097998?q=80&w=800&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?q=80&w=800&auto=format&fit=crop"
+      ],
+      sizeClass: "md:col-span-2 md:row-span-1",
+      icon: "book"
+    },
+    {
+      id: "outdoors-meeting-2025",
+      title: "Annual Team Retreat",
+      desc: "Recharged away from the laptops with outdoor team-building games, hiking, and casual fireside brain-storming.",
+      date: "Nov 2025",
+      location: "Lonavala Eco Resort",
+      badge: "⛺ Retreat",
+      cover: "https://images.unsplash.com/photo-1478131143081-80f7f84ca84d?q=80&w=800&auto=format&fit=crop",
+      photos: [
+        "https://images.unsplash.com/photo-1478131143081-80f7f84ca84d?q=80&w=800&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?q=80&w=800&auto=format&fit=crop"
+      ],
+      sizeClass: "md:col-span-1 md:row-span-1",
+      icon: "tree"
+    }
   ]
 };
 
@@ -1089,7 +1238,11 @@ const Background3D = ({ theme }) => {
 
         ctx.beginPath();
         const edges = [[0,1],[1,2],[2,3],[3,0],[4,5],[5,6],[6,7],[7,4],[0,4],[1,5],[2,6],[3,7]];
-        ctx.strokeStyle = `rgba(${strokeColor}, ${Math.max(0.1, 1 - cube.z/1200)})`;
+        const distFromCenter = Math.sqrt(cube.x * cube.x + cube.y * cube.y);
+        const maxDist = Math.sqrt(canvas.width * canvas.width + canvas.height * canvas.height) * 0.5;
+        const centerFade = Math.min(1, distFromCenter / (maxDist || 1));
+        const opacity = Math.max(0.015, (1 - cube.z/1200) * 0.14 * centerFade);
+        ctx.strokeStyle = `rgba(${strokeColor}, ${opacity})`;
         ctx.lineWidth = 1.5 * vertices[0].scale;
         edges.forEach(e => { ctx.moveTo(vertices[e[0]].x, vertices[e[0]].y); ctx.lineTo(vertices[e[1]].x, vertices[e[1]].y); });
         ctx.stroke();
@@ -2269,39 +2422,447 @@ const HomePage = ({ theme, onNavigate }) => (
   </>
 );
 
+// --- INTERACTIVE ALBUM LIGHTBOX ---
+const Lightbox = ({ album, isOpen, onClose }) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  
+  // Reset index when changing albums
+  useEffect(() => {
+    setCurrentIndex(0);
+  }, [album]);
+
+  if (!isOpen || !album) return null;
+
+  const handleNext = (e) => {
+    e.stopPropagation();
+    setCurrentIndex((prev) => (prev + 1) % album.photos.length);
+  };
+
+  const handlePrev = (e) => {
+    e.stopPropagation();
+    setCurrentIndex((prev) => (prev - 1 + album.photos.length) % album.photos.length);
+  };
+
+  return (
+    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/95 backdrop-blur-md animate-[fade-in_0.2s_ease-out]">
+      {/* Close button */}
+      <button onClick={onClose} className="absolute top-6 right-6 text-white/70 hover:text-white transition-all bg-white/10 hover:bg-white/20 p-3 rounded-full z-10">
+        <X className="w-6 h-6" />
+      </button>
+
+      {/* Main Image Slider */}
+      <div className="relative max-w-5xl w-full px-6 flex flex-col items-center">
+        <div className="relative aspect-[16/10] w-full max-h-[70vh] flex items-center justify-center overflow-hidden rounded-2xl bg-black/60 shadow-2xl border border-white/10">
+          <img 
+            src={album.photos[currentIndex]} 
+            alt={`${album.title} - ${currentIndex + 1}`} 
+            className="max-w-full max-h-full object-contain animate-[scale-up_0.3s_ease-out]"
+          />
+          
+          {/* Prev/Next buttons */}
+          {album.photos.length > 1 && (
+            <>
+              <button 
+                onClick={handlePrev} 
+                className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/75 hover:scale-105 active:scale-95 text-white p-3 rounded-full transition-all border border-white/10 hover:border-white/25 z-10"
+              >
+                <ChevronLeft className="w-6 h-6" />
+              </button>
+              <button 
+                onClick={handleNext} 
+                className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/75 hover:scale-105 active:scale-95 text-white p-3 rounded-full transition-all border border-white/10 hover:border-white/25 z-10"
+              >
+                <ChevronRight className="w-6 h-6" />
+              </button>
+            </>
+          )}
+
+          {/* Badge & Title overlay at bottom */}
+          <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/95 via-black/60 to-transparent p-6 pt-16 text-left">
+            <span className="px-3 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-amber-500/20 text-amber-400 border border-amber-500/30 mb-2 inline-block">
+              {album.badge}
+            </span>
+            <h3 className="text-xl font-bold text-white">{album.title}</h3>
+            <p className="text-xs text-slate-300 mt-1.5 flex items-center gap-2">
+              <Calendar className="w-3.5 h-3.5 text-amber-500" /> {album.date} &bull; <MapPin className="w-3.5 h-3.5 text-amber-500" /> {album.location}
+            </p>
+          </div>
+        </div>
+
+        {/* Thumbnail strip */}
+        {album.photos.length > 1 && (
+          <div className="flex gap-2.5 mt-6 overflow-x-auto max-w-full py-2 no-scrollbar justify-center">
+            {album.photos.map((photo, i) => (
+              <button 
+                key={i} 
+                onClick={() => setCurrentIndex(i)} 
+                className={`w-16 h-12 rounded-lg overflow-hidden border-2 transition-all relative flex-shrink-0 ${
+                  currentIndex === i ? 'border-amber-500 scale-105 shadow-lg shadow-amber-500/10' : 'border-white/10 hover:border-white/40 opacity-60 hover:opacity-90'
+                }`}
+              >
+                <img src={photo} alt="" className="w-full h-full object-cover" />
+              </button>
+            ))}
+          </div>
+        )}
+
+        {/* Info Counter */}
+        <p className="text-sm font-semibold font-mono text-slate-400 mt-4">
+          Photo {currentIndex + 1} of {album.photos.length}
+        </p>
+      </div>
+    </div>
+  );
+};
+
+// --- JOURNEY TIMELINE COMPONENT ---
+const JourneyTimeline = ({ theme }) => {
+  const timelineEvents = [
+    {
+      date: "July 2025",
+      title: "Club Formation & Vision Draft",
+      desc: "Solution Developers was officially established as a syndicate of innovators, drafting our core guidelines and code rules.",
+      tag: "Initiation",
+      icon: Code2
+    },
+    {
+      date: "August 2025",
+      title: "First Advanced Whiteboard Session",
+      desc: "Launched our first workshop session centering on microservice infrastructure pipelines and distributed cache setups.",
+      tag: "Workshop",
+      icon: Terminal
+    },
+    {
+      date: "October 2025",
+      title: "First Rural Field Tech Survey",
+      desc: "Traveled to regional cooperatives to study user accessibility and analyze digital dashboard constraints.",
+      tag: "Survey Field",
+      icon: ClipboardList
+    },
+    {
+      date: "December 2025",
+      title: "Vanguard Hackathon Winner",
+      desc: "Claimed first place with our fully automated DevForge CLI project bootstrapper tool.",
+      tag: "Hackathon",
+      icon: Trophy
+    },
+    {
+      date: "January 2026",
+      title: "Era II Presidential Launch",
+      desc: "Promoted new leadership boards under Prem Gosawi & Ragini Waghmare to drive advanced platform initiatives.",
+      tag: "Leadership Era II",
+      icon: Sparkles
+    },
+    {
+      date: "March 2026",
+      title: "Active Partnership Protocol",
+      desc: "Inked active collaborations with TechCorp Inc. and open-source infrastructure consortia.",
+      tag: "Collaboration",
+      icon: Building2
+    },
+    {
+      date: "June 2026",
+      title: "National Smart India Victory",
+      desc: "Clinched the SIH grand prize for Smart Automation, deploying real-time regional dashboard pilots.",
+      tag: "Award SIH",
+      icon: Award
+    },
+    {
+      date: "July 2026",
+      title: "Era III Presidential Board",
+      desc: "Inducted Sammed Chaugule & Sneha Jadhav as Era III Presidents, initiating the Solupers Ecosystem update.",
+      tag: "Leadership Era III",
+      icon: Milestone
+    }
+  ];
+
+  const lineBg = theme === 'bot' ? 'bg-green-800' : 'bg-amber-500/20';
+  const glowColor = theme === 'bot' ? 'rgba(34,197,94,0.3)' : (theme === 'light' ? 'rgba(217,119,6,0.2)' : 'rgba(245,158,11,0.25)');
+
+  return (
+    <div className="relative max-w-4xl mx-auto py-16 px-4">
+      {/* Timeline line */}
+      <div className={`absolute left-4 md:left-1/2 top-0 bottom-0 w-[2px] -translate-x-1/2 ${lineBg} hidden sm:block`} />
+      
+      <div className="space-y-12 relative">
+        {timelineEvents.map((evt, idx) => {
+          const IconComponent = evt.icon;
+          const isEven = idx % 2 === 0;
+
+          return (
+            <div key={idx} className="flex flex-col sm:flex-row items-start sm:justify-between relative group">
+              {/* Timeline dot */}
+              <div 
+                className={`absolute left-4 md:left-1/2 top-1.5 w-6 h-6 rounded-full border-2 -translate-x-1/2 flex items-center justify-center z-10 transition-all duration-300 group-hover:scale-115 ${
+                  theme === 'bot' 
+                    ? 'border-green-500 bg-black text-green-500 shadow-[0_0_10px_rgba(34,197,94,0.5)]' 
+                    : (theme === 'light' 
+                        ? 'border-amber-600 bg-white text-amber-600 shadow-md' 
+                        : 'border-amber-500 bg-slate-900 text-amber-400 shadow-[0_0_15px_rgba(245,158,11,0.35)]')
+                }`}
+                style={{ boxShadow: `0 0 12px ${glowColor}` }}
+              >
+                <div className={`w-2 h-2 rounded-full ${theme === 'bot' ? 'bg-green-500' : 'bg-amber-500'}`} />
+              </div>
+
+              {/* Grid content columns */}
+              <div className={`w-full sm:w-[45%] pl-12 sm:pl-0 ${isEven ? 'sm:text-right' : 'sm:order-2 sm:text-left'}`}>
+                <span className={`inline-block px-3 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider mb-2 ${
+                  theme === 'bot' 
+                    ? 'bg-green-950/40 text-green-400 border border-green-800 font-mono' 
+                    : (theme === 'light' 
+                        ? 'bg-amber-50 text-amber-800 border-amber-200' 
+                        : 'bg-amber-500/10 text-amber-400 border border-amber-500/20')
+                }`}>
+                  {evt.date} &bull; {evt.tag}
+                </span>
+                
+                <h4 className={`text-lg font-extrabold flex items-center gap-2 ${
+                  isEven ? 'sm:justify-end' : 'sm:justify-start'
+                } ${
+                  theme === 'bot' ? 'text-green-400 font-mono' : (theme === 'light' ? 'text-slate-900' : 'text-white')
+                }`}>
+                  {!isEven && <IconComponent className="w-4 h-4 text-amber-500 flex-shrink-0" />}
+                  {evt.title}
+                  {isEven && <IconComponent className="w-4 h-4 text-amber-500 flex-shrink-0" />}
+                </h4>
+                
+                <p className={`mt-2 text-sm leading-relaxed ${
+                  theme === 'bot' ? 'text-green-700 font-mono' : (theme === 'light' ? 'text-slate-650' : 'text-slate-455')
+                }`}>
+                  {evt.desc}
+                </p>
+              </div>
+
+              {/* Spacer on the opposite side to balance grid */}
+              <div className="hidden sm:block sm:w-[45%]" />
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
+
+// --- REDESIGNED GALLERY PAGE ---
 const GalleryPage = ({ theme }) => {
     const [activeTab, setActiveTab] = useState('achievements');
+    const [selectedAlbum, setSelectedAlbum] = useState(null);
+    const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+
     const data = GALLERY_DATA[activeTab];
+    const featuredAlbum = GALLERY_DATA.achievements[0]; // SIH Winners
 
-    const cardClass = theme === 'bot' ? 'bg-black/80 border border-green-900 hover:border-green-500' : (theme === 'light' ? 'bg-white/80 border border-slate-200 hover:border-amber-300' : 'bg-slate-900/80 border border-slate-700 hover:border-amber-500');
-    const textClass = theme === 'bot' ? 'text-green-400' : (theme === 'light' ? 'text-slate-900' : 'text-white');
-
+    const cardClass = theme === 'bot' ? 'bg-black/80 border border-green-900 hover:border-green-500' : (theme === 'light' ? 'bg-white border border-slate-200 hover:border-amber-300' : 'bg-slate-900/80 border border-slate-800 hover:border-amber-500');
+    
     return (
         <section className="px-6 pb-24 min-h-screen pt-24 bg-transparent relative z-10">
              <div className="max-w-7xl mx-auto">
-                <SectionTitle theme={theme} title="Visual Log" subtitle="Capturing our journey." />
+                <SectionTitle theme={theme} title="Living Album" subtitle="Documenting our memories, collaborations, and celebrations." />
                 
-                <div className="flex justify-center mb-12 gap-4">
-                    <button onClick={() => setActiveTab('achievements')} className={`px-6 py-2 rounded-full font-bold transition-all ${activeTab === 'achievements' ? (theme === 'bot' ? 'bg-green-900/30 text-green-500 border border-green-500' : 'bg-amber-600 text-white') : (theme === 'bot' ? 'text-green-700' : 'text-slate-500')}`}>
-                        <Award className="w-4 h-4 inline mr-2"/> Achievements
-                    </button>
-                    <button onClick={() => setActiveTab('surveys')} className={`px-6 py-2 rounded-full font-bold transition-all ${activeTab === 'surveys' ? (theme === 'bot' ? 'bg-green-900/30 text-green-500 border border-green-500' : 'bg-amber-600 text-white') : (theme === 'bot' ? 'text-green-700' : 'text-slate-500')}`}>
-                        <ClipboardList className="w-4 h-4 inline mr-2"/> Surveys & Events
-                    </button>
+                {/* Featured Hero Section */}
+                <div className="mb-16 animate-[fade-in_0.6s_ease-out]">
+                    <div className={`relative overflow-hidden rounded-3xl border transition-all duration-350 ${
+                        theme === 'bot' 
+                          ? 'bg-black/90 border-green-900' 
+                          : (theme === 'light' ? 'bg-white border-slate-200 shadow-xl' : 'bg-slate-900/90 border-slate-850')
+                    }`}>
+                        <div className="grid grid-cols-1 lg:grid-cols-12">
+                            {/* Image banner */}
+                            <div className="lg:col-span-7 h-64 sm:h-96 relative overflow-hidden bg-slate-950">
+                                <img 
+                                  src={featuredAlbum.cover} 
+                                  alt={featuredAlbum.title} 
+                                  className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
+                                />
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent lg:hidden" />
+                            </div>
+
+                            {/* Content text */}
+                            <div className="lg:col-span-5 p-8 sm:p-10 flex flex-col justify-center">
+                                <div className="mb-4">
+                                    <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider ${
+                                        theme === 'bot' 
+                                          ? 'bg-green-950/40 text-green-400 border border-green-800 font-mono' 
+                                          : (theme === 'light' ? 'bg-amber-100 text-amber-800 border-amber-200' : 'bg-amber-500/10 text-amber-400 border border-amber-500/20')
+                                    }`}>
+                                      <Trophy className="w-3.5 h-3.5 text-amber-500" /> Featured Memory
+                                    </span>
+                                </div>
+
+                                <h2 className={`text-2xl sm:text-3xl font-black tracking-tight mb-3 transition-colors ${
+                                    theme === 'bot' ? 'text-green-400 font-mono' : (theme === 'light' ? 'text-slate-900' : 'text-white')
+                                }`}>
+                                    {featuredAlbum.title}
+                                </h2>
+                                
+                                <p className={`text-sm leading-relaxed mb-6 ${
+                                    theme === 'bot' ? 'text-green-700 font-mono' : (theme === 'light' ? 'text-slate-600' : 'text-slate-400')
+                                }`}>
+                                    {featuredAlbum.desc}
+                                </p>
+
+                                <div className={`flex flex-col sm:flex-row sm:items-center gap-4 mb-8 text-xs font-semibold ${
+                                    theme === 'bot' ? 'text-green-700' : (theme === 'light' ? 'text-slate-500' : 'text-slate-400')
+                                }`}>
+                                    <div className="flex items-center gap-1.5">
+                                        <Calendar className="w-4 h-4 text-amber-500" /> {featuredAlbum.date}
+                                    </div>
+                                    <div className="flex items-center gap-1.5">
+                                        <MapPin className="w-4 h-4 text-amber-500" /> {featuredAlbum.location}
+                                    </div>
+                                    <div className="flex items-center gap-1.5">
+                                        <Images className="w-4 h-4 text-amber-500" /> {featuredAlbum.photos.length} Photos
+                                    </div>
+                                </div>
+
+                                <button 
+                                  onClick={() => {
+                                      setSelectedAlbum(featuredAlbum);
+                                      setIsLightboxOpen(true);
+                                  }}
+                                  className={`inline-flex items-center justify-center gap-2 self-start px-6 py-3 rounded-full font-black text-xs uppercase tracking-wider transition-all duration-300 hover:scale-105 active:scale-95 ${
+                                      theme === 'bot' 
+                                        ? 'bg-black border border-green-500 text-green-400 font-mono rounded-none' 
+                                        : (theme === 'light' 
+                                            ? 'bg-[#8a6500] hover:bg-[#705200] text-white hover:shadow-[0_0_15px_rgba(138,101,0,0.3)]' 
+                                            : 'bg-[#D4AF37] hover:bg-[#c59f2e] text-black hover:shadow-[0_0_15px_rgba(212,175,55,0.35)]')
+                                  }`}
+                                >
+                                    <Eye className="w-4 h-4" /> View Full Album
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    {data.map((item, idx) => (
-                        <div key={idx} className={`group relative aspect-square overflow-hidden rounded-2xl ${cardClass} hover:-translate-y-2 transition-all duration-300 shadow-xl`}>
-                             <div className={`absolute inset-0 ${item.image} opacity-80 group-hover:scale-110 transition-transform duration-500`}></div>
-                             <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex flex-col justify-end p-6">
-                                 <h3 className={`text-lg font-bold text-white mb-1`}>{item.title}</h3>
-                                 <p className="text-sm text-slate-300">{item.desc}</p>
-                             </div>
-                        </div>
-                    ))}
+                {/* Segmented Control / Tabs */}
+                <div className="flex justify-center mb-12">
+                    <div className={`p-1.5 rounded-full flex gap-1 border backdrop-blur-md ${
+                      theme === 'bot' 
+                        ? 'bg-black border-green-900' 
+                        : (theme === 'light' ? 'bg-slate-100/80 border-slate-200' : 'bg-slate-900/80 border-slate-800')
+                    }`}>
+                        <button 
+                          onClick={() => setActiveTab('achievements')} 
+                          className={`px-6 py-2.5 rounded-full font-bold text-xs uppercase tracking-wider transition-all duration-300 flex items-center gap-2 ${
+                            activeTab === 'achievements' 
+                              ? (theme === 'bot' ? 'bg-green-950/40 text-green-500 border border-green-500' : 'bg-amber-600 text-white shadow-md') 
+                              : (theme === 'bot' ? 'text-green-700' : 'text-slate-500 hover:text-slate-400')
+                          }`}
+                        >
+                            <Trophy className="w-4 h-4"/> Achievements & Celebrations
+                        </button>
+                        <button 
+                          onClick={() => setActiveTab('surveys')} 
+                          className={`px-6 py-2.5 rounded-full font-bold text-xs uppercase tracking-wider transition-all duration-300 flex items-center gap-2 ${
+                            activeTab === 'surveys' 
+                              ? (theme === 'bot' ? 'bg-green-950/40 text-green-500 border border-green-500' : 'bg-amber-600 text-white shadow-md') 
+                              : (theme === 'bot' ? 'text-green-700' : 'text-slate-500 hover:text-slate-400')
+                          }`}
+                        >
+                            <Images className="w-4 h-4"/> Surveys & Journey
+                        </button>
+                    </div>
                 </div>
+
+                {/* Masonry Mosaic Grid */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 auto-rows-[250px] md:auto-rows-[280px] mb-16 animate-[fade-in_0.5s_ease-out]">
+                    {data.map((item) => {
+                        let IconElement = Award;
+                        if (item.icon === 'trophy') IconElement = Trophy;
+                        else if (item.icon === 'medal') IconElement = Medal;
+                        else if (item.icon === 'award') IconElement = Award;
+                        else if (item.icon === 'cheers') IconElement = Sparkles;
+                        else if (item.icon === 'clipboard') IconElement = ClipboardList;
+                        else if (item.icon === 'building') IconElement = Building2;
+                        else if (item.icon === 'users') IconElement = Users;
+                        else if (item.icon === 'book') IconElement = GraduationCap;
+                        else if (item.icon === 'tree') IconElement = Trees;
+
+                        return (
+                            <div 
+                              key={item.id} 
+                              onClick={() => {
+                                  setSelectedAlbum(item);
+                                  setIsLightboxOpen(true);
+                              }}
+                              className={`group relative overflow-hidden rounded-3xl ${cardClass} ${item.sizeClass} hover:-translate-y-2 transition-all duration-350 cursor-pointer shadow-lg hover:shadow-2xl`}
+                            >
+                                 {/* Image cover with zoom */}
+                                 <div className="absolute inset-0 bg-slate-900 z-0">
+                                     <img 
+                                       src={item.cover} 
+                                       alt={item.title} 
+                                       className="w-full h-full object-cover opacity-85 group-hover:scale-105 transition-transform duration-500" 
+                                     />
+                                     {/* Gradient overlay */}
+                                     <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/50 to-transparent z-10" />
+                                 </div>
+
+                                 {/* Top badge */}
+                                 <div className="absolute top-4 left-4 z-20">
+                                     <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-black/60 text-amber-400 border border-amber-500/25`}>
+                                         {item.badge}
+                                     </span>
+                                 </div>
+
+                                 {/* Photo count indicator */}
+                                 <div className="absolute top-4 right-4 z-20 flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-black/60 text-slate-300 border border-white/10">
+                                     <Images className="w-3 h-3 text-amber-500" />
+                                     {item.photos.length} Photos
+                                 </div>
+
+                                 {/* Content overlay */}
+                                 <div className="absolute inset-x-0 bottom-0 p-6 z-20 flex flex-col justify-end">
+                                     <h3 className="text-lg sm:text-xl font-black text-white flex items-center gap-2 mb-1.5 tracking-tight group-hover:text-amber-300 transition-colors">
+                                         <IconElement className="w-5 h-5 text-amber-500 flex-shrink-0" />
+                                         {item.title}
+                                     </h3>
+                                     
+                                     <p className="text-xs text-slate-300 line-clamp-2 mb-2 font-medium leading-relaxed">
+                                         {item.desc}
+                                     </p>
+
+                                     <div className="flex items-center gap-3 text-[10.5px] font-bold text-slate-400">
+                                         <span className="flex items-center gap-1">
+                                             <Calendar className="w-3.5 h-3.5 text-amber-500/80" /> {item.date}
+                                         </span>
+                                         <span className="flex items-center gap-1">
+                                             <MapPin className="w-3.5 h-3.5 text-amber-500/80" /> {item.location}
+                                         </span>
+                                     </div>
+                                 </div>
+                            </div>
+                        );
+                    })}
+                </div>
+
+                {/* Timeline for Surveys & Journey */}
+                {activeTab === 'surveys' && (
+                  <div className="mt-16 animate-[fade-in_0.5s_ease-out]">
+                    <div className="text-center mb-12">
+                      <span className={`text-xs font-mono font-bold tracking-widest uppercase ${theme === 'bot' ? 'text-green-500' : 'text-amber-500'}`}>
+                        // OUR CHRONOLOGY
+                      </span>
+                      <h3 className={`text-3xl font-extrabold mt-2 ${theme === 'bot' ? 'text-white' : (theme === 'light' ? 'text-slate-900' : 'text-white')}`}>
+                        Journey Timeline
+                      </h3>
+                    </div>
+                    <JourneyTimeline theme={theme} />
+                  </div>
+                )}
              </div>
+
+             {/* Lightbox Album Modal */}
+             <Lightbox 
+               album={selectedAlbum} 
+               isOpen={isLightboxOpen} 
+               onClose={() => {
+                   setIsLightboxOpen(false);
+                   setSelectedAlbum(null);
+               }} 
+             />
         </section>
     );
 };
