@@ -2668,211 +2668,264 @@ const JourneyTimeline = ({ theme }) => {
   );
 };
 
-// --- FUTURISTIC CENTERPIECE COMPONENT ---
-const FuturisticCenterpiece = ({ theme, onClick }) => {
-  const canvasRef = useRef(null);
+// --- 3D JUMBOTRON DIGITAL DISPLAY COMPONENT ---
+const Jumbotron3D = ({ theme, onClick }) => {
+  const [rotationY, setRotationY] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
-  const rotationSpeed = useRef(0.008);
-  const angleX = useRef(Math.PI / 6);
-  const angleY = useRef(Math.PI / 4);
-  const scale = useRef(1);
-  const pulseDirection = useRef(1);
+  const dragStart = useRef(0);
+  const angleStart = useRef(0);
+  const animationId = useRef(null);
 
+  // Auto-rotation loop
   useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    let animationFrameId;
-
-    const resize = () => {
-      canvas.width = 300;
-      canvas.height = 300;
+    if (isDragging || isHovered) return;
+    
+    let lastTime = performance.now();
+    const rotateStep = (time) => {
+      const delta = time - lastTime;
+      lastTime = time;
+      // Premium slow cinematic turn (12 degrees per second)
+      setRotationY(prev => (prev + (12 * delta) / 1000) % 360);
+      animationId.current = requestAnimationFrame(rotateStep);
     };
-    resize();
+    
+    animationId.current = requestAnimationFrame(rotateStep);
+    return () => cancelAnimationFrame(animationId.current);
+  }, [isDragging, isHovered]);
 
-    // 3D Box vertices (rectangular prism)
-    const sizeX = 65;
-    const sizeY = 85;
-    const sizeZ = 65;
-    const vertices = [
-      { x: -sizeX, y: -sizeY, z: -sizeZ },
-      { x: sizeX, y: -sizeY, z: -sizeZ },
-      { x: sizeX, y: sizeY, z: -sizeZ },
-      { x: -sizeX, y: sizeY, z: -sizeZ },
-      { x: -sizeX, y: -sizeY, z: sizeZ },
-      { x: sizeX, y: -sizeY, z: sizeZ },
-      { x: sizeX, y: sizeY, z: sizeZ },
-      { x: -sizeX, y: sizeY, z: sizeZ }
-    ];
+  // Drag/Touch handlers
+  const handleMouseDown = (e) => {
+    setIsDragging(true);
+    dragStart.current = e.clientX;
+    angleStart.current = rotationY;
+  };
 
-    const edges = [
-      [0, 1], [1, 2], [2, 3], [3, 0], // back face
-      [4, 5], [5, 6], [6, 7], [7, 4], // front face
-      [0, 4], [1, 5], [2, 6], [3, 7]  // connecting edges
-    ];
+  const handleMouseMove = (e) => {
+    if (!isDragging) return;
+    const deltaX = e.clientX - dragStart.current;
+    setRotationY(angleStart.current + deltaX * 0.45);
+  };
 
-    const project = (x, y, z) => {
-      const perspective = 350;
-      const scaleProject = perspective / (perspective + z);
-      return {
-        x: x * scaleProject + canvas.width / 2,
-        y: y * scaleProject + canvas.height / 2
-      };
-    };
+  const handleMouseUp = () => {
+    setIsDragging(false);
+  };
 
-    const rotateX = (x, y, z, angle) => {
-      const cos = Math.cos(angle);
-      const sin = Math.sin(angle);
-      return { x, y: y * cos - z * sin, z: y * sin + z * cos };
-    };
+  const handleTouchStart = (e) => {
+    setIsDragging(true);
+    dragStart.current = e.touches[0].clientX;
+    angleStart.current = rotationY;
+  };
 
-    const rotateY = (x, y, z, angle) => {
-      const cos = Math.cos(angle);
-      const sin = Math.sin(angle);
-      return { x: x * cos + z * sin, y, z: -x * sin + z * cos };
-    };
+  const handleTouchMove = (e) => {
+    if (!isDragging) return;
+    const deltaX = e.touches[0].clientX - dragStart.current;
+    setRotationY(angleStart.current + deltaX * 0.45);
+  };
 
-    const render = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      // Pulse scaling
-      if (pulseDirection.current === 1) {
-        scale.current += 0.0008;
-        if (scale.current >= 1.04) pulseDirection.current = -1;
-      } else {
-        scale.current -= 0.0008;
-        if (scale.current <= 0.96) pulseDirection.current = 1;
-      }
-
-      // Dynamic speed based on hover
-      const targetSpeed = isHovered ? 0.002 : 0.006;
-      rotationSpeed.current += (targetSpeed - rotationSpeed.current) * 0.1;
-      
-      angleX.current += rotationSpeed.current;
-      angleY.current += rotationSpeed.current * 0.75;
-
-      // Project vertices
-      const projected = vertices.map(v => {
-        let x = v.x * scale.current;
-        let y = v.y * scale.current;
-        let z = v.z * scale.current;
-
-        let rot = rotateX(x, y, z, angleX.current);
-        rot = rotateY(rot.x, rot.y, rot.z, angleY.current);
-
-        return project(rot.x, rot.y, rot.z);
-      });
-
-      // Translucent inner faces for glassmorphism look
-      ctx.fillStyle = theme === 'bot' ? 'rgba(34, 197, 94, 0.04)' : 'rgba(245, 158, 11, 0.05)';
-      ctx.beginPath();
-      ctx.moveTo(projected[4].x, projected[4].y);
-      ctx.lineTo(projected[5].x, projected[5].y);
-      ctx.lineTo(projected[6].x, projected[6].y);
-      ctx.lineTo(projected[7].x, projected[7].y);
-      ctx.closePath();
-      ctx.fill();
-
-      ctx.beginPath();
-      ctx.moveTo(projected[0].x, projected[0].y);
-      ctx.lineTo(projected[1].x, projected[1].y);
-      ctx.lineTo(projected[2].x, projected[2].y);
-      ctx.lineTo(projected[3].x, projected[3].y);
-      ctx.closePath();
-      ctx.fill();
-
-      // Draw wireframe edges
-      ctx.strokeStyle = theme === 'bot' ? 'rgba(34, 197, 94, 0.85)' : 'rgba(245, 158, 11, 0.95)';
-      ctx.lineWidth = isHovered ? 2.2 : 1.6;
-      ctx.shadowBlur = isHovered ? 18 : 6;
-      ctx.shadowColor = theme === 'bot' ? 'rgba(34, 197, 94, 0.6)' : 'rgba(245, 158, 11, 0.6)';
-
-      edges.forEach(edge => {
-        ctx.beginPath();
-        ctx.moveTo(projected[edge[0]].x, projected[edge[0]].y);
-        ctx.lineTo(projected[edge[1]].x, projected[edge[1]].y);
-        ctx.stroke();
-      });
-
-      // Vertex nodes
-      ctx.shadowBlur = 0;
-      projected.forEach(v => {
-        ctx.beginPath();
-        ctx.arc(v.x, v.y, isHovered ? 3.5 : 2.5, 0, Math.PI * 2);
-        ctx.fillStyle = theme === 'bot' ? '#22c55e' : '#D4AF37';
-        ctx.fill();
-      });
-
-      animationFrameId = requestAnimationFrame(render);
-    };
-    render();
-
-    return () => cancelAnimationFrame(animationFrameId);
-  }, [theme, isHovered]);
-
-  const infoCards = [
-    { label: "Achievements", value: "25+ Awards", icon: Trophy, posClass: "top-0 left-1/2 -translate-x-1/2 -translate-y-6 md:-translate-y-8" },
-    { label: "Events & Memories", value: "60+ Memories", icon: Images, posClass: "bottom-0 left-1/2 -translate-x-1/2 translate-y-6 md:translate-y-8" },
-    { label: "Hackathons", value: "15 Competitions", icon: Target, posClass: "top-1/2 left-0 -translate-y-1/2 -translate-x-6 md:-translate-x-12 lg:-translate-x-20" },
-    { label: "Community", value: "500+ Members", icon: Users, posClass: "top-1/2 right-0 -translate-y-1/2 translate-x-6 md:translate-x-12 lg:translate-x-20" }
+  // 4 Jumbotron panel content definitions
+  const panels = [
+    {
+      badge: "Achievements",
+      title: "Hackathon Winners",
+      desc: "Team 'ByteBusters' at Solution Developers Hackathon",
+      date: "Aug 2025",
+      icon: Trophy,
+      img: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=400&auto=format&fit=crop",
+      transform: "rotateY(0deg) translateZ(140px)"
+    },
+    {
+      badge: "Innovation",
+      title: "Project Alpha Go-Live",
+      desc: "Interactive mapping tool initialized successfully",
+      date: "Oct 2025",
+      icon: Target,
+      img: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=400&auto=format&fit=crop",
+      transform: "rotateY(90deg) translateZ(140px)"
+    },
+    {
+      badge: "Workshops",
+      title: "Workshops Session",
+      desc: "Masterclass on system design and high-volume databases",
+      date: "Dec 2025",
+      icon: GraduationCap,
+      img: "https://images.unsplash.com/photo-1531482615713-2afd69097998?q=80&w=400&auto=format&fit=crop",
+      transform: "rotateY(180deg) translateZ(140px)"
+    },
+    {
+      badge: "Community",
+      title: "Community Growth",
+      desc: "Welcoming 500+ active contributors in the network",
+      date: "Jan 2026",
+      icon: Users,
+      img: "https://images.unsplash.com/photo-1528605248644-14dd04022da1?q=80&w=400&auto=format&fit=crop",
+      transform: "rotateY(270deg) translateZ(140px)"
+    }
   ];
+
+  const accentColor = theme === 'bot' ? 'rgba(34, 197, 94, 0.4)' : 'rgba(245, 158, 11, 0.4)';
+  const secondaryAccent = 'rgba(59, 130, 246, 0.4)';
 
   return (
     <div 
-      className="relative flex items-center justify-center w-full h-[420px] my-8 cursor-pointer select-none group"
+      className="relative w-full h-[500px] my-10 flex flex-col items-center justify-center select-none overflow-hidden"
       onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      onClick={onClick}
+      onMouseLeave={() => {
+        setIsHovered(false);
+        setIsDragging(false);
+      }}
+      onMouseMove={handleMouseMove}
+      onMouseUp={handleMouseUp}
+      onMouseDown={handleMouseDown}
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleMouseUp}
     >
-      {/* SVG Connecting lines */}
-      <svg className="absolute inset-0 w-full h-full pointer-events-none z-0">
-        <defs>
-          <linearGradient id="glowGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#D4AF37" stopOpacity="0.8" />
-            <stop offset="100%" stopColor="#f59e0b" stopOpacity="0.2" />
-          </linearGradient>
-        </defs>
-        
-        {/* Draw lines from center to 4 panels */}
-        {/* Left connector line */}
-        <line x1="20%" y1="50%" x2="40%" y2="50%" stroke="url(#glowGrad)" strokeWidth="1.5" strokeDasharray="3 3" className="opacity-80 animate-pulse" />
-        {/* Right connector line */}
-        <line x1="80%" y1="50%" x2="60%" y2="50%" stroke="url(#glowGrad)" strokeWidth="1.5" strokeDasharray="3 3" className="opacity-80 animate-pulse" />
-        {/* Top connector line */}
-        <line x1="50%" y1="18%" x2="50%" y2="40%" stroke="url(#glowGrad)" strokeWidth="1.5" strokeDasharray="3 3" className="opacity-80 animate-pulse" />
-        {/* Bottom connector line */}
-        <line x1="50%" y1="82%" x2="50%" y2="60%" stroke="url(#glowGrad)" strokeWidth="1.5" strokeDasharray="3 3" className="opacity-80 animate-pulse" />
-      </svg>
+      {/* Dynamic spot gradient beams (light cone shadows) */}
+      <div 
+        className="absolute top-0 left-[20%] w-[160px] h-[350px] pointer-events-none opacity-30 mix-blend-screen"
+        style={{
+          background: 'linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(245, 158, 11, 0) 70%)',
+          clipPath: 'polygon(0 0, 100% 0, 80% 100%, 20% 100%)',
+          transform: 'rotate(-10deg)',
+          transformOrigin: 'top center'
+        }}
+      />
+      <div 
+        className="absolute top-0 right-[20%] w-[160px] h-[350px] pointer-events-none opacity-30 mix-blend-screen"
+        style={{
+          background: 'linear-gradient(225deg, rgba(59, 130, 246, 0.15) 0%, rgba(59, 130, 246, 0) 70%)',
+          clipPath: 'polygon(0 0, 100% 0, 80% 100%, 20% 100%)',
+          transform: 'rotate(10deg)',
+          transformOrigin: 'top center'
+        }}
+      />
 
-      {/* Center 3D Cube Canvas Frame */}
-      <div className={`relative z-10 w-[240px] h-[240px] md:w-[280px] md:h-[280px] flex items-center justify-center rounded-full transition-all duration-500 bg-gradient-to-br from-white/5 to-white/0 border border-white/5 ${
-        isHovered ? 'scale-105 shadow-[0_0_60px_rgba(245,158,11,0.18)] border-amber-500/25' : ''
+      {/* Ceiling lighting truss structure */}
+      <div className={`absolute top-2 w-[320px] h-[24px] rounded-lg border backdrop-blur-md z-20 flex items-center justify-around px-4 ${
+        theme === 'bot' 
+          ? 'bg-black/90 border-green-900/60 shadow-[0_0_15px_rgba(34,197,94,0.15)] text-green-500' 
+          : (theme === 'light' ? 'bg-slate-150 border-slate-300 shadow-md text-slate-800' : 'bg-slate-900/90 border-slate-800 shadow-[0_0_15px_rgba(245,158,11,0.1)] text-slate-200')
       }`}>
-        <canvas ref={canvasRef} />
+        <div className={`w-2 h-2 rounded-full animate-ping ${theme === 'bot' ? 'bg-green-500' : 'bg-amber-500'}`} />
+        <span className="text-[8px] font-mono tracking-[0.25em] font-black uppercase">MUSEUM NETWORK</span>
+        <div className="w-2 h-2 rounded-full animate-ping bg-blue-500" />
       </div>
 
-      {/* Floating Info Panels */}
-      {infoCards.map((card, i) => {
-        const Icon = card.icon;
-        return (
-          <div 
-            key={i} 
-            className={`absolute z-20 flex flex-col items-center p-3 md:p-4 rounded-2xl border backdrop-blur-md transition-all duration-350 shadow-md ${card.posClass} ${
-              theme === 'bot' 
-                ? 'bg-black/90 border-green-900 text-green-500 font-mono text-[10px]' 
-                : (theme === 'light' 
-                    ? 'bg-white/90 border-slate-200 text-slate-800 hover:shadow-lg' 
-                    : 'bg-slate-900/90 border-slate-850 text-slate-250 hover:shadow-2xl')
-            } ${isHovered ? 'scale-105 border-amber-500/35' : ''}`}
-          >
-            <div className={`p-2 rounded-xl mb-1.5 ${theme === 'light' ? 'bg-amber-50 text-amber-600' : 'bg-amber-500/10 text-amber-400'}`}>
-              <Icon className="w-4 h-4 md:w-5 md:h-5" />
-            </div>
-            <span className="text-[9px] uppercase font-bold tracking-widest text-slate-500">{card.label}</span>
-            <span className={`text-xs md:text-sm font-black mt-0.5 ${theme === 'light' ? 'text-slate-900' : 'text-white'}`}>{card.value}</span>
-          </div>
-        );
-      })}
+      {/* Suspension steel cables */}
+      <div className="absolute top-[26px] h-[74px] w-[260px] flex justify-between pointer-events-none z-15">
+        <div className="w-[1.5px] h-full bg-gradient-to-b from-slate-500/80 to-slate-700/30 shadow-[0_0_2px_rgba(255,255,255,0.2)]" />
+        <div className="w-[1.5px] h-full bg-gradient-to-b from-slate-500/80 to-slate-700/30 shadow-[0_0_2px_rgba(255,255,255,0.2)]" />
+      </div>
+
+      {/* 3D Viewport container */}
+      <div 
+        className="relative w-[300px] h-[370px] mt-[60px]"
+        style={{
+          perspective: '1000px',
+          cursor: isDragging ? 'grabbing' : 'grab'
+        }}
+      >
+        {/* 3D Scene container */}
+        <div
+          onClick={onClick}
+          className="w-full h-full preserve-3d transition-transform duration-100 ease-out"
+          style={{
+            transform: `rotateY(${rotationY}deg) rotateX(-5deg)`,
+            transformStyle: 'preserve-3d'
+          }}
+        >
+          {panels.map((p, i) => {
+            const Icon = p.icon;
+            return (
+              <div
+                key={i}
+                className={`absolute w-[280px] h-[340px] left-0 top-0 rounded-2xl border overflow-hidden shadow-2xl flex flex-col justify-between backdrop-blur-sm group/jumbo ${
+                  theme === 'bot' 
+                    ? 'bg-black/95 border-green-500/30 shadow-[0_0_20px_rgba(34,197,94,0.15)]' 
+                    : (theme === 'light' 
+                        ? 'bg-white border-slate-200 shadow-[0_15px_35px_rgba(0,0,0,0.06)]' 
+                        : 'bg-slate-900/90 border-slate-800 shadow-[0_15px_35px_rgba(0,0,0,0.35)]')
+                }`}
+                style={{
+                  transform: p.transform,
+                  backfaceVisibility: 'hidden',
+                  transformStyle: 'preserve-3d'
+                }}
+              >
+                {/* Accent glow bar */}
+                <div 
+                  className="absolute top-0 inset-x-0 h-[1.5px] pointer-events-none opacity-50"
+                  style={{
+                    background: `linear-gradient(90deg, ${accentColor} 0%, ${secondaryAccent} 100%)`
+                  }}
+                />
+
+                {/* Content area */}
+                <div className="relative flex-1 p-5 flex flex-col justify-between overflow-hidden">
+                  <img 
+                    src={p.img} 
+                    alt={p.title} 
+                    className="absolute inset-0 w-full h-full object-cover z-0 opacity-15 filter grayscale contrast-125"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/65 to-transparent z-0" />
+
+                  {/* Top line content */}
+                  <div className="relative z-10 flex justify-between items-center">
+                    <span className={`px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-black/60 border ${
+                      theme === 'bot' 
+                        ? 'text-green-400 border-green-500/25' 
+                        : 'text-amber-400 border-amber-500/25'
+                    }`}>
+                      {p.badge}
+                    </span>
+                    <span className="text-[8px] font-mono text-slate-500 font-bold">{p.date}</span>
+                  </div>
+
+                  {/* Core details */}
+                  <div className="relative z-10 mt-auto">
+                    <div className="flex items-center gap-2 mb-1">
+                      <div className={`p-1.5 rounded-lg ${theme === 'light' ? 'bg-amber-50 text-amber-600' : 'bg-amber-500/10 text-amber-400'}`}>
+                        <Icon className="w-4 h-4" />
+                      </div>
+                      <h4 className={`text-sm font-black tracking-tight leading-none ${
+                        theme === 'bot' ? 'text-green-400 font-mono' : (theme === 'light' ? 'text-slate-900' : 'text-white')
+                      }`}>
+                        {p.title}
+                      </h4>
+                    </div>
+                    <p className={`text-[11px] leading-snug font-semibold mt-1.5 ${
+                      theme === 'bot' ? 'text-green-700' : (theme === 'light' ? 'text-slate-500' : 'text-slate-400')
+                    }`}>
+                      {p.desc}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Bottom Bezel branding panel */}
+                <div className={`h-[50px] relative z-10 flex items-center justify-center border-t px-4 bg-gradient-to-b ${
+                  theme === 'bot' 
+                    ? 'from-black to-slate-950 border-green-950' 
+                    : (theme === 'light' ? 'from-slate-50 to-slate-100 border-slate-200' : 'from-slate-900 to-slate-950 border-slate-850')
+                }`}>
+                  <span className={`text-[10px] font-black tracking-[0.25em] uppercase text-center ${
+                    theme === 'bot' ? 'text-green-500 font-mono' : (theme === 'light' ? 'text-[#8a6500]' : 'text-[#D4AF37]')
+                  }`}>
+                    SOLUTION DEVELOPERS
+                  </span>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Floating Shadow below */}
+      <div 
+        className={`absolute bottom-4 w-[160px] h-[10px] rounded-full blur-[6px] pointer-events-none transition-all duration-500 opacity-60 ${
+          theme === 'bot' ? 'bg-green-900/20' : 'bg-slate-950/50'
+        }`}
+      />
     </div>
   );
 };
@@ -2986,9 +3039,9 @@ const GalleryPage = ({ theme }) => {
              <div className="max-w-7xl mx-auto">
                 <SectionTitle theme={theme} title="Digital Museum" subtitle="Documenting our memories, collaborations, and celebrations." />
                 
-                {/* NEW Animated Centerpiece with Floating Panels */}
+                {/* NEW Transparent 3D Jumbotron suspended display */}
                 <div className="animate-[fade-in_0.7s_ease-out]">
-                  <FuturisticCenterpiece theme={theme} onClick={() => setIsStatsOpen(true)} />
+                  <Jumbotron3D theme={theme} onClick={() => setIsStatsOpen(true)} />
                 </div>
 
                 {/* Segmented Control / Tabs */}
