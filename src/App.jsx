@@ -2723,8 +2723,8 @@ const Jumbotron3D = ({ theme, onClick }) => {
   };
 
   // 4 Jumbotron panel content definitions
-  // Front / Back faces: Width 700px (landscape screen), Z-translate: 110px
-  // Right / Left faces: Width 220px (portrait screen), Z-translate: 350px
+  // Front / Back faces: Width 1100px (landscape screen), Z-translate: 120px
+  // Right / Left faces: Width 240px (portrait screen), Z-translate: 550px
   const panels = [
     {
       isWide: true,
@@ -2734,8 +2734,8 @@ const Jumbotron3D = ({ theme, onClick }) => {
       date: "Aug 2025",
       icon: Trophy,
       img: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=600&auto=format&fit=crop",
-      transform: "rotateY(0deg) translateZ(110px)",
-      widthClass: "w-[700px]"
+      transform: "rotateY(0deg) translateZ(120px)",
+      widthClass: "w-[1100px]"
     },
     {
       isWide: false,
@@ -2746,8 +2746,8 @@ const Jumbotron3D = ({ theme, onClick }) => {
       statValue: "Go-Live",
       icon: Target,
       img: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=300&auto=format&fit=crop",
-      transform: "rotateY(90deg) translateZ(350px)",
-      widthClass: "w-[220px] left-[240px]"
+      transform: "rotateY(90deg) translateZ(550px)",
+      widthClass: "w-[240px] left-[430px]"
     },
     {
       isWide: true,
@@ -2756,9 +2756,9 @@ const Jumbotron3D = ({ theme, onClick }) => {
       desc: "Masterclass on high-volume system design pipelines, databases, and microservices caching.",
       date: "Dec 2025",
       icon: GraduationCap,
-      img: "https://images.unsplash.com/photo-1531482615713-2afd69097998?q=80&w=400&auto=format&fit=crop",
-      transform: "rotateY(180deg) translateZ(110px)",
-      widthClass: "w-[700px]"
+      img: "https://images.unsplash.com/photo-1531482615713-2afd69097998?q=80&w=600&auto=format&fit=crop",
+      transform: "rotateY(180deg) translateZ(120px)",
+      widthClass: "w-[1100px]"
     },
     {
       isWide: false,
@@ -2769,8 +2769,8 @@ const Jumbotron3D = ({ theme, onClick }) => {
       statValue: "500+",
       icon: Users,
       img: "https://images.unsplash.com/photo-1528605248644-14dd04022da1?q=80&w=300&auto=format&fit=crop",
-      transform: "rotateY(270deg) translateZ(350px)",
-      widthClass: "w-[220px] left-[240px]"
+      transform: "rotateY(270deg) translateZ(550px)",
+      widthClass: "w-[240px] left-[430px]"
     }
   ];
 
@@ -2779,7 +2779,7 @@ const Jumbotron3D = ({ theme, onClick }) => {
 
   return (
     <div 
-      className="relative w-full h-[580px] my-6 flex flex-col items-center justify-center select-none overflow-hidden"
+      className="relative w-full h-[780px] my-6 flex flex-col items-center justify-center select-none overflow-hidden"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => {
         setIsHovered(false);
@@ -2813,7 +2813,7 @@ const Jumbotron3D = ({ theme, onClick }) => {
 
       {/* Spotlights projecting down with low opacity (~20%) */}
       <div 
-        className="absolute top-0 left-[10%] w-[220px] h-[420px] pointer-events-none opacity-25 mix-blend-screen z-0"
+        className="absolute top-0 left-[10%] w-[320px] h-[600px] pointer-events-none opacity-25 mix-blend-screen z-0"
         style={{
           background: 'linear-gradient(135deg, rgba(212, 175, 55, 0.15) 0%, rgba(212, 175, 55, 0) 70%)',
           clipPath: 'polygon(0 0, 100% 0, 80% 100%, 20% 100%)',
@@ -2822,7 +2822,7 @@ const Jumbotron3D = ({ theme, onClick }) => {
         }}
       />
       <div 
-        className="absolute top-0 right-[10%] w-[220px] h-[420px] pointer-events-none opacity-25 mix-blend-screen z-0"
+        className="absolute top-0 right-[10%] w-[320px] h-[600px] pointer-events-none opacity-25 mix-blend-screen z-0"
         style={{
           background: 'linear-gradient(225deg, rgba(59, 130, 246, 0.15) 0%, rgba(59, 130, 246, 0) 70%)',
           clipPath: 'polygon(0 0, 100% 0, 80% 100%, 20% 100%)',
@@ -2832,28 +2832,27 @@ const Jumbotron3D = ({ theme, onClick }) => {
       />
 
       {/* 1. Ceiling space-frame lighting truss structure */}
-      <div className="absolute top-0 w-[720px] h-[28px] pointer-events-none z-20 hidden lg:flex items-center justify-center">
-        <svg className="w-full h-full" viewBox="0 0 720 28" fill="none">
-          <rect x="2" y="2" width="716" height="24" rx="6" fill="#0f172a" fillOpacity="0.9" stroke="#334155" strokeWidth="2"/>
+      <div className="absolute top-0 w-[1120px] h-[28px] pointer-events-none z-20 hidden lg:flex items-center justify-center">
+        <svg className="w-full h-full" viewBox="0 0 1120 28" fill="none">
+          <rect x="2" y="2" width="1116" height="24" rx="6" fill="#0f172a" fillOpacity="0.9" stroke="#334155" strokeWidth="2"/>
           {/* Overlapping steel cross-beams */}
-          <path d="M2 2 L26 26 M26 2 L50 26 M50 2 L74 26 M74 2 L98 26 M98 2 L122 26 M122 2 L146 26 M146 2 L170 26 M170 2 L194 26 M194 2 L218 26 M218 2 L242 26 M242 2 L266 26 M266 2 L290 26 M290 2 L314 26 M314 2 L338 26 M338 2 L362 26 M362 2 L386 26 M386 2 L410 26 M410 2 L434 26 M434 2 L458 26 M458 2 L482 26 M482 2 L506 26 M506 2 L530 26 M530 2 L554 26 M554 2 L578 26 M578 2 L602 26 M602 2 L626 26 M626 2 L650 26 M650 2 L674 26 M674 2 L698 26 M698 2 L720 26" stroke="#475569" strokeWidth="1.5" strokeOpacity="0.4" />
-          <path d="M26 2 L2 26 M50 2 L26 26 M74 2 L50 26 M98 2 L74 26 M122 2 L98 26 M146 2 L122 26 M170 2 L146 26 M194 2 L170 26 M218 2 L194 26 M242 2 L218 26 M266 2 L242 26 M290 2 L266 26 M314 2 L290 26 M338 2 L314 26 M362 2 L338 26 M386 2 L362 26 M410 2 L386 26 M434 2 L410 26 M458 2 L434 26 M482 2 L458 26 M506 2 L482 26 M530 2 L506 26 M554 2 L530 26 M578 2 L554 26 M602 2 L578 26 M626 2 L602 26 M650 2 L626 26 M674 2 L650 26 M698 2 L674 26 M720 2 L698 26" stroke="#475569" strokeWidth="1.5" strokeOpacity="0.4" />
+          <path d="M2 2 L26 26 M26 2 L50 26 M50 2 L74 26 M74 2 L98 26 M98 2 L122 26 M122 2 L146 26 M146 2 L170 26 M170 2 L194 26 M194 2 L218 26 M218 2 L242 26 M242 2 L266 26 M266 2 L290 26 M290 2 L314 26 M314 2 L338 26 M338 2 L362 26 M362 2 L386 26 M386 2 L410 26 M410 2 L434 26 M434 2 L458 26 M458 2 L482 26 M482 2 L506 26 M506 2 L530 26 M530 2 L554 26 M554 2 L578 26 M578 2 L602 26 M602 2 L626 26 M626 2 L650 26 M650 2 L674 26 M674 2 L698 26 M698 2 L720 26" stroke="#475569" strokeWidth="1.5" strokeOpacity="0.3" />
           {/* LED Strip glows */}
-          <line x1="10" y1="25" x2="710" y2="25" stroke="#f59e0b" strokeWidth="2" strokeOpacity="0.7" />
+          <line x1="10" y1="25" x2="1110" y2="25" stroke="#f59e0b" strokeWidth="2" strokeOpacity="0.65" />
         </svg>
       </div>
 
       {/* 2. Heavy steel suspension cables */}
-      <div className="absolute top-[28px] h-[72px] w-[620px] flex justify-between pointer-events-none z-15 hidden lg:flex">
+      <div className="absolute top-[28px] h-[152px] w-[1020px] flex justify-between pointer-events-none z-15 hidden lg:flex">
         <div className="w-[2.5px] h-full bg-gradient-to-b from-slate-400 to-slate-800 shadow-[0_0_3px_rgba(255,255,255,0.2)]" />
         <div className="w-[2.5px] h-full bg-gradient-to-b from-slate-400 to-slate-800 shadow-[0_0_3px_rgba(255,255,255,0.2)]" />
       </div>
 
       {/* 3D Viewport container (responsive scales) */}
       <div 
-        className="relative w-[700px] h-[430px] mt-[40px] transition-transform duration-500 scale-[0.45] sm:scale-[0.72] lg:scale-100"
+        className="relative w-[1100px] h-[650px] mt-[120px] transition-transform duration-500 scale-[0.25] sm:scale-[0.5] md:scale-[0.7] lg:scale-100"
         style={{
-          perspective: '1200px',
+          perspective: '1800px',
           cursor: isDragging ? 'grabbing' : 'grab'
         }}
       >
@@ -2864,17 +2863,51 @@ const Jumbotron3D = ({ theme, onClick }) => {
           style={{
             transform: `rotateY(${rotationY}deg) rotateX(-2deg) ${isHovered ? 'translateY(-8px)' : 'translateY(0)'}`,
             transformStyle: 'preserve-3d',
-            filter: isHovered ? 'drop-shadow(0 20px 40px rgba(212,175,55,0.18))' : 'drop-shadow(0 12px 24px rgba(0,0,0,0.3))'
+            filter: isHovered ? 'drop-shadow(0 25px 50px rgba(212,175,55,0.2))' : 'drop-shadow(0 15px 30px rgba(0,0,0,0.3))'
           }}
         >
+          {/* Top structural metal cap face */}
+          <div 
+            className="absolute left-0 top-[205px] w-[1100px] h-[240px] border border-slate-600 bg-gradient-to-b from-slate-700 via-slate-800 to-slate-900"
+            style={{
+              transform: 'rotateX(90deg) translateZ(325px)',
+              backfaceVisibility: 'hidden',
+              backgroundImage: 'radial-gradient(circle at center, #475569, #1e293b)'
+            }}
+          >
+            {/* Brackets where cables attach */}
+            <div className="absolute top-4 left-10 w-8 h-8 rounded bg-slate-950 border border-slate-600 flex items-center justify-center">
+              <div className="w-3 h-3 rounded-full bg-slate-700 shadow-inner" />
+            </div>
+            <div className="absolute top-4 right-10 w-8 h-8 rounded bg-slate-950 border border-slate-600 flex items-center justify-center">
+              <div className="w-3 h-3 rounded-full bg-slate-700 shadow-inner" />
+            </div>
+            <div className="absolute bottom-4 left-10 w-8 h-8 rounded bg-slate-950 border border-slate-600 flex items-center justify-center">
+              <div className="w-3 h-3 rounded-full bg-slate-700 shadow-inner" />
+            </div>
+            <div className="absolute bottom-4 right-10 w-8 h-8 rounded bg-slate-950 border border-slate-600 flex items-center justify-center">
+              <div className="w-3 h-3 rounded-full bg-slate-700 shadow-inner" />
+            </div>
+          </div>
+
+          {/* Bottom structural metal cap face */}
+          <div 
+            className="absolute left-0 top-[205px] w-[1100px] h-[240px] border border-slate-600 bg-gradient-to-b from-slate-900 via-slate-950 to-black"
+            style={{
+              transform: 'rotateX(90deg) translateZ(-325px)',
+              backfaceVisibility: 'hidden'
+            }}
+          />
+
+          {/* 4 Jumbotron faces */}
           {panels.map((p, i) => {
             const Icon = p.icon;
             return (
               <div
                 key={i}
-                className={`absolute h-[420px] left-0 top-0 rounded-[24px] border flex flex-col justify-between backdrop-blur-sm group/jumbo overflow-hidden ${p.widthClass} ${
+                className={`absolute h-[650px] left-0 top-0 rounded-[28px] border flex flex-col justify-between backdrop-blur-sm group/jumbo overflow-hidden ${p.widthClass} ${
                   theme === 'bot' 
-                    ? 'bg-black/95 border-green-500/30' 
+                    ? 'bg-black border-green-500/30' 
                     : (theme === 'light' 
                         ? 'bg-slate-100/95 border-slate-350 shadow-inner' 
                         : 'bg-slate-900/95 border-slate-850')
@@ -2883,12 +2916,11 @@ const Jumbotron3D = ({ theme, onClick }) => {
                   transform: p.transform,
                   backfaceVisibility: 'hidden',
                   transformStyle: 'preserve-3d',
-                  // Brushed metallic matte graphite styling
                   backgroundImage: 'radial-gradient(ellipse at top left, rgba(255,255,255,0.06), transparent)'
                 }}
               >
                 {/* 1. Ultra-thin golden trims */}
-                <div className="absolute inset-1.5 border border-amber-500/20 rounded-[18px] pointer-events-none z-20" style={{ animation: 'borderPulse 4s infinite' }} />
+                <div className="absolute inset-1.5 border border-amber-500/20 rounded-[22px] pointer-events-none z-20" style={{ animation: 'borderPulse 4s infinite' }} />
 
                 {/* 2. Glass glossy reflection layer & moving light sweep */}
                 <div className="absolute inset-0 bg-gradient-to-tr from-white/5 via-transparent to-transparent pointer-events-none z-15" />
@@ -2896,7 +2928,7 @@ const Jumbotron3D = ({ theme, onClick }) => {
                   className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent pointer-events-none z-15"
                   style={{
                     animation: 'glassSweep 7s infinite',
-                    animationDelay: `str${i * 1.5}s`
+                    animationDelay: `${i * 1.5}s`
                   }}
                 />
 
@@ -2910,7 +2942,7 @@ const Jumbotron3D = ({ theme, onClick }) => {
                 <div className="absolute top-3 right-3 w-1.5 h-1.5 rounded-full bg-red-500 z-20 pointer-events-none" style={{ animation: 'ledIndicator 1.5s infinite' }} />
 
                 {/* 5. Main MicroLED Screen & content details */}
-                <div className="relative flex-1 m-3 rounded-[16px] overflow-hidden flex flex-col justify-between bg-slate-950/80 border border-slate-800/80">
+                <div className="relative flex-1 m-4 rounded-[20px] overflow-hidden flex flex-col justify-between bg-slate-950 border border-slate-850">
                   <img 
                     src={p.img} 
                     alt={p.title} 
@@ -2919,75 +2951,75 @@ const Jumbotron3D = ({ theme, onClick }) => {
                   <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent z-0" />
 
                   {/* Header metadata */}
-                  <div className="relative z-10 p-4 flex justify-between items-center">
-                    <span className={`px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-black/75 border ${
+                  <div className="relative z-10 p-5 flex justify-between items-center">
+                    <span className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-black/75 border ${
                       theme === 'bot' 
                         ? 'text-green-400 border-green-500/25' 
                         : 'text-amber-500 border-amber-400/30'
                     }`}>
                       {p.badge}
                     </span>
-                    <span className="text-[8px] font-mono text-slate-500 font-bold">{p.date}</span>
+                    <span className="text-[9px] font-mono text-slate-500 font-bold">{p.date}</span>
                   </div>
 
                   {/* Body Content */}
-                  <div className="relative z-10 p-5 mt-auto">
-                    ${p.isWide ? `
+                  <div className="relative z-10 p-6 mt-auto">
+                    {p.isWide ? (
                       /* Landscape layout */
-                      <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
-                        <div className="md:col-span-8">
-                          <div className="flex items-center gap-2 mb-1">
-                            <div className="p-1.5 rounded-lg ${theme === 'light' ? 'bg-amber-50 text-amber-600' : 'bg-amber-500/10 text-amber-400'}">
-                              <Icon className="w-5 h-5" />
+                      <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+                        <div className="md:col-span-8 space-y-2">
+                          <div className="flex items-center gap-3">
+                            <div className={`p-2 rounded-xl ${theme === 'light' ? 'bg-amber-50 text-amber-600' : 'bg-amber-500/10 text-amber-400'}`}>
+                              <Icon className="w-6 h-6" />
                             </div>
-                            <h4 className="text-lg font-black tracking-tight leading-none ${
+                            <h4 className={`text-xl font-black tracking-tight leading-none ${
                               theme === 'bot' ? 'text-green-400 font-mono' : (theme === 'light' ? 'text-slate-900' : 'text-white')
-                            }">
-                              ${p.title}
+                            }`}>
+                              {p.title}
                             </h4>
                           </div>
-                          <p className="text-xs leading-relaxed font-semibold mt-2 ${
+                          <p className={`text-sm leading-relaxed font-semibold ${
                             theme === 'bot' ? 'text-green-700 font-mono' : (theme === 'light' ? 'text-slate-500' : 'text-slate-400')
-                          }">
-                            ${p.desc}
+                          }`}>
+                            {p.desc}
                           </p>
                         </div>
-                        <div className="hidden md:block md:col-span-4 rounded-xl overflow-hidden border border-white/5 h-20">
-                          <img src="${p.img}" alt="Detail" className="w-full h-full object-cover" />
+                        <div className="hidden md:block md:col-span-4 rounded-2xl overflow-hidden border border-white/5 h-28 shadow-2xl">
+                          <img src={p.img} alt="Detail" className="w-full h-full object-cover" />
                         </div>
                       </div>
-                    ` : `
+                    ) : (
                       /* Side Portrait Stats Layout */
-                      <div className="flex flex-col items-center text-center py-2">
-                        <div className="p-2 rounded-full mb-2 ${theme === 'light' ? 'bg-amber-50 text-amber-600' : 'bg-amber-500/10 text-amber-400'}">
-                          <Icon className="w-6 h-6" />
+                      <div className="flex flex-col items-center text-center py-4 space-y-2">
+                        <div className={`p-3 rounded-full ${theme === 'light' ? 'bg-amber-50 text-amber-600' : 'bg-amber-500/10 text-amber-400'}`}>
+                          <Icon className="w-8 h-8" />
                         </div>
-                        <h4 className="text-sm font-black uppercase tracking-wider ${
+                        <h4 className={`text-base font-black uppercase tracking-wider ${
                           theme === 'bot' ? 'text-green-400 font-mono' : (theme === 'light' ? 'text-slate-800' : 'text-white')
-                        }">
-                          ${p.title}
+                        }`}>
+                          {p.title}
                         </h4>
-                        <span className="text-4xl font-black my-2 bg-clip-text text-transparent bg-gradient-to-r from-amber-400 to-amber-600 ${theme === 'bot' ? 'from-green-400 to-emerald-600' : ''}">
-                          ${p.statValue}
+                        <span className={`text-5xl font-black bg-clip-text text-transparent bg-gradient-to-r from-amber-400 to-amber-600 ${theme === 'bot' ? 'from-green-400 to-emerald-600' : ''}`}>
+                          {p.statValue}
                         </span>
-                        <p className="text-[10px] text-slate-500 font-bold max-w-[90%] leading-normal">${p.desc}</p>
+                        <p className="text-xs text-slate-500 font-bold max-w-[90%] leading-normal">{p.desc}</p>
                       </div>
-                    `}
+                    )}
                   </div>
                 </div>
 
                 {/* 6. Brushed metallic status base plate */}
-                <div className={`h-[60px] relative z-10 flex flex-col items-center justify-center border-t px-4 bg-gradient-to-b ${
+                <div className={`h-[74px] relative z-10 flex flex-col items-center justify-center border-t px-4 bg-gradient-to-b ${
                   theme === 'bot' 
                     ? 'from-black to-slate-950 border-green-950' 
                     : (theme === 'light' ? 'from-slate-50 to-slate-100 border-slate-200' : 'from-slate-900 to-slate-950 border-slate-850')
                 }`}>
-                  <span className={`text-[10px] font-black tracking-[0.3em] uppercase text-center leading-none ${
+                  <span className={`text-[11px] font-black tracking-[0.35em] uppercase text-center leading-none ${
                     theme === 'bot' ? 'text-green-500 font-mono' : (theme === 'light' ? 'text-[#8a6500]' : 'text-[#D4AF37]')
                   }`}>
                     SOLUTION DEVELOPERS
                   </span>
-                  <span className="text-[7.5px] font-mono text-slate-500 uppercase tracking-widest mt-1">
+                  <span className="text-[8px] font-mono text-slate-500 uppercase tracking-widest mt-1.5">
                     DIGITAL MUSEUM // ACHIEVEMENT REGISTER
                   </span>
                 </div>
@@ -2999,8 +3031,8 @@ const Jumbotron3D = ({ theme, onClick }) => {
 
       {/* Floating base shadow */}
       <div 
-        className={`absolute bottom-4 h-[12px] rounded-full blur-[8px] pointer-events-none transition-all duration-300 ${
-          isHovered ? 'w-[400px] opacity-40 blur-[10px]' : 'w-[320px] opacity-60'
+        className={`absolute bottom-4 h-[16px] rounded-full blur-[10px] pointer-events-none transition-all duration-300 ${
+          isHovered ? 'w-[600px] opacity-40 blur-[12px]' : 'w-[520px] opacity-60'
         } ${
           theme === 'bot' ? 'bg-green-900/20' : 'bg-slate-950/50'
         }`}
