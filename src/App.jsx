@@ -2677,7 +2677,7 @@ const Jumbotron3D = ({ theme, onClick }) => {
   const angleStart = useRef(0);
   const animationId = useRef(null);
 
-  // Auto-rotation loop (slow cinematic turn, 16s per revolution => ~22.5 deg/sec)
+  // Auto-rotation loop (slow cinematic turn, 18s per revolution => ~20 deg/sec)
   useEffect(() => {
     if (isDragging || isHovered) return;
     
@@ -2685,7 +2685,7 @@ const Jumbotron3D = ({ theme, onClick }) => {
     const rotateStep = (time) => {
       const delta = time - lastTime;
       lastTime = time;
-      setRotationY(prev => (prev + (22.5 * delta) / 1000) % 360);
+      setRotationY(prev => (prev + (20 * delta) / 1000) % 360);
       animationId.current = requestAnimationFrame(rotateStep);
     };
     
@@ -2703,7 +2703,7 @@ const Jumbotron3D = ({ theme, onClick }) => {
   const handleMouseMove = (e) => {
     if (!isDragging) return;
     const deltaX = e.clientX - dragStart.current;
-    setRotationY(angleStart.current + deltaX * 0.4);
+    setRotationY(angleStart.current + deltaX * 0.35);
   };
 
   const handleMouseUp = () => {
@@ -2719,52 +2719,58 @@ const Jumbotron3D = ({ theme, onClick }) => {
   const handleTouchMove = (e) => {
     if (!isDragging) return;
     const deltaX = e.touches[0].clientX - dragStart.current;
-    setRotationY(angleStart.current + deltaX * 0.4);
+    setRotationY(angleStart.current + deltaX * 0.35);
   };
 
   // 4 Jumbotron panel content definitions
-  // Front / Back faces: Width 400px, Z-translate: 160px
-  // Right / Left faces: Width 320px, Z-translate: 200px
+  // Front / Back faces: Width 700px (landscape screen), Z-translate: 110px
+  // Right / Left faces: Width 220px (portrait screen), Z-translate: 350px
   const panels = [
     {
+      isWide: true,
       badge: "Achievements",
       title: "Hackathon Winners",
-      desc: "Team 'ByteBusters' at Solution Developers Hackathon",
+      desc: "Team 'ByteBusters' at Solution Developers Hackathon, bootstrapping DevForge CLI tools.",
       date: "Aug 2025",
       icon: Trophy,
-      img: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=400&auto=format&fit=crop",
-      transform: "rotateY(0deg) translateZ(160px)",
-      widthClass: "w-[400px]"
+      img: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=600&auto=format&fit=crop",
+      transform: "rotateY(0deg) translateZ(110px)",
+      widthClass: "w-[700px]"
     },
     {
+      isWide: false,
       badge: "Innovation",
-      title: "Project Alpha Go-Live",
-      desc: "Interactive mapping tool initialized successfully",
+      title: "Project Alpha",
+      desc: "Interactive mapping tool",
       date: "Oct 2025",
+      statValue: "Go-Live",
       icon: Target,
-      img: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=400&auto=format&fit=crop",
-      transform: "rotateY(90deg) translateZ(200px)",
-      widthClass: "w-[320px] left-[40px]"
+      img: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=300&auto=format&fit=crop",
+      transform: "rotateY(90deg) translateZ(350px)",
+      widthClass: "w-[220px] left-[240px]"
     },
     {
+      isWide: true,
       badge: "Workshops",
       title: "Workshops Session",
-      desc: "Masterclass on system design and high-volume databases",
+      desc: "Masterclass on high-volume system design pipelines, databases, and microservices caching.",
       date: "Dec 2025",
       icon: GraduationCap,
       img: "https://images.unsplash.com/photo-1531482615713-2afd69097998?q=80&w=400&auto=format&fit=crop",
-      transform: "rotateY(180deg) translateZ(160px)",
-      widthClass: "w-[400px]"
+      transform: "rotateY(180deg) translateZ(110px)",
+      widthClass: "w-[700px]"
     },
     {
+      isWide: false,
       badge: "Community",
-      title: "Community Growth",
-      desc: "Welcoming 500+ active contributors in the network",
+      title: "Community Hub",
+      desc: "Contributors network",
       date: "Jan 2026",
+      statValue: "500+",
       icon: Users,
-      img: "https://images.unsplash.com/photo-1528605248644-14dd04022da1?q=80&w=400&auto=format&fit=crop",
-      transform: "rotateY(270deg) translateZ(200px)",
-      widthClass: "w-[320px] left-[40px]"
+      img: "https://images.unsplash.com/photo-1528605248644-14dd04022da1?q=80&w=300&auto=format&fit=crop",
+      transform: "rotateY(270deg) translateZ(350px)",
+      widthClass: "w-[220px] left-[240px]"
     }
   ];
 
@@ -2797,56 +2803,55 @@ const Jumbotron3D = ({ theme, onClick }) => {
           50% { opacity: 1; }
         }
         @keyframes borderPulse {
-          0%, 100% { border-color: rgba(212, 175, 55, 0.2); }
-          50% { border-color: rgba(212, 175, 55, 0.65); }
+          0%, 100% { border-color: rgba(212, 175, 55, 0.25); }
+          50% { border-color: rgba(212, 175, 55, 0.7); }
         }
       `}} />
 
       {/* Backdrop Subtle Ambient Radial Glow */}
-      <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_center,rgba(212,175,55,0.05)_0%,transparent_60%)] z-0" />
+      <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_center,rgba(212,175,55,0.06)_0%,transparent_60%)] z-0" />
 
       {/* Spotlights projecting down with low opacity (~20%) */}
       <div 
-        className="absolute top-0 left-[15%] w-[200px] h-[400px] pointer-events-none opacity-25 mix-blend-screen z-0"
+        className="absolute top-0 left-[10%] w-[220px] h-[420px] pointer-events-none opacity-25 mix-blend-screen z-0"
         style={{
-          background: 'linear-gradient(135deg, rgba(212, 175, 55, 0.12) 0%, rgba(212, 175, 55, 0) 70%)',
+          background: 'linear-gradient(135deg, rgba(212, 175, 55, 0.15) 0%, rgba(212, 175, 55, 0) 70%)',
           clipPath: 'polygon(0 0, 100% 0, 80% 100%, 20% 100%)',
-          transform: 'rotate(-8deg)',
+          transform: 'rotate(-6deg)',
           transformOrigin: 'top center'
         }}
       />
       <div 
-        className="absolute top-0 right-[15%] w-[200px] h-[400px] pointer-events-none opacity-25 mix-blend-screen z-0"
+        className="absolute top-0 right-[10%] w-[220px] h-[420px] pointer-events-none opacity-25 mix-blend-screen z-0"
         style={{
-          background: 'linear-gradient(225deg, rgba(59, 130, 246, 0.12) 0%, rgba(59, 130, 246, 0) 70%)',
+          background: 'linear-gradient(225deg, rgba(59, 130, 246, 0.15) 0%, rgba(59, 130, 246, 0) 70%)',
           clipPath: 'polygon(0 0, 100% 0, 80% 100%, 20% 100%)',
-          transform: 'rotate(8deg)',
+          transform: 'rotate(6deg)',
           transformOrigin: 'top center'
         }}
       />
 
-      {/* Ceiling lighting truss structure with warm LEDs */}
-      <div className={`absolute top-0 w-[420px] h-[28px] rounded-lg border backdrop-blur-md z-20 flex items-center justify-between px-6 ${
-        theme === 'bot' 
-          ? 'bg-black/90 border-green-900/60 shadow-[0_0_15px_rgba(34,197,94,0.15)] text-green-500' 
-          : (theme === 'light' 
-              ? 'bg-slate-150 border-slate-350 shadow-md text-slate-800 shadow-[0_4px_15px_rgba(253,224,71,0.15)]' 
-              : 'bg-slate-900/90 border-slate-800 shadow-[0_0_18px_rgba(212,175,55,0.12)] text-slate-200 shadow-[0_4px_15px_rgba(253,224,71,0.25)]')
-      }`}>
-        <div className={`w-2 h-2 rounded-full animate-ping ${theme === 'bot' ? 'bg-green-500' : 'bg-amber-500'}`} />
-        <span className="text-[9px] font-mono tracking-[0.3em] font-black uppercase">SD CORE MUSEUM Scoreboard</span>
-        <div className="w-2 h-2 rounded-full animate-ping bg-blue-500" />
+      {/* 1. Ceiling space-frame lighting truss structure */}
+      <div className="absolute top-0 w-[720px] h-[28px] pointer-events-none z-20 hidden lg:flex items-center justify-center">
+        <svg className="w-full h-full" viewBox="0 0 720 28" fill="none">
+          <rect x="2" y="2" width="716" height="24" rx="6" fill="#0f172a" fillOpacity="0.9" stroke="#334155" strokeWidth="2"/>
+          {/* Overlapping steel cross-beams */}
+          <path d="M2 2 L26 26 M26 2 L50 26 M50 2 L74 26 M74 2 L98 26 M98 2 L122 26 M122 2 L146 26 M146 2 L170 26 M170 2 L194 26 M194 2 L218 26 M218 2 L242 26 M242 2 L266 26 M266 2 L290 26 M290 2 L314 26 M314 2 L338 26 M338 2 L362 26 M362 2 L386 26 M386 2 L410 26 M410 2 L434 26 M434 2 L458 26 M458 2 L482 26 M482 2 L506 26 M506 2 L530 26 M530 2 L554 26 M554 2 L578 26 M578 2 L602 26 M602 2 L626 26 M626 2 L650 26 M650 2 L674 26 M674 2 L698 26 M698 2 L720 26" stroke="#475569" strokeWidth="1.5" strokeOpacity="0.4" />
+          <path d="M26 2 L2 26 M50 2 L26 26 M74 2 L50 26 M98 2 L74 26 M122 2 L98 26 M146 2 L122 26 M170 2 L146 26 M194 2 L170 26 M218 2 L194 26 M242 2 L218 26 M266 2 L242 26 M290 2 L266 26 M314 2 L290 26 M338 2 L314 26 M362 2 L338 26 M386 2 L362 26 M410 2 L386 26 M434 2 L410 26 M458 2 L434 26 M482 2 L458 26 M506 2 L482 26 M530 2 L506 26 M554 2 L530 26 M578 2 L554 26 M602 2 L578 26 M626 2 L602 26 M650 2 L626 26 M674 2 L650 26 M698 2 L674 26 M720 2 L698 26" stroke="#475569" strokeWidth="1.5" strokeOpacity="0.4" />
+          {/* LED Strip glows */}
+          <line x1="10" y1="25" x2="710" y2="25" stroke="#f59e0b" strokeWidth="2" strokeOpacity="0.7" />
+        </svg>
       </div>
 
-      {/* Heavy double suspension cables */}
-      <div className="absolute top-[28px] h-[72px] w-[360px] flex justify-between pointer-events-none z-15">
-        <div className="w-[2px] h-full bg-gradient-to-b from-slate-400 to-slate-800 shadow-[0_0_3px_rgba(255,255,255,0.25)]" />
-        <div className="w-[2px] h-full bg-gradient-to-b from-slate-400 to-slate-800 shadow-[0_0_3px_rgba(255,255,255,0.25)]" />
+      {/* 2. Heavy steel suspension cables */}
+      <div className="absolute top-[28px] h-[72px] w-[620px] flex justify-between pointer-events-none z-15 hidden lg:flex">
+        <div className="w-[2.5px] h-full bg-gradient-to-b from-slate-400 to-slate-800 shadow-[0_0_3px_rgba(255,255,255,0.2)]" />
+        <div className="w-[2.5px] h-full bg-gradient-to-b from-slate-400 to-slate-800 shadow-[0_0_3px_rgba(255,255,255,0.2)]" />
       </div>
 
       {/* 3D Viewport container (responsive scales) */}
       <div 
-        className="relative w-[400px] h-[410px] mt-[50px] transition-transform duration-500 scale-[0.68] sm:scale-[0.85] lg:scale-100"
+        className="relative w-[700px] h-[430px] mt-[40px] transition-transform duration-500 scale-[0.45] sm:scale-[0.72] lg:scale-100"
         style={{
           perspective: '1200px',
           cursor: isDragging ? 'grabbing' : 'grab'
@@ -2859,7 +2864,7 @@ const Jumbotron3D = ({ theme, onClick }) => {
           style={{
             transform: `rotateY(${rotationY}deg) rotateX(-2deg) ${isHovered ? 'translateY(-8px)' : 'translateY(0)'}`,
             transformStyle: 'preserve-3d',
-            filter: isHovered ? 'drop-shadow(0 15px 30px rgba(212,175,55,0.18))' : 'drop-shadow(0 10px 20px rgba(0,0,0,0.25))'
+            filter: isHovered ? 'drop-shadow(0 20px 40px rgba(212,175,55,0.18))' : 'drop-shadow(0 12px 24px rgba(0,0,0,0.3))'
           }}
         >
           {panels.map((p, i) => {
@@ -2867,22 +2872,23 @@ const Jumbotron3D = ({ theme, onClick }) => {
             return (
               <div
                 key={i}
-                className={`absolute h-[380px] left-0 top-0 rounded-[20px] border flex flex-col justify-between backdrop-blur-sm group/jumbo overflow-hidden ${p.widthClass} ${
+                className={`absolute h-[420px] left-0 top-0 rounded-[24px] border flex flex-col justify-between backdrop-blur-sm group/jumbo overflow-hidden ${p.widthClass} ${
                   theme === 'bot' 
                     ? 'bg-black/95 border-green-500/30' 
                     : (theme === 'light' 
-                        ? 'bg-slate-100/90 border-slate-350 shadow-inner' 
+                        ? 'bg-slate-100/95 border-slate-350 shadow-inner' 
                         : 'bg-slate-900/95 border-slate-850')
                 }`}
                 style={{
                   transform: p.transform,
                   backfaceVisibility: 'hidden',
                   transformStyle: 'preserve-3d',
-                  backgroundImage: 'radial-gradient(ellipse at top left, rgba(255,255,255,0.05), transparent)'
+                  // Brushed metallic matte graphite styling
+                  backgroundImage: 'radial-gradient(ellipse at top left, rgba(255,255,255,0.06), transparent)'
                 }}
               >
                 {/* 1. Ultra-thin golden trims */}
-                <div className="absolute inset-1.5 border border-amber-500/20 rounded-[14px] pointer-events-none z-20" style={{ animation: 'borderPulse 4s infinite' }} />
+                <div className="absolute inset-1.5 border border-amber-500/20 rounded-[18px] pointer-events-none z-20" style={{ animation: 'borderPulse 4s infinite' }} />
 
                 {/* 2. Glass glossy reflection layer & moving light sweep */}
                 <div className="absolute inset-0 bg-gradient-to-tr from-white/5 via-transparent to-transparent pointer-events-none z-15" />
@@ -2890,27 +2896,27 @@ const Jumbotron3D = ({ theme, onClick }) => {
                   className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent pointer-events-none z-15"
                   style={{
                     animation: 'glassSweep 7s infinite',
-                    animationDelay: `${i * 1.5}s`
+                    animationDelay: `str${i * 1.5}s`
                   }}
                 />
 
                 {/* 3. Gold corner joint protectors */}
-                <div className="absolute top-2 left-2 w-2.5 h-2.5 border-t-2 border-l-2 border-amber-400/80 z-20 pointer-events-none" />
-                <div className="absolute top-2 right-2 w-2.5 h-2.5 border-t-2 border-r-2 border-amber-400/80 z-20 pointer-events-none" />
-                <div className="absolute bottom-2 left-2 w-2.5 h-2.5 border-b-2 border-l-2 border-amber-400/80 z-20 pointer-events-none" />
-                <div className="absolute bottom-2 right-2 w-2.5 h-2.5 border-b-2 border-r-2 border-amber-400/80 z-20 pointer-events-none" />
+                <div className="absolute top-2 left-2 w-3 h-3 border-t-2 border-l-2 border-amber-400/80 z-20 pointer-events-none" />
+                <div className="absolute top-2 right-2 w-3 h-3 border-t-2 border-r-2 border-amber-400/80 z-20 pointer-events-none" />
+                <div className="absolute bottom-2 left-2 w-3 h-3 border-b-2 border-l-2 border-amber-400/80 z-20 pointer-events-none" />
+                <div className="absolute bottom-2 right-2 w-3 h-3 border-b-2 border-r-2 border-amber-400/80 z-20 pointer-events-none" />
 
                 {/* 4. Pulsing Corner LED status indicators */}
                 <div className="absolute top-3 right-3 w-1.5 h-1.5 rounded-full bg-red-500 z-20 pointer-events-none" style={{ animation: 'ledIndicator 1.5s infinite' }} />
 
-                {/* LED Screen & content details */}
-                <div className="relative flex-1 m-2.5 rounded-[12px] overflow-hidden flex flex-col justify-between">
+                {/* 5. Main MicroLED Screen & content details */}
+                <div className="relative flex-1 m-3 rounded-[16px] overflow-hidden flex flex-col justify-between bg-slate-950/80 border border-slate-800/80">
                   <img 
                     src={p.img} 
                     alt={p.title} 
                     className="absolute inset-0 w-full h-full object-cover z-0 opacity-20 filter contrast-125 brightness-110"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/70 to-transparent z-0" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent z-0" />
 
                   {/* Header metadata */}
                   <div className="relative z-10 p-4 flex justify-between items-center">
@@ -2924,28 +2930,54 @@ const Jumbotron3D = ({ theme, onClick }) => {
                     <span className="text-[8px] font-mono text-slate-500 font-bold">{p.date}</span>
                   </div>
 
-                  {/* Title & Desc */}
-                  <div className="relative z-10 p-4 mt-auto">
-                    <div className="flex items-center gap-2 mb-1">
-                      <div className={`p-1.5 rounded-lg ${theme === 'light' ? 'bg-amber-50 text-amber-600' : 'bg-amber-500/10 text-amber-400'}`}>
-                        <Icon className="w-4 h-4" />
+                  {/* Body Content */}
+                  <div className="relative z-10 p-5 mt-auto">
+                    ${p.isWide ? `
+                      /* Landscape layout */
+                      <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+                        <div className="md:col-span-8">
+                          <div className="flex items-center gap-2 mb-1">
+                            <div className="p-1.5 rounded-lg ${theme === 'light' ? 'bg-amber-50 text-amber-600' : 'bg-amber-500/10 text-amber-400'}">
+                              <Icon className="w-5 h-5" />
+                            </div>
+                            <h4 className="text-lg font-black tracking-tight leading-none ${
+                              theme === 'bot' ? 'text-green-400 font-mono' : (theme === 'light' ? 'text-slate-900' : 'text-white')
+                            }">
+                              ${p.title}
+                            </h4>
+                          </div>
+                          <p className="text-xs leading-relaxed font-semibold mt-2 ${
+                            theme === 'bot' ? 'text-green-700 font-mono' : (theme === 'light' ? 'text-slate-500' : 'text-slate-400')
+                          }">
+                            ${p.desc}
+                          </p>
+                        </div>
+                        <div className="hidden md:block md:col-span-4 rounded-xl overflow-hidden border border-white/5 h-20">
+                          <img src="${p.img}" alt="Detail" className="w-full h-full object-cover" />
+                        </div>
                       </div>
-                      <h4 className={`text-base font-black tracking-tight leading-none ${
-                        theme === 'bot' ? 'text-green-400 font-mono' : (theme === 'light' ? 'text-slate-900' : 'text-white')
-                      }`}>
-                        {p.title}
-                      </h4>
-                    </div>
-                    <p className={`text-[11px] leading-snug font-semibold mt-2 max-w-[90%] ${
-                      theme === 'bot' ? 'text-green-700' : (theme === 'light' ? 'text-slate-500' : 'text-slate-400')
-                    }`}>
-                      {p.desc}
-                    </p>
+                    ` : `
+                      /* Side Portrait Stats Layout */
+                      <div className="flex flex-col items-center text-center py-2">
+                        <div className="p-2 rounded-full mb-2 ${theme === 'light' ? 'bg-amber-50 text-amber-600' : 'bg-amber-500/10 text-amber-400'}">
+                          <Icon className="w-6 h-6" />
+                        </div>
+                        <h4 className="text-sm font-black uppercase tracking-wider ${
+                          theme === 'bot' ? 'text-green-400 font-mono' : (theme === 'light' ? 'text-slate-800' : 'text-white')
+                        }">
+                          ${p.title}
+                        </h4>
+                        <span className="text-4xl font-black my-2 bg-clip-text text-transparent bg-gradient-to-r from-amber-400 to-amber-600 ${theme === 'bot' ? 'from-green-400 to-emerald-600' : ''}">
+                          ${p.statValue}
+                        </span>
+                        <p className="text-[10px] text-slate-500 font-bold max-w-[90%] leading-normal">${p.desc}</p>
+                      </div>
+                    `}
                   </div>
                 </div>
 
-                {/* 5. Brushed metallic status base plate */}
-                <div className={`h-[54px] relative z-10 flex flex-col items-center justify-center border-t px-4 bg-gradient-to-b ${
+                {/* 6. Brushed metallic status base plate */}
+                <div className={`h-[60px] relative z-10 flex flex-col items-center justify-center border-t px-4 bg-gradient-to-b ${
                   theme === 'bot' 
                     ? 'from-black to-slate-950 border-green-950' 
                     : (theme === 'light' ? 'from-slate-50 to-slate-100 border-slate-200' : 'from-slate-900 to-slate-950 border-slate-850')
@@ -2968,7 +3000,7 @@ const Jumbotron3D = ({ theme, onClick }) => {
       {/* Floating base shadow */}
       <div 
         className={`absolute bottom-4 h-[12px] rounded-full blur-[8px] pointer-events-none transition-all duration-300 ${
-          isHovered ? 'w-[200px] opacity-40 blur-[10px]' : 'w-[170px] opacity-60'
+          isHovered ? 'w-[400px] opacity-40 blur-[10px]' : 'w-[320px] opacity-60'
         } ${
           theme === 'bot' ? 'bg-green-900/20' : 'bg-slate-950/50'
         }`}
