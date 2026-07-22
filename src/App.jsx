@@ -2668,42 +2668,146 @@ const JourneyTimeline = ({ theme }) => {
   );
 };
 
-// --- 3D JUMBOTRON DIGITAL DISPLAY COMPONENT ---
-const Jumbotron3D = ({ theme, onClick }) => {
-  const [rotationY, setRotationY] = useState(0);
+// --- DYNAMIC 3D CUBE GALLERY COMPONENT ---
+const Cube3DGallery = ({ theme, onClick }) => {
+  const [rotation, setRotation] = useState({ x: -15, y: 25 });
   const [isDragging, setIsDragging] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
-  const dragStart = useRef(0);
-  const angleStart = useRef(0);
+  const [activeFaceIndex, setActiveFaceIndex] = useState(0);
+  const [autoRotate, setAutoRotate] = useState(true);
+  const dragStart = useRef({ x: 0, y: 0 });
+  const rotStart = useRef({ x: -15, y: 25 });
   const animationId = useRef(null);
 
-  // Auto-rotation loop (slow cinematic turn, 18s per revolution => ~20 deg/sec)
-  useEffect(() => {
-    if (isDragging || isHovered) return;
-    
-    let lastTime = performance.now();
-    const rotateStep = (time) => {
-      const delta = time - lastTime;
-      lastTime = time;
-      setRotationY(prev => (prev + (20 * delta) / 1000) % 360);
-      animationId.current = requestAnimationFrame(rotateStep);
-    };
-    
-    animationId.current = requestAnimationFrame(rotateStep);
-    return () => cancelAnimationFrame(animationId.current);
-  }, [isDragging, isHovered]);
+  // 6 Cube faces representing achievements & photo highlights
+  const cubeFaces = [
+    {
+      id: "front",
+      label: "Front",
+      badge: "National Triumph",
+      title: "Smart India Hackathon Winners",
+      desc: "Team 'ByteBusters' won 1st Prize in Smart Education track.",
+      date: "Dec 2025",
+      icon: Trophy,
+      stat: "1st Place",
+      img: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=600&auto=format&fit=crop",
+      faceTransform: "rotateY(0deg) translateZ(150px)"
+    },
+    {
+      id: "right",
+      label: "Right",
+      badge: "Innovation",
+      title: "Project Alpha Ecosystem",
+      desc: "Launched DevForge CLI & Cloud Ecosystem.",
+      date: "Oct 2025",
+      icon: Target,
+      stat: "10k+ Installs",
+      img: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=600&auto=format&fit=crop",
+      faceTransform: "rotateY(90deg) translateZ(150px)"
+    },
+    {
+      id: "back",
+      label: "Back",
+      badge: "Workshops",
+      title: "System Design Masterclass",
+      desc: "Trained 300+ Solupers on high-scale microservices.",
+      date: "Nov 2025",
+      icon: GraduationCap,
+      stat: "300+ Students",
+      img: "https://images.unsplash.com/photo-1531482615713-2afd69097998?q=80&w=600&auto=format&fit=crop",
+      faceTransform: "rotateY(180deg) translateZ(150px)"
+    },
+    {
+      id: "left",
+      label: "Left",
+      badge: "Outreach",
+      title: "Field Surveys & Audits",
+      desc: "Inspected institutional tech infrastructure across 15+ campuses.",
+      date: "Jan 2026",
+      icon: Users,
+      stat: "15+ Campuses",
+      img: "https://images.unsplash.com/photo-1528605248644-14dd04022da1?q=80&w=600&auto=format&fit=crop",
+      faceTransform: "rotateY(-90deg) translateZ(150px)"
+    },
+    {
+      id: "top",
+      label: "Top",
+      badge: "Community",
+      title: "House of Soluper Core",
+      desc: "Active community of 75+ lead student developers.",
+      date: "2025-2026",
+      icon: Sparkles,
+      stat: "75+ Solupers",
+      img: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=600&auto=format&fit=crop",
+      faceTransform: "rotateX(90deg) translateZ(150px)"
+    },
+    {
+      id: "bottom",
+      label: "Bottom",
+      badge: "Legacy",
+      title: "Founders & Presidents Era",
+      desc: "Driven by continuous innovation across 3 presidential eras.",
+      date: "Established 2024",
+      icon: Medal,
+      stat: "3 Eras",
+      img: "https://images.unsplash.com/photo-1511632765486-a01980e01a18?q=80&w=600&auto=format&fit=crop",
+      faceTransform: "rotateX(-90deg) translateZ(150px)"
+    }
+  ];
 
-  // Drag/Touch handlers
+  // Presets to snap to a specific face
+  const faceRotations = [
+    { x: -10, y: 0 },    // Front
+    { x: -10, y: -90 },  // Right
+    { x: -10, y: -180 }, // Back
+    { x: -10, y: 90 },   // Left
+    { x: -90, y: 0 },    // Top
+    { x: 90, y: 0 }      // Bottom
+  ];
+
+  const handleSnapToFace = (index) => {
+    setActiveFaceIndex(index);
+    setAutoRotate(false);
+    setRotation(faceRotations[index]);
+  };
+
+  // Auto rotation loop
+  useEffect(() => {
+    if (!autoRotate || isDragging || isHovered) return;
+
+    let lastTime = performance.now();
+    const animate = (time) => {
+      const delta = (time - lastTime) / 1000;
+      lastTime = time;
+      setRotation((prev) => ({
+        x: prev.x + delta * 3,
+        y: prev.y + delta * 20
+      }));
+      animationId.current = requestAnimationFrame(animate);
+    };
+
+    animationId.current = requestAnimationFrame(animate);
+    return () => {
+      if (animationId.current) cancelAnimationFrame(animationId.current);
+    };
+  }, [autoRotate, isDragging, isHovered]);
+
+  // Drag handlers
   const handleMouseDown = (e) => {
     setIsDragging(true);
-    dragStart.current = e.clientX;
-    angleStart.current = rotationY;
+    setAutoRotate(false);
+    dragStart.current = { x: e.clientX, y: e.clientY };
+    rotStart.current = { ...rotation };
   };
 
   const handleMouseMove = (e) => {
     if (!isDragging) return;
-    const deltaX = e.clientX - dragStart.current;
-    setRotationY(angleStart.current + deltaX * 0.35);
+    const deltaX = e.clientX - dragStart.current.x;
+    const deltaY = e.clientY - dragStart.current.y;
+    setRotation({
+      x: rotStart.current.x - deltaY * 0.4,
+      y: rotStart.current.y + deltaX * 0.4
+    });
   };
 
   const handleMouseUp = () => {
@@ -2712,315 +2816,141 @@ const Jumbotron3D = ({ theme, onClick }) => {
 
   const handleTouchStart = (e) => {
     setIsDragging(true);
-    dragStart.current = e.touches[0].clientX;
-    angleStart.current = rotationY;
+    setAutoRotate(false);
+    dragStart.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+    rotStart.current = { ...rotation };
   };
 
   const handleTouchMove = (e) => {
     if (!isDragging) return;
-    const deltaX = e.touches[0].clientX - dragStart.current;
-    setRotationY(angleStart.current + deltaX * 0.35);
+    const deltaX = e.touches[0].clientX - dragStart.current.x;
+    const deltaY = e.touches[0].clientY - dragStart.current.y;
+    setRotation({
+      x: rotStart.current.x - deltaY * 0.4,
+      y: rotStart.current.y + deltaX * 0.4
+    });
   };
 
-  // 4 Jumbotron panel content definitions
-  // Front / Back faces: Width 1100px (landscape screen), Z-translate: 120px
-  // Right / Left faces: Width 240px (portrait screen), Z-translate: 550px
-  const panels = [
-    {
-      isWide: true,
-      badge: "Achievements",
-      title: "Hackathon Winners",
-      desc: "Team 'ByteBusters' at Solution Developers Hackathon, bootstrapping DevForge CLI tools.",
-      date: "Aug 2025",
-      icon: Trophy,
-      img: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=600&auto=format&fit=crop",
-      transform: "rotateY(0deg) translateZ(120px)",
-      widthClass: "w-[1100px]"
-    },
-    {
-      isWide: false,
-      badge: "Innovation",
-      title: "Project Alpha",
-      desc: "Interactive mapping tool",
-      date: "Oct 2025",
-      statValue: "Go-Live",
-      icon: Target,
-      img: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=300&auto=format&fit=crop",
-      transform: "rotateY(90deg) translateZ(550px)",
-      widthClass: "w-[240px] left-[430px]"
-    },
-    {
-      isWide: true,
-      badge: "Workshops",
-      title: "Workshops Session",
-      desc: "Masterclass on high-volume system design pipelines, databases, and microservices caching.",
-      date: "Dec 2025",
-      icon: GraduationCap,
-      img: "https://images.unsplash.com/photo-1531482615713-2afd69097998?q=80&w=600&auto=format&fit=crop",
-      transform: "rotateY(180deg) translateZ(120px)",
-      widthClass: "w-[1100px]"
-    },
-    {
-      isWide: false,
-      badge: "Community",
-      title: "Community Hub",
-      desc: "Contributors network",
-      date: "Jan 2026",
-      statValue: "500+",
-      icon: Users,
-      img: "https://images.unsplash.com/photo-1528605248644-14dd04022da1?q=80&w=300&auto=format&fit=crop",
-      transform: "rotateY(270deg) translateZ(550px)",
-      widthClass: "w-[240px] left-[430px]"
-    }
-  ];
-
-  const accentColor = theme === 'bot' ? 'rgba(34, 197, 94, 0.5)' : 'rgba(212, 175, 55, 0.5)';
-  const secondaryAccent = 'rgba(59, 130, 246, 0.4)';
-
   return (
-    <div 
-      className="relative w-full h-[780px] my-6 flex flex-col items-center justify-center select-none overflow-hidden"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => {
-        setIsHovered(false);
-        setIsDragging(false);
-      }}
-      onMouseMove={handleMouseMove}
-      onMouseUp={handleMouseUp}
-      onMouseDown={handleMouseDown}
-      onTouchStart={handleTouchStart}
-      onTouchMove={handleTouchMove}
-      onTouchEnd={handleMouseUp}
-    >
-      {/* Self-contained keyframe styles */}
-      <style dangerouslySetInnerHTML={{__html: `
-        @keyframes glassSweep {
-          0% { transform: translateX(-150%) skewX(-20deg); }
-          30%, 100% { transform: translateX(150%) skewX(-20deg); }
-        }
-        @keyframes ledIndicator {
-          0%, 100% { opacity: 0.3; }
-          50% { opacity: 1; }
-        }
-        @keyframes borderPulse {
-          0%, 100% { border-color: rgba(212, 175, 55, 0.25); }
-          50% { border-color: rgba(212, 175, 55, 0.7); }
-        }
-      `}} />
+    <div className="relative w-full py-10 my-4 flex flex-col items-center justify-center select-none overflow-hidden">
+      {/* Background ambient radial glow */}
+      <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_center,rgba(212,175,55,0.08)_0%,transparent_70%)] z-0" />
 
-      {/* Backdrop Subtle Ambient Radial Glow */}
-      <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_center,rgba(212,175,55,0.06)_0%,transparent_60%)] z-0" />
-
-      {/* Spotlights projecting down with low opacity (~20%) */}
-      <div 
-        className="absolute top-0 left-[10%] w-[320px] h-[600px] pointer-events-none opacity-25 mix-blend-screen z-0"
-        style={{
-          background: 'linear-gradient(135deg, rgba(212, 175, 55, 0.15) 0%, rgba(212, 175, 55, 0) 70%)',
-          clipPath: 'polygon(0 0, 100% 0, 80% 100%, 20% 100%)',
-          transform: 'rotate(-6deg)',
-          transformOrigin: 'top center'
-        }}
-      />
-      <div 
-        className="absolute top-0 right-[10%] w-[320px] h-[600px] pointer-events-none opacity-25 mix-blend-screen z-0"
-        style={{
-          background: 'linear-gradient(225deg, rgba(59, 130, 246, 0.15) 0%, rgba(59, 130, 246, 0) 70%)',
-          clipPath: 'polygon(0 0, 100% 0, 80% 100%, 20% 100%)',
-          transform: 'rotate(6deg)',
-          transformOrigin: 'top center'
-        }}
-      />
-
-      {/* 1. Ceiling space-frame lighting truss structure */}
-      <div className="absolute top-0 w-[1120px] h-[28px] pointer-events-none z-20 hidden lg:flex items-center justify-center">
-        <svg className="w-full h-full" viewBox="0 0 1120 28" fill="none">
-          <rect x="2" y="2" width="1116" height="24" rx="6" fill="#0f172a" fillOpacity="0.9" stroke="#334155" strokeWidth="2"/>
-          {/* Overlapping steel cross-beams */}
-          <path d="M2 2 L26 26 M26 2 L50 26 M50 2 L74 26 M74 2 L98 26 M98 2 L122 26 M122 2 L146 26 M146 2 L170 26 M170 2 L194 26 M194 2 L218 26 M218 2 L242 26 M242 2 L266 26 M266 2 L290 26 M290 2 L314 26 M314 2 L338 26 M338 2 L362 26 M362 2 L386 26 M386 2 L410 26 M410 2 L434 26 M434 2 L458 26 M458 2 L482 26 M482 2 L506 26 M506 2 L530 26 M530 2 L554 26 M554 2 L578 26 M578 2 L602 26 M602 2 L626 26 M626 2 L650 26 M650 2 L674 26 M674 2 L698 26 M698 2 L720 26" stroke="#475569" strokeWidth="1.5" strokeOpacity="0.3" />
-          {/* LED Strip glows */}
-          <line x1="10" y1="25" x2="1110" y2="25" stroke="#f59e0b" strokeWidth="2" strokeOpacity="0.65" />
-        </svg>
+      {/* Header Badge */}
+      <div className="relative z-10 flex items-center gap-2 mb-8">
+        <span className={`px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest border backdrop-blur-md flex items-center gap-2 shadow-lg ${
+          theme === 'bot' 
+            ? 'bg-black/80 border-green-500/40 text-green-400 font-mono' 
+            : (theme === 'light' ? 'bg-amber-50 border-amber-200 text-amber-800' : 'bg-slate-900/80 border-amber-500/30 text-amber-400')
+        }`}>
+          <RotateCw className={`w-3.5 h-3.5 ${autoRotate ? 'animate-spin' : ''}`} style={{ animationDuration: '6s' }} /> 
+          3D Interactive Achievement Cube
+        </span>
       </div>
 
-      {/* 2. Heavy steel suspension cables */}
-      <div className="absolute top-[28px] h-[152px] w-[1020px] flex justify-between pointer-events-none z-15 hidden lg:flex">
-        <div className="w-[2.5px] h-full bg-gradient-to-b from-slate-400 to-slate-800 shadow-[0_0_3px_rgba(255,255,255,0.2)]" />
-        <div className="w-[2.5px] h-full bg-gradient-to-b from-slate-400 to-slate-800 shadow-[0_0_3px_rgba(255,255,255,0.2)]" />
-      </div>
-
-      {/* 3D Viewport container (responsive scales) */}
+      {/* 3D Scene Viewport */}
       <div 
-        className="relative w-[1100px] h-[650px] mt-[120px] transition-transform duration-500 scale-[0.25] sm:scale-[0.5] md:scale-[0.7] lg:scale-100"
-        style={{
-          perspective: '1800px',
-          cursor: isDragging ? 'grabbing' : 'grab'
+        className="relative w-[320px] sm:w-[360px] h-[320px] sm:h-[360px] flex items-center justify-center cursor-grab active:cursor-grabbing"
+        style={{ perspective: '1100px' }}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => {
+          setIsHovered(false);
+          setIsDragging(false);
         }}
+        onMouseDown={handleMouseDown}
+        onMouseMove={handleMouseMove}
+        onMouseUp={handleMouseUp}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleMouseUp}
       >
-        {/* 3D Scene container */}
+        {/* 3D Rotating Cube */}
         <div
-          onClick={onClick}
-          className="w-full h-full preserve-3d transition-all duration-300 ease-out"
+          className="w-[280px] h-[280px] sm:w-[300px] sm:h-[300px] relative transition-transform duration-100 ease-out"
           style={{
-            transform: `rotateY(${rotationY}deg) rotateX(-2deg) ${isHovered ? 'translateY(-8px)' : 'translateY(0)'}`,
             transformStyle: 'preserve-3d',
-            filter: isHovered ? 'drop-shadow(0 25px 50px rgba(212,175,55,0.2))' : 'drop-shadow(0 15px 30px rgba(0,0,0,0.3))'
+            transform: `rotateX(${rotation.x}deg) rotateY(${rotation.y}deg)`
           }}
         >
-          {/* Top structural metal cap face */}
-          <div 
-            className="absolute left-0 top-[205px] w-[1100px] h-[240px] border border-slate-600 bg-gradient-to-b from-slate-700 via-slate-800 to-slate-900"
-            style={{
-              transform: 'rotateX(90deg) translateZ(325px)',
-              backfaceVisibility: 'hidden',
-              backgroundImage: 'radial-gradient(circle at center, #475569, #1e293b)'
-            }}
-          >
-            {/* Brackets where cables attach */}
-            <div className="absolute top-4 left-10 w-8 h-8 rounded bg-slate-950 border border-slate-600 flex items-center justify-center">
-              <div className="w-3 h-3 rounded-full bg-slate-700 shadow-inner" />
-            </div>
-            <div className="absolute top-4 right-10 w-8 h-8 rounded bg-slate-950 border border-slate-600 flex items-center justify-center">
-              <div className="w-3 h-3 rounded-full bg-slate-700 shadow-inner" />
-            </div>
-            <div className="absolute bottom-4 left-10 w-8 h-8 rounded bg-slate-950 border border-slate-600 flex items-center justify-center">
-              <div className="w-3 h-3 rounded-full bg-slate-700 shadow-inner" />
-            </div>
-            <div className="absolute bottom-4 right-10 w-8 h-8 rounded bg-slate-950 border border-slate-600 flex items-center justify-center">
-              <div className="w-3 h-3 rounded-full bg-slate-700 shadow-inner" />
-            </div>
-          </div>
-
-          {/* Bottom structural metal cap face */}
-          <div 
-            className="absolute left-0 top-[205px] w-[1100px] h-[240px] border border-slate-600 bg-gradient-to-b from-slate-900 via-slate-950 to-black"
-            style={{
-              transform: 'rotateX(90deg) translateZ(-325px)',
-              backfaceVisibility: 'hidden'
-            }}
-          />
-
-          {/* 4 Jumbotron faces */}
-          {panels.map((p, i) => {
-            const Icon = p.icon;
+          {cubeFaces.map((face) => {
+            const Icon = face.icon;
             return (
               <div
-                key={i}
-                className={`absolute h-[650px] left-0 top-0 rounded-[28px] border flex flex-col justify-between backdrop-blur-sm group/jumbo overflow-hidden ${p.widthClass} ${
-                  theme === 'bot' 
-                    ? 'bg-black border-green-500/30' 
-                    : (theme === 'light' 
-                        ? 'bg-slate-100/95 border-slate-350 shadow-inner' 
-                        : 'bg-slate-900/95 border-slate-850')
+                key={face.id}
+                onClick={onClick}
+                className={`absolute inset-0 w-full h-full rounded-2xl border-2 backdrop-blur-md overflow-hidden flex flex-col justify-between p-5 shadow-2xl transition-all group ${
+                  theme === 'bot'
+                    ? 'bg-black/90 border-green-500/50 text-green-400 font-mono shadow-[0_0_20px_rgba(34,197,94,0.2)]'
+                    : (theme === 'light'
+                        ? 'bg-white/95 border-amber-300 text-slate-900 shadow-[0_10px_30px_rgba(212,175,55,0.25)]'
+                        : 'bg-slate-900/95 border-amber-500/40 text-white shadow-[0_10px_35px_rgba(0,0,0,0.6)]')
                 }`}
                 style={{
-                  transform: p.transform,
-                  backfaceVisibility: 'hidden',
-                  transformStyle: 'preserve-3d',
-                  backgroundImage: 'radial-gradient(ellipse at top left, rgba(255,255,255,0.06), transparent)'
+                  transform: face.faceTransform,
+                  backfaceVisibility: 'visible',
+                  WebkitBackfaceVisibility: 'visible'
                 }}
               >
-                {/* 1. Ultra-thin golden trims */}
-                <div className="absolute inset-1.5 border border-amber-500/20 rounded-[22px] pointer-events-none z-20" style={{ animation: 'borderPulse 4s infinite' }} />
-
-                {/* 2. Glass glossy reflection layer & moving light sweep */}
-                <div className="absolute inset-0 bg-gradient-to-tr from-white/5 via-transparent to-transparent pointer-events-none z-15" />
-                <div 
-                  className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent pointer-events-none z-15"
-                  style={{
-                    animation: 'glassSweep 7s infinite',
-                    animationDelay: `${i * 1.5}s`
-                  }}
-                />
-
-                {/* 3. Gold corner joint protectors */}
-                <div className="absolute top-2 left-2 w-3 h-3 border-t-2 border-l-2 border-amber-400/80 z-20 pointer-events-none" />
-                <div className="absolute top-2 right-2 w-3 h-3 border-t-2 border-r-2 border-amber-400/80 z-20 pointer-events-none" />
-                <div className="absolute bottom-2 left-2 w-3 h-3 border-b-2 border-l-2 border-amber-400/80 z-20 pointer-events-none" />
-                <div className="absolute bottom-2 right-2 w-3 h-3 border-b-2 border-r-2 border-amber-400/80 z-20 pointer-events-none" />
-
-                {/* 4. Pulsing Corner LED status indicators */}
-                <div className="absolute top-3 right-3 w-1.5 h-1.5 rounded-full bg-red-500 z-20 pointer-events-none" style={{ animation: 'ledIndicator 1.5s infinite' }} />
-
-                {/* 5. Main MicroLED Screen & content details */}
-                <div className="relative flex-1 m-4 rounded-[20px] overflow-hidden flex flex-col justify-between bg-slate-950 border border-slate-850">
+                {/* Background Image with Gradient Overlay */}
+                <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
                   <img 
-                    src={p.img} 
-                    alt={p.title} 
-                    className="absolute inset-0 w-full h-full object-cover z-0 opacity-20 filter contrast-125 brightness-110"
+                    src={face.img} 
+                    alt={face.title} 
+                    className="w-full h-full object-cover opacity-30 group-hover:scale-110 transition-transform duration-700" 
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent z-0" />
-
-                  {/* Header metadata */}
-                  <div className="relative z-10 p-5 flex justify-between items-center">
-                    <span className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-black/75 border ${
-                      theme === 'bot' 
-                        ? 'text-green-400 border-green-500/25' 
-                        : 'text-amber-500 border-amber-400/30'
-                    }`}>
-                      {p.badge}
-                    </span>
-                    <span className="text-[9px] font-mono text-slate-500 font-bold">{p.date}</span>
-                  </div>
-
-                  {/* Body Content */}
-                  <div className="relative z-10 p-6 mt-auto">
-                    {p.isWide ? (
-                      /* Landscape layout */
-                      <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
-                        <div className="md:col-span-8 space-y-2">
-                          <div className="flex items-center gap-3">
-                            <div className={`p-2 rounded-xl ${theme === 'light' ? 'bg-amber-50 text-amber-600' : 'bg-amber-500/10 text-amber-400'}`}>
-                              <Icon className="w-6 h-6" />
-                            </div>
-                            <h4 className={`text-xl font-black tracking-tight leading-none ${
-                              theme === 'bot' ? 'text-green-400 font-mono' : (theme === 'light' ? 'text-slate-900' : 'text-white')
-                            }`}>
-                              {p.title}
-                            </h4>
-                          </div>
-                          <p className={`text-sm leading-relaxed font-semibold ${
-                            theme === 'bot' ? 'text-green-700 font-mono' : (theme === 'light' ? 'text-slate-500' : 'text-slate-400')
-                          }`}>
-                            {p.desc}
-                          </p>
-                        </div>
-                        <div className="hidden md:block md:col-span-4 rounded-2xl overflow-hidden border border-white/5 h-28 shadow-2xl">
-                          <img src={p.img} alt="Detail" className="w-full h-full object-cover" />
-                        </div>
-                      </div>
-                    ) : (
-                      /* Side Portrait Stats Layout */
-                      <div className="flex flex-col items-center text-center py-4 space-y-2">
-                        <div className={`p-3 rounded-full ${theme === 'light' ? 'bg-amber-50 text-amber-600' : 'bg-amber-500/10 text-amber-400'}`}>
-                          <Icon className="w-8 h-8" />
-                        </div>
-                        <h4 className={`text-base font-black uppercase tracking-wider ${
-                          theme === 'bot' ? 'text-green-400 font-mono' : (theme === 'light' ? 'text-slate-800' : 'text-white')
-                        }`}>
-                          {p.title}
-                        </h4>
-                        <span className={`text-5xl font-black bg-clip-text text-transparent bg-gradient-to-r from-amber-400 to-amber-600 ${theme === 'bot' ? 'from-green-400 to-emerald-600' : ''}`}>
-                          {p.statValue}
-                        </span>
-                        <p className="text-xs text-slate-500 font-bold max-w-[90%] leading-normal">{p.desc}</p>
-                      </div>
-                    )}
-                  </div>
+                  <div className={`absolute inset-0 bg-gradient-to-t ${
+                    theme === 'bot' 
+                      ? 'from-black via-black/80 to-transparent' 
+                      : (theme === 'light' ? 'from-white via-white/80 to-transparent' : 'from-slate-950 via-slate-950/80 to-transparent')
+                  }`} />
                 </div>
 
-                {/* 6. Brushed metallic status base plate */}
-                <div className={`h-[74px] relative z-10 flex flex-col items-center justify-center border-t px-4 bg-gradient-to-b ${
-                  theme === 'bot' 
-                    ? 'from-black to-slate-950 border-green-950' 
-                    : (theme === 'light' ? 'from-slate-50 to-slate-100 border-slate-200' : 'from-slate-900 to-slate-950 border-slate-850')
-                }`}>
-                  <span className={`text-[11px] font-black tracking-[0.35em] uppercase text-center leading-none ${
-                    theme === 'bot' ? 'text-green-500 font-mono' : (theme === 'light' ? 'text-[#8a6500]' : 'text-[#D4AF37]')
+                {/* Corner Status LED Indicator */}
+                <div className={`absolute top-3 right-3 w-2 h-2 rounded-full ${theme === 'bot' ? 'bg-green-400' : 'bg-amber-400'} animate-pulse z-20 pointer-events-none`} />
+
+                {/* Header Badge & Date */}
+                <div className="relative z-10 flex justify-between items-center pointer-events-none">
+                  <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider ${
+                    theme === 'bot'
+                      ? 'bg-green-950/90 text-green-400 border border-green-500/40'
+                      : 'bg-amber-500/20 text-amber-500 border border-amber-500/30'
                   }`}>
-                    SOLUTION DEVELOPERS
+                    {face.badge}
                   </span>
-                  <span className="text-[8px] font-mono text-slate-500 uppercase tracking-widest mt-1.5">
-                    DIGITAL MUSEUM // ACHIEVEMENT REGISTER
+                  <span className="text-[10px] font-bold text-slate-400">{face.date}</span>
+                </div>
+
+                {/* Body Details */}
+                <div className="relative z-10 my-auto text-left space-y-1.5 pointer-events-none">
+                  <div className="flex items-center gap-2">
+                    <div className={`p-2 rounded-xl ${
+                      theme === 'bot' 
+                        ? 'bg-green-500/20 text-green-400' 
+                        : 'bg-amber-500/20 text-amber-500'
+                    }`}>
+                      <Icon className="w-4 h-4" />
+                    </div>
+                    <span className="text-xs font-black uppercase tracking-wider text-amber-400">{face.stat}</span>
+                  </div>
+
+                  <h3 className={`text-base font-black leading-snug tracking-tight ${
+                    theme === 'bot' ? 'text-green-400' : (theme === 'light' ? 'text-slate-900' : 'text-white')
+                  }`}>
+                    {face.title}
+                  </h3>
+
+                  <p className={`text-xs line-clamp-2 leading-relaxed ${
+                    theme === 'bot' ? 'text-green-600' : (theme === 'light' ? 'text-slate-650' : 'text-slate-300')
+                  }`}>
+                    {face.desc}
+                  </p>
+                </div>
+
+                {/* Bottom Bar */}
+                <div className="relative z-10 pt-2 border-t border-white/10 flex justify-between items-center text-[10px] font-bold pointer-events-none">
+                  <span className="text-slate-400">SOLUTION DEVELOPERS</span>
+                  <span className={`${theme === 'bot' ? 'text-green-500' : 'text-amber-400'} flex items-center gap-1`}>
+                    View Details <ChevronRight className="w-3 h-3" />
                   </span>
                 </div>
               </div>
@@ -3029,14 +2959,45 @@ const Jumbotron3D = ({ theme, onClick }) => {
         </div>
       </div>
 
-      {/* Floating base shadow */}
-      <div 
-        className={`absolute bottom-4 h-[16px] rounded-full blur-[10px] pointer-events-none transition-all duration-300 ${
-          isHovered ? 'w-[600px] opacity-40 blur-[12px]' : 'w-[520px] opacity-60'
-        } ${
-          theme === 'bot' ? 'bg-green-900/20' : 'bg-slate-950/50'
-        }`}
-      />
+      {/* Floating Base Shadow */}
+      <div className={`w-[240px] h-[14px] rounded-full blur-xl my-3 pointer-events-none ${
+        theme === 'bot' ? 'bg-green-500/20' : 'bg-amber-500/20'
+      }`} />
+
+      {/* Face Snap Buttons & Auto-Spin Toggle */}
+      <div className="relative z-10 mt-2 flex flex-wrap justify-center items-center gap-2 max-w-lg px-4">
+        <button
+          onClick={() => setAutoRotate(!autoRotate)}
+          className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 border shadow-sm ${
+            autoRotate
+              ? (theme === 'bot' ? 'bg-green-950 border-green-500 text-green-400' : 'bg-amber-600 text-white border-amber-400')
+              : (theme === 'bot' ? 'bg-black border-green-900 text-green-700' : 'bg-slate-800/80 border-slate-700 text-slate-300')
+          }`}
+        >
+          <RotateCw className={`w-3.5 h-3.5 ${autoRotate ? 'animate-spin' : ''}`} />
+          {autoRotate ? 'Auto Spin On' : 'Auto Spin Off'}
+        </button>
+
+        {cubeFaces.map((face, index) => (
+          <button
+            key={face.id}
+            onClick={() => handleSnapToFace(index)}
+            className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all border ${
+              activeFaceIndex === index && !autoRotate
+                ? (theme === 'bot' ? 'bg-green-500 text-black border-green-400' : 'bg-amber-500 text-slate-950 border-amber-300 shadow-md')
+                : (theme === 'bot' 
+                    ? 'bg-black/60 border-green-900 text-green-600 hover:text-green-400' 
+                    : (theme === 'light' ? 'bg-white border-slate-200 text-slate-600 hover:bg-amber-50' : 'bg-slate-900/80 border-slate-800 text-slate-400 hover:text-white'))
+            }`}
+          >
+            {face.label}
+          </button>
+        ))}
+      </div>
+
+      <p className={`mt-3 text-[11px] font-semibold text-slate-500 flex items-center gap-1.5 ${theme === 'bot' ? 'font-mono text-green-700' : ''}`}>
+        <span>💡 Tip: Click and drag anywhere on the cube to spin in 3D</span>
+      </p>
     </div>
   );
 };
@@ -3150,9 +3111,9 @@ const GalleryPage = ({ theme }) => {
              <div className="max-w-7xl mx-auto">
                 <SectionTitle theme={theme} title="Digital Museum" subtitle="Documenting our memories, collaborations, and celebrations." />
                 
-                {/* NEW Transparent 3D Jumbotron suspended display */}
+                {/* 3D Interactive Achievement Cube Showcase */}
                 <div className="animate-[fade-in_0.7s_ease-out]">
-                  <Jumbotron3D theme={theme} onClick={() => setIsStatsOpen(true)} />
+                  <Cube3DGallery theme={theme} onClick={() => setIsStatsOpen(true)} />
                 </div>
 
                 {/* Segmented Control / Tabs */}
